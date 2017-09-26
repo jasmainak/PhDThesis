@@ -10,6 +10,7 @@
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp}
+\usepackage{natbib}
 \usepackage{helvet}	% or \usepackage{lmodern}
 \renewcommand\textnumero{n$^{\textsf{{\tiny O}}}$}
 \renewcommand{\familydefault}{\sfdefault}
@@ -161,5 +162,11 @@ Co-encadrement de la thèse:		{\bf Prénom NOM}
 \tableofcontents
 \listoffigures
 \listoftables
-\chapter{Introduction}
+\input{chapters/1-introduction.tex}
+
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{abbrvnat}
+\bibliography{refs}
+
 \end{document}
