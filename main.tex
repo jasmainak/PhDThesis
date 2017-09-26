@@ -1,0 +1,74 @@
+\documentclass[a4paper,14pt,twoside]{extreport}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+
+\usepackage{etoolbox}
+\usepackage[rgb]{xcolor}
+\usepackage{mathsymbols}
+\usepackage{amsfonts}
+\usepackage[cmex10]{amsmath}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    citecolor=blue,
+    filecolor=black,
+    linkcolor=blue,
+    urlcolor=blue
+}
+
+\linespread{0.98}
+
+\newtoggle{long}
+\toggletrue{long}
+
+\newcommand{\alex}{\textcolor{blue}}
+\newcommand{\mainak}{\textcolor{magenta}}
+
+\begin{document}
+
+\begin{titlepage}
+
+\begin{figure}
+\includegraphics[width=0.2\linewidth]{telecom-logo.png}
+\hfill
+\includegraphics[width=0.2\linewidth]{CNRS-logo.jpg}
+\end{figure}
+
+\centering
+\vspace*{2cm}
+{\LARGE \scshape \bfseries Automated preprocessing in M/EEG\par}
+\vspace{3cm}
+{\LARGE \scshape Mid term report \\}
+\vspace{2cm}
+{\Large Mainak Jas}
+\vspace{5cm}
+{\\ \large Supervised by \\}
+\vspace{0.5cm}
+{\large Alexandre Gramfort}
+% supervised by alex
+% who is the jury
+\end{titlepage}
+
+\input{sections/0-abstract}
+
+\tableofcontents
+
+%\mainak{Write a story about what you will do in the future -- dictionary learning etc -- basically what forms the intro for your next project}
+
+\input{sections/1-introduction}
+\input{sections/2-methods}
+\input{sections/3-results}
+\input{sections/4-discussion}
+\input{sections/5-conclusion}
+\input{sections/6-sparse_coding}
+
+%\bibliographystyle{IEEEtran}
+%\bibliography{refs}
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{agsm}
+\bibliography{refs}
+
+\end{document}

@@ -1,0 +1,16 @@
+\section{Discussion}
+\label{sec:discussion}
+% XXX start with 1 phrase of summary what this was and drop this phrase, obviously you discuss limitations and strengths here.
+
+% xxx general remark on this section, it could benefit from more linguistic synthesis and some summarizing/generalizing remark. It reads like a list.
+The algorithm described here is fully automated requiring no manual intervention. This is particularly useful for large-scale experiments. It also implies that the analysis pipeline is free from experimenter's bias while rejecting trials.
+
+A big strength of the \emph{auto reject} algorithm is that the average evoked response obtained can be used in noise-normalized source modeling techniques such as dSPM or sLORETA without any modifications. Indeed, such methods are not readily applicable if the average is a weighted mean (as in robust  regression~\citep{diedrichsen2005detecting}), which changes how the variance of the noise should be calculated. However this is not the case in our method.
+%This is unlike regression-based techniques such as robust regression which compute a weighted average which means that noise normalized source estimates such as dSPM or sLORETA are not readily applicable. The variance of the noise of the average here remains the variance of the noise of a single trial devided by the number of averaged trials.
+% XXX this is not really true is it? % mj: I had a discussion with ag about this. nave changes when you do robust regression which causes problems
+
+\iftoggle{long}{Although the average signal has been used for optimizing the algorithm, it is not restricted to event-related potentials/fields. The algorithm is general and will work even with resting-state data. Instead of the average signal, one could also optimize at another analysis level -- source space, time-frequency signal \textit{etc} -- keeping in mind the dangers of double dipping \citep{kriegeskorte2009circular}.}{} 
+
+Compared to other methods (\textit{e.g.}, PREP~\citep{bigdely2015prep}), we do not make the assumption that sensors must be globally bad. In fact, it can detect and repair sensors even when they are locally bad, thus saving data. Of course, with suitable modifications, the method can also be used to detect flat sensors. \iftoggle{long}{In the future, we will integrate this into the framework.}{} Note that, even though we used peak-to-peak threshold as our statistic for trials, our algorithm should work with other reasonable statistics too.
+
+To avoid the dangers of double dipping, our advice is to run the algorithm on each condition separately and not on the contrast. \iftoggle{long}{The interpolation technology can pose some inherent limitations which we have partially addressed with the $\rho$ parameter.}{} Finally, when spatial filtering methods \citep{vigario1997extraction, uusitalo1997signal} are used for artifact removal, they should be applied after our algorithm.
