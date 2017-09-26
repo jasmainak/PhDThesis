@@ -1,74 +1,166 @@
-\documentclass[a4paper,14pt,twoside]{extreport}
-\usepackage[left=2cm,right=2cm,top=2cm,bottom=3cm]{geometry}
+% Couverture Thèse TPT Latex v2
+% Fabrice Linot 04/12/11 
 
-\usepackage{etoolbox}
-\usepackage[rgb]{xcolor}
-\usepackage{mathsymbols}
-\usepackage{amsfonts}
-\usepackage[cmex10]{amsmath}
+\documentclass[11pt,a4paper]{book}
+%\documentclass{ecsthesis}
+%\usepackage[left=0cm,top=1.2cm,right=0cm,bottom=0.5cm]{geometry}
 \usepackage{graphicx}
-\usepackage{natbib}
-\usepackage{hyperref}
+\usepackage{eso-pic}
+\usepackage{array}
+\usepackage[francais]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{helvet}	% or \usepackage{lmodern}
+\renewcommand\textnumero{n$^{\textsf{{\tiny O}}}$}
+\renewcommand{\familydefault}{\sfdefault}
 
-\hypersetup{
-    colorlinks,
-    citecolor=blue,
-    filecolor=black,
-    linkcolor=blue,
-    urlcolor=blue
-}
+\usepackage{ifpdf}
+\newcommand\BackgroundPic{
+\ifpdf
+	\includegraphics[height=\paperheight,width=\paperwidth]{cover_bg.pdf}
+\else
+	\includegraphics[height=\paperheight,width=\paperwidth]{cover_bg.pdf}
+\fi}
 
-\linespread{0.98}
-
-\newtoggle{long}
-\toggletrue{long}
-
-\newcommand{\alex}{\textcolor{blue}}
-\newcommand{\mainak}{\textcolor{magenta}}
+\pagestyle{empty}
 
 \begin{document}
+\AddToShipoutPicture*{\BackgroundPic}
+~
 
-\begin{titlepage}
+%\begin{flushright}
 
-\begin{figure}
-\includegraphics[width=0.2\linewidth]{telecom-logo.png}
-\hfill
-\includegraphics[width=0.2\linewidth]{CNRS-logo.jpg}
-\end{figure}
+\includegraphics[scale=0.45]{logo_TPT.pdf}
 
-\centering
-\vspace*{2cm}
-{\LARGE \scshape \bfseries Automated preprocessing in M/EEG\par}
-\vspace{3cm}
-{\LARGE \scshape Mid term report \\}
-\vspace{2cm}
-{\Large Mainak Jas}
-\vspace{5cm}
-{\\ \large Supervised by \\}
+{\small {2015-ENST-00xx~~~~}}
+\end{flushright}
+
+
+
+%\vspace{0.cm}
+\begin{center}
+%
+
+
+\includegraphics[scale=0.65]{logo_edite.pdf} \\
+{\small {EDITE - ED 130}}
+
+
+%
+\vspace{.5cm}
+%
+%
+%
+%{\Large École doctorale \textnumero XX: texte}\\		% version une ligne
+%{\Large École doctorale \textnumero XX:\\ texte}\\		% version deux lignes (changer les espaces en conséquence
+%
+%
+%
+\vspace{1.0cm}
+%
+%
+%
+{\LARGE {\bf Doctorat ParisTech}}\\
+\vspace{1.1cm}
+{\LARGE {\bf T H È S E}}\\
 \vspace{0.5cm}
-{\large Alexandre Gramfort}
-% supervised by alex
-% who is the jury
-\end{titlepage}
+{\normalsize {\bf pour obtenir le grade de docteur délivré par}}\\
+%
+%
+%
+\vspace{.9cm}
+%
+%
+%
+%
+{\LARGE {\bf TELECOM ParisTech}}\\
+\vspace{0.6cm}
+{\Large {\bf Spécialité \og Xxxx \fg}}\\
+%
+%
+%
+\vspace{.8cm}
+%
+%
+%
+{\normalsize {\it présentée et soutenue publiquement par}}\\
+\vspace{0.7cm}
+{\Large {\bf Mainak JAS}}\\
+\vspace{0.24cm}
+{\normalsize le jour mois année}\\
+%
+%
+%
+\vfill
+%
+%
+%
+\textcolor[RGB]{191,18,56}{
+\noindent
+{\LARGE {\bf Advances in automating analysis of\\[.6cm]neural time series data}}\\
+}
+%
+%
+%
+\vfill~\vfill
+%
+%
+%
+{\normalsize
+\begin{tabular}{c}
+Directeur de thèse:					{\bf Alexandre GRAMFORT}\\
+Co-encadrement de la thèse:		{\bf Prénom NOM}
+\end{tabular}
+}
+\end{center}
+%
+%
+%
+\vfill
+%
+%
+%
+\flushleft
+\begin{minipage}{.9\textwidth}	% ou .91\textwidth si vous n'avez pas assez de place
+{\bf Jury}\\
+% Mme/M. Prénom NOM, Titre, Unité de recherche, Ecole 
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
+{\bf Mme/M. Prénom NOM}, {\small Titre, Unité de recherche, Ecole}
+	\hfill Fonction\\
 
-\input{sections/0-abstract}
-
-\tableofcontents
-
-%\mainak{Write a story about what you will do in the future -- dictionary learning etc -- basically what forms the intro for your next project}
-
-\input{sections/1-introduction}
-\input{sections/2-methods}
-\input{sections/3-results}
-\input{sections/4-discussion}
-\input{sections/5-conclusion}
-\input{sections/6-sparse_coding}
-
-%\bibliographystyle{IEEEtran}
-%\bibliography{refs}
-
-\addcontentsline{toc}{chapter}{Bibliography}
-\bibliographystyle{agsm}
-\bibliography{refs}
-
+\end{minipage}\\
+%
+%
+%
+\vspace{-.3cm}
+%
+%
+%
+\centering
+{\bf TELECOM ParisTech}\\
+{\small école de l'Institut Mines-Télécom - membre de ParisTech}\\
+{\tiny 46 rue Barrault 75013 Paris - (+33) 1 45 81 77 77 - www.telecom-paristech.fr}
+%
+%
+%
+%
+%\newpage
+%\tableofcontents
+%\listoffigures
+%\listoftables
+%\chapter{Introduction}
 \end{document}
