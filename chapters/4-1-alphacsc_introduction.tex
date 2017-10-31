@@ -1,0 +1,113 @@
+\chapter{Convolutional Sparse Coding}
+
+%!TEX root = ../nips_2017.tex
+
+\section{Introduction}
+Neural time series data, either non-invasive such as electroencephalograhy (EEG) 
+% \utodo{we shouldn't use abbreviations if they won't be used later in the text.}
+or invasive such as electrocorticography (ECoG) and local field potentials (LFP), are fundamental to modern experimental neuroscience. Such recordings contain a wide variety of `prototypical signals' that range from beta rhythms (12--30 Hz) in motor imagery tasks and alpha oscillations (8--12 Hz) involved in attention mechanisms, to spindles in sleep studies, 
+% \utodo{Does everybody know what this is?}
+and the classical P300 event related potential, a biomarker for surprise. 
+%
+These prototypical waveforms are considered critical in clinical and cognitive research~\cite{cole2017brain}, thereby motivating the development of computational tools for learning such signals from data.
+%\mjtodo{Stylistic remark: This is the same as first sentence in abstract.}
+
+
+Despite the underlying complexity in the morphology of neural signals, the majority of the computational tools in the community are based on representing the signals with rather simple, predefined bases, such as the Fourier or wavelet bases~\cite{cohen2014analyzing}.
+While such bases lead to computationally efficient algorithms, they often fall short at capturing the precise morphology of signal waveforms, as demonstrated by a number of recent studies~\cite{jones2016brain,mazaheri2008asymmetric}. An example of such a failure is the disambiguation of the alpha rhythm from the mu rhythm~\cite{hari2017meg}, both of which have a component around $10$\,Hz but with different morphologies that cannot be captured by Fourier- or wavelet-based representations.
+
+% with logarithmic complexities --> logarithmic in what?
+
+
+ % can serve as biomarkers for pathologies or modified by certain cognitive tasks~\cite{cole2017brain,Cole4830}. 
+
+% For example, filtering a signal in a relatively narrow band transforms it to an almost perfect sinusoid. This issue is reflected in many recent studies~\cite{tanner2015inappropriate,rousselet2012does,acunzo2012systematic} which have debated the pros and cons of filtering in analysis pipelines because it can ``distort'' waveforms. When looking at bursts of oscillations, typically using Morlet wavelets, the asymmetric shape of an alpha wave~\cite{mazaheri2008asymmetric} or the ``sawtooth'' shape of a beta oscillations~\cite{cole2017brain} are very often invisible. Disambiguating the alpha rhythm from the mu rhythm~\cite{hari2017meg}, both of which have a component around 10 Hz, while having different morphologies is also not doable when looking at amplitude of Fourier-based representations.
+
+%~\cite{durka2005multichannel,jost2006motif,sieluzyckiamultivariate,benar2009consensus,barthelemy2013multivariate}
+% These observations is what has spurred the recent 
+
+Recently, there have been several attempts for extracting more realistic and precise morphologies directly from unfiltered electrophysiology signals, via dictionary learning approaches \cite{jost2006motif,brockmeier2016learning,hitziger2017adaptive,gips2017discovering}.
+%
+These methods all aim to extract certain \emph{shift-invariant} prototypical waveforms (called `atoms' in this context) to better capture the temporal structure of the signals.
+%
+As opposed to using generic bases that have predefined shapes, such as the Fourier or the wavelet bases, these atoms provide a more meaningful representation of the data and are not restricted to narrow frequency bands.
+% would be able to capture the temporal structure of the signals via the shift-invariance, 
+% The first attempts \cite{durka2005multichannel,sieluzyckiamultivariate,benar2009consensus, brockmeier2016learning} used matching pursuit to select the best atoms from an overcomplete dictionary of atoms.
+
+% In this line of research, \citet{jost2006motif} proposed the MoTIF algorithm, which uses an iterative strategy based on generalized eigenvalue decompositions, where the atoms are assumed to be orthogonal to each other. Even though this algorithm has been shown to be successful at estimating the alpha waves from EEG, it cannot be applied to signals where the atoms can be correlated, a case which often occurs in practical applications. 
+% %
+% More recently, the Sliding Window Matching algorithms~\cite{gips2017discovering} were proposed for learning the time-varying atoms from electrophysiological recordings. \umut{Even though these algorithms have ..... advantages,} 
+% \utodo{Alex, I let you fix this.}
+% % \mainak{It uses correlations to estimate recurring patterns, but it cannot handle atoms that have varying amplitudes or are overlapping.} 
+% they cannot handle atoms that can be simultaneously activated or atoms with varying amplitudes. On the other hand, this approach is based on an heuristics-based inference technique which does not explicitly solve a mathematical objective\mjtodo{We should be careful with this statement. SWM does have a mathematical objective function that they minimize.} and therefore cannot be easily extended or improved due to this heuristic nature. 
+
+In this line of research, \citet{jost2006motif} proposed the MoTIF algorithm, which uses an iterative strategy based on generalized eigenvalue decompositions, where the atoms are assumed to be orthogonal to each other and learnt one by one in a greedy way.
+%
+More recently, the `sliding window matching' (SWM) algorithm \cite{gips2017discovering} was proposed for learning time-varying atoms by using a correlation-based approach that aims to identify the recurring patterns. Even though some success has been reported with these algorithms,
+they have several limitations: SWM uses a slow stochastic search inspired by simulated annealing and MoTIF poorly handles correlated atoms, simultaneously activated, or having varying amplitudes; some cases which often occur in practical applications.
+% On the other hand,
+% %
+% these approaches are based on certain heuristics and often do not explicitly consider a mathematical objective, which limits their potential for possible extensions or improvements.
+%  % therefore cannot be easily extended or improved due to this heuristic nature.
+% \mjtodo{We should be careful with this statement. SWM does have a mathematical objective function that they minimize.}
+
+
+ % it cannot be applied to signals where the atoms can be correlated, . 
+
+% The MoTIF\cite{jost2006motif} algorithm, which has been successfully applied to estimate alpha waves from EEG, uses an iterative strategy based on generalized eigenvalue decompositions where the atoms are learned one at a time, under the constraint that successive atoms are orthogonal to each other. \mainak{This presents a limitation when recovering atoms that are correlated to each other.} More recently, the Sliding Window Matching (SWM) algorithms~\cite{gips2017discovering} were proposed to learn time-varying atoms from electrophysiological recordings. However, it is based on a quite ad-hoc inference technique which does not explicitly maximize a likelihood or minimize a cost function.
+% As opposed to traditional dictionary learning in images, we are interested in learning time-invariant representations which are less redundant and more interpretable.
+
+A natural way to cast the problem of learning a dictionary of shift-invariant atoms into an optimization problem is a convolutional sparse coding (CSC) approach~\cite{Grosse-etal:2007}. 
+% The idea is to replace the matrix factorization of dictionary learning by a convolution operator~\cite{sejnowski1999coding} while keeping an $\ell_1$ or $\ell_0$ regularization to promote sparsity. 
+This approach has gained popularity in computer vision~\cite{heide2015fast,wohlberg2016efficient,zeiler2010deconvolutional, vsorel2016fast,kavukcuoglu2010learning}%
+, biomedical imaging~\cite{pachitariu2013extracting} and audio signal processing~\cite{Grosse-etal:2007,mailhe2008shift},
+due to its ability to obtain compact representations of the signals and to incorporate the temporal structure of the signals via convolution.
+%\mainak{Additionally, it comes with known theoretical guarantees~\cite{papyan2016working1,papyan2016working2}.
+In the neuroscience context, \citet{barthelemy2013multivariate} used an extension of the K-SVD algorithm using convolutions on EEG data. 
+% \utodo{Is this really CSC?}
+In a similar spirit, \citet{brockmeier2016learning} used the matching pursuit algorithm combined with a rather heuristic  
+% \mjtodo{(I feel a NIPS reviewer may not know MoTIF that well, so I wouldn't use "MoTIF-like")} 
+dictionary update, which is similar to the MoTIF algorithm. 
+%
+In a very recent study, \citet{hitziger2017adaptive} proposed the AWL algorithm, which presents a mathematically more principled CSC approach for modeling neural signals. Yet, as opposed to classical CSC approaches, the AWL algorithm imposes additional combinatorial  constraints, which limit its scope to certain data that contain spike-like atoms. Also, since these constraints increase the complexity of the optimization problem, the authors had to resort to dataset-specific initializations and many heuristics in their inference procedure.
+%The need for mathematically rigorous CSC tools for analyzing neural signals hence still prevails.  
+
+%to decrease the objective function considered.
+
+
+ % makes use of an $\ell_1$ regularization in a CSC model with some added combinatorial constraints. These make the optimization challenging and motivated a number of heuristics in the optimization schemes that \mainak{limit the scope of the model to data with spike-like atoms and} impact scalability and robustness of the approach. \ag{maybe too harsh...}. 
+%Also since these approaches do not explicitly monitor a monotonically decreasing objective functions stopping criteria are unclear and solutions obtained with different initializations are not compared. Indeed, similar to the k-means algorithm, which too has a non-convex objective, CSC results can be significantly improved by using restart strategies.
+
+% While this can be alleviated using a very good initialization~\cite{hitziger2017adaptive}, the shape of the atoms are not always known a priori.
+
+
+While the current state-of-the-art CSC methods have a strong potential for modeling neural signals, they might also be limited as they consider an $\ell_2$ reconstruction error, which corresponds to assuming an additive Gaussian noise distribution. While this assumption could be reasonable for several signal processing tasks, it turns out to be very restrictive for neural signals, which often contain heavy noise bursts and have low signal-to-noise ratio.
+
+% While this is often good enough for computer vision applications where data are rarely corrupted by strong impulsive artifacts, it is not adapted to the demands of low signal-to-noise ratio in neural signals. 
+%
+
+In this study, we aim to address the aforementioned concerns and propose a novel probabilistic CSC model called $\alpha$CSC, which is better-suited for neural signals. $\alpha$CSC is based on a family of \emph{heavy-tailed} distributions called $\alpha$-stable distributions \cite{samorodnitsky1994stable} whose rich structure covers a broad range of noise distributions. The heavy-tailed nature of the $\alpha$-stable distributions renders our model robust to impulsive observations. We develop a Monte Carlo expectation maximization (MCEM) algorithm for inference, with a weighted CSC model for the maximization step. We propose efficient optimization strategies that are specifically designed for neural time series.
+%
+We illustrate the benefits of the proposed approach on both synthetic and real datasets.
+
+% While such $\alpha$-stable distributions have been recently proposed for denoising EEG signals~\cite{wang2016delving} they have not been used for CSC in the presence of outliers and artifacts.
+
+
+
+% To cope with the presence of transient and impulsive artifacts, heavy-tailed distribution such as $\alpha$-stable \cite{nolan:13} distributions are necessary. The $\alpha$-stable distributions generalize the Cauchy distribution and exhibit a slower tail decay in probability density function (PDF) than the Gaussian PDF.
+
+% Standard dictionary learning in the presence of noise has been dealt with before using a robust loss~\cite{lu2013online}, but not in the convolutional setting.
+
+
+
+% Besides these limitations of the current state-of-the-art, these model typically assume additive white noise with a Gaussian distribution. 
+% % While this is often good enough for computer vision applications where data are rarely corrupted by strong impulsive artifacts, it is not adapted to the demands of low signal-to-noise ratio in neural signals. 
+% %
+% To cope with the presence of transient and impulsive artifacts, heavy-tailed distribution such as $\alpha$-stable \cite{nolan:13} distributions are necessary. The $\alpha$-stable distributions generalize the Cauchy distribution and exhibit a slower tail decay in probability density function (PDF) than the Gaussian PDF.
+% While such $\alpha$-stable distributions have been recently proposed for denoising EEG signals~\cite{wang2016delving} they have not been used for CSC in the presence of outliers and artifacts. Standard dictionary learning in the presence of noise has been dealt with before using a robust loss~\cite{lu2013online}, but not in the convolutional setting.
+
+% The sparsity constraint enables us to apply this method even on continuous recordings, not knowing a priori that the signal contains event-related potentials (ERPs) at specific time points. This is in contrast to convolutional models in fMRI event-related design~\cite{dale1999optimal} or the estimation of receptive fields~\cite{theunissen2001estimating} where the activations are already assumed to be known. If not for the sparsity constraint, one would obtain a convolutional Independent Component Analysis (ICA) or tensor factorization model\cite{huangconvolutional,truccolo2003estimation,morup2008shift}. Indeed, estimating single-trial ERPs containing onset jitters, has been solved many times before~\cite{woody1967characterization}, recently for example with the iterative least squares~\cite{barthelemy2013multivariate}. These methods learn not just the atoms but also the activations corresponding to the atoms and can even handle overlapping atoms, which is often necessary in neuroscience research~\cite{smith2015regression1,smith2015regression2}.
+
+% The paper is organized as follows. First we present our probabilistic CSC model for which we derive an expectation-maximization (EM) inference algorithm. As the M-step leads to a standard CSC model using $\ell_2$ data fitting term, we then propose an alternated minimization scheme that we obtain by extension of state-of-the-art algorithmic solutions from computer vision literature. We then present results on simulations to demonstrate the better scalability of our implementation and the improved robustness to noise of our model. Practical impact of our contribution is then shown on 3 datasets.
+
+% The optimization problem, as we frame it, is non-convex\cite{kavukcuoglu2010learning}, but it can be solved using an alternate minimization strategy. We enforce a non-negativity constraint on the activations to reflect the fact that atoms, due to their neuronal origin, cannot change their sign. The non-negativity, for us, also  allows a simpler interpretation, because it avoids cross-cancellation between atoms. Contrary to works in computer vision, the time series in our problem tend to be much longer which motivates us to solve the problem in the time domain. We compare our implementation to state-of-the-art implementations from computer vision in terms of performance. Finally, we demonstrate the power of our model on LFP data on rats which is known to have a cross-frequency coupling effect. Applying our method, the coupled waveform pops out almost effortlessly.

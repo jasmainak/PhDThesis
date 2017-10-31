@@ -1,0 +1,107 @@
+\section{Experimental Validation Protocol}
+
+\begin{table}[!b]
+{
+    \caption{Overview of rejection strategies evaluated\label{tab:strategies}}
+       \begin{center}
+       \begin{tabular}{l l l l}
+        \hline
+        \textbf{method} & \textbf{statistical scope} & \textbf{parameter defaults}\\
+		% uses sensor positions? / univariate or multivariate
+        \hline
+        $\text{FASTER}^{a}$ & univariate & threshold on zscore $=$ 3 \\
+        $\text{SNS}^{b}$ & multivariate & number of neighbors = 8\\
+        $\text{RANSAC}^{c}$ & multivariate outlier detection & \#resamples = 50, fraction of channels = 0.25,\\
+        & & threshold on correlation = 0.75, unbroken time = 0.4 \\
+        % & minimum correlation, window size, unbroken time & \\
+        autoreject & univariate with cross-validation & sensor-level thresholds, $\rho$ and $\kappa$; learned from data \\
+        \hline
+        \end{tabular}
+        \label{table:methods}
+        \end{center}
+        \vspace{-0.9em}
+        \hspace{1em}
+        {\footnotesize
+         $^a$\cite{nolan2010faster}, $^b$\cite{de2008sensor},  $^c$\cite{bigdely2015prep}}
+}
+\end{table}
+
+To experimentally validate \emph{autoreject}, our general strategy is to first visually evaluate the results and thereafter quantify the performance. We describe below the evaluation metric used, the methods we compare against, and finally the datasets analyzed. All general data processing was done using the open source software MNE-Python~\citep{gramfort2013meg}.
+
+\subsection{Evaluation metric}
+The evoked response from the data cleaned using our algorithm or a competing benchmark is denoted by $\overbar{X}(method)$. This is compared to the ground truth evoked response $\overbar{X}(clean)$ (See Section~\ref{sec:datasets} to see how these are obtained for different datasets) using:
+%
+\begin{equation}
+\infnorm{\overbar{X}(method) - \overbar{X}(clean)}
+\label{eq:infnorm}
+\end{equation}
+%
+where $\infnorm{\cdot}$ is the infinity norm. The reason for using infinity norm is that it is sensitive to the maximum amplitude in the difference signal as opposed to the Frobenius norm which averages the squared difference. The $\infnorm{\cdot}$ is a particularly sensitive metric to quantity artifacts which are also visually striking such as those localized on one sensor or at a given time instant.
+
+\subsection{Competing methods}
+\label{sec:competing_methods}
+
+Here, we list the methods that will be quantitatively compared to \emph{autoreject} using the evaluation metric in Equation~\ref{eq:infnorm}. These methods are also summarized for the reader's convenience in Table~\ref{table:methods}.
+
+% \denis{the bullet points were reported to be disturbing by Fede; check that it is consistent with methods}
+\begin{itemize}[noitemsep,nolistsep]
+\item \emph{No rejection}: It is a simple sanity check to make sure that the data quality upon applying the \emph{autoreject (local)} algorithm does indeed improve. This is the data before the algorithm is applied.
+\item \emph{Sensor Noise Suppression (SNS)}: The SNS~\citep{de2008sensor} algorithm, as described in the Introduction (Section~\ref{sec:introduction}), projects the data of each sensor on to the subspace spanned by the principle components of all the other sensors. What it does is regressing out the sensor noise that cannot be explained by other sensors. It works on the principle that brain sources project on to multiple sensors but the noise is uncorrelated across sensors. In practice, not all the sensors are used for projection, but only a certain number of neighboring sensors (determined by the correlation in the data between the sensors).
+\item \emph{Fully Automated Statistical Thresholding for EEG artifact Rejection (FASTER)}: It finds the outlier sensor using five different criteria: the variance, correlation, Hurst exponent, kurtosis and line noise. When the z-score of any of these criteria exceeds 3, the sensor is marked as bad according to that criteria. Note that even though FASTER is typically used as an integrated pipeline, here we use the bad sensor detection step, as this is what appears to dominate the bad signals in the case of the HCP data (Section~\ref{sec:datasets}). We take a union of the sensors marked as bad by the different criteria and interpolate the data for those sensors.
+\item \emph{Random Sample Consensus (RANSAC)}: We use the RANSAC implemented as part of the PREP pipeline~\citep{bigdely2015prep}. In fact, RANSAC~\citep{fischler1981random} is a well-known approach used to fit statistical models in the presence of outliers in the data. In this approach, adopted for the use case of artifact detection in EEG, a subset of sensors (inliers) are sampled randomly (25\% of the total sensors) and the data in all sensors are interpolated from these inliers sensors. This is repeated multiple times (50 in the PREP implementation) so as to yield a set of 50 time series for each sensor. The correlation between the median, computed instant by instant, of these 50 time series and the real data is computed. If this correlation is less than a threshold (0.75 in the PREP implementation), then the sensor is considered an outlier and therefore marked as bad. It is perhaps worth noting that unlike in the classical RANSAC algorithm, the inlier model is not learned from the data but instead determined from the physical interpolation. A sensor which is bad for more than 40\% of the trials (the unbroken time) is marked as globally bad and interpolated. Even though the method was first proposed on EEG data only, we extended it for MEG data by replacing spline interpolation with field interpolation using spherical harmonics as implemented in MNE~\citep{gramfort2013meg,hamalainen1994interpreting}. Note that this is the same interpolation method that is used by \emph{autoreject (local)}.
+\end{itemize}
+
+\subsubsection{Datasets}
+\label{sec:datasets}
+
+\begin{table}[!t]
+{
+    \caption{Overview of datasets analyzed\label{tab:datasets}}
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{l l l l l l}
+        \hline
+         \textbf{Algorithm} & \textbf{Dataset} & \textbf{Acquisition device} & \textbf{Sensors used} & \textbf{\#subjects}\\
+
+\hline
+\multirow{2}{*}{autoreject (global)} & MNE sample data & Neuromag VectorView & 60 EEG electrodes & 1\\
+& EEGBCI & BCI2000 cap & 64 EEG electrodes & 105\\
+\hline
+\multirow{3}{*}{autoreject (local)} & MNE sample data & Neuromag VectorView & 60 EEG electrodes & 1\\
+& EEG faces & Neuromag VectorView& 60 EEG electrodes & 19\\
+& HCP working memory & 4D Magnes 3600 WH& 248 magnetometers & 83\\
+        \hline
+        \end{tabular}
+    }
+    \label{table:datasets}
+}
+\end{table}
+
+We validated our methods on four open datasets with data from over 200 subjects. This allowed us to evaluate experimentally strengths and potential limitations of different rejection methods. The datasets contained either EEG or MEG data. To obtain solid experimental conclusions, diverse experimental paradigms were considered with data from working memory, perceptual and motor tasks.
+
+We detail below how we defined $\overbar{X}(clean)$, the cleaned ground-truth data for two of our datasets -- HCP MEG and EEG faces data. This is perhaps one of the most challenging aspects of this work because the performance is evaluated on real data and not on simulations. An overview of all the datasets used in this study is provided in Table~\ref{table:datasets}.
+
+% One of the most challenging aspects of this work is evaluating the quality of cleaned data. This is due to the difficulty of defining a ground-truth when performance is evaluated on data and not simulations. However, for two of the datasets we described (HCP MEG and EEG faces data), human annotations are available. Such annotations from trained experts obtained independently of the present work offer us an unbiased evaluation setup.
+
+\paragraph{MNE sample data}
+
+The MNE sample data~\citep{gramfort2013meg} is a multimodal open dataset consisting of MEG and EEG data. It has been integrated as the default testing dataset into the development of the MNE software~\citep{gramfort2013meg}. The simultaneous M/EEG data were recorded at the Martinos Center of Massachusetts General Hospital. The MEG data with a Neuromag VectorView system, and an MEG-compatible cap comprising 60 electrodes was used for the EEG recordings. Data were sampled at 150 Hz. In the experiment, auditory stimuli (delivered monoaurally to the left or right ear) and visual stimuli (shown in the left or right visual hemifield) were presented in a random sequence with a stimulus onset asynchrony of 750 ms. The data was low-pass filtered at 40 Hz. The trials were 700 ms long including a 200 ms baseline period which was used for baseline correction.
+
+\paragraph{EEGBCI dataset}
+
+This is a 109-subject dataset (of which we analyzed 105 subjects which can be easily downloaded and analyzed using MNE-Python~\citep{gramfort2013meg}) containing EEG data recording with a 64-sensor BCI2000 EEG cap~\citep{schalk2004bci2000}. Subjects were asked to perform different motor/imagery tasks while their EEG activity was recorded. In the related BCI protocol, each subject performed 14 runs, amounting to a total of 180 trials for hands and feet movements (90 trials each). The data was band-pass filtered between 1 and 40 Hz, and 700 ms long trials were constructed including a 200 ms pre-stimulus baseline period.
+
+\paragraph{EEG faces data (OpenfMRI ds000117)}
+
+The OpenfMRI ds000117 dataset~\citep{wakeman2015multi} contains multimodal task-related neuroimaging data over multiple runs for EEG, MEG and fMRI. For our analysis, we restrict ourselves to EEG data. The EEG data was recorded using a 70 channel Easycap EEG with electrode layout conforming to the 10-10\% system. Subjects were presented with images of famous faces, unfamiliar faces and scrambled faces as stimuli. For each subject, on average, about 293 trials were available for famous and unfamiliar faces. The authors kindly provided us with run-wise bad sensor annotations which allowed us to conduct benchmarking against human judgement. To generate the ground truth evoked response $\overbar{X}(clean)$, we randomly select 80 percent of the total number of trials in which famous and unfamiliar faces were displayed. In these trials, we interpolated the bad sensors run-wise. Then, we removed physiological artifacts (heart beat and eye blinks) using Independent Component Analysis (ICA)~\citep{vigario2000independent}. Following the ICA pipelines recommended by the MNE-Python software, the bad ICA components were marked automatically using cross-trial phase statistics~\citep{dammers2008integration} for ECG (threshold=0.8) and adaptive z-scoring (threshold=3) for EOG components. The evoked response from the cleaned data $\overbar{X}(method)$ is computed from the remaining 20 percent trials cleaned using either \emph{autoreject (local)} or \emph{RANSAC} (see Section~\ref{sec:benchmark_sensors} for a description of this method). Computing the ground-truth evoked potential from a large proportion of trials minimized the effect of outliers in the average. However, it is noteworthy that this choice of assigning fewer trials to the estimation with rejection algorithms acts in a conservative sense: each unnoticed bad trial may affect the ensuing evoked potentials more severely.
+
+\paragraph{Human Connectome Project (HCP) MEG data}
+
+The HCP dataset is a multimodal reference dataset realized by the efforts of multiple international laboratories around the world. It currently provides access to both task-free and task-related data for more than 900 human subjects with functional MRI data, 95 of which have presently also MEG~\citep{larson2013adding}. An interesting aspect of the initiative is that the data provided is not only in unprocessed BTi format, but also processed using diverse processing pipelines. These include annotations of bad sensors and corrupted time segments for the MEG data derived from automated pipelines and supplemented by human inspection. The automated pipelines are based on correlation between neighboring sensors, z-score metrics, ratio of variance to neighbors, and ICA decomposition. Most significant for our purposes, the clean average response $\overbar{X}(clean)$ is directly available. It allows us to objectively evaluate the proposed algorithm against state-of-the-art methods by reprocessing the raw data and comparing the outcome with the official pipeline output.
+
+The HCP MEG dataset provides access to MEG recordings from diverse tasks, \textit{i.e.}, a motor paradigm, passive listening and working memory. Here, we focused on the working memory task for which data is available for 83 subjects out of 95. A considerable proportion of subjects were genetically related, but we can ignore this information as the purpose of our algorithm is artifact removal rather than analyzing brain responses. For each subject two runs are available. Two classes of stimuli were employed, faces and tools. Here, we focused on the MEG data in response to stimulus onsets for the ``faces" condition.
+
+The MEG data were recorded with a wholehead MAGNES 3600 (4D Neuroimaging, San Diego, CA) in a magnetically shielded room at Saint Louis University. The system comprises 248 magnetometers and 23 reference sensors to capture environmental signals. Time windows precisely matched values used by the HCP ``eravg'' pipeline with onsets and offsets at $-1.5$\,s and $2.5$\,s before and after the stimulus event, respectively. As in the HCP pipeline, signals were down-sampled to $508.63$\,Hz and band-pass filtered between 0.5--60\,Hz. As it is commonly done with BTi systems, reference sensors at the periphery of the head were used to subtract away environmental noise. Given the linearity of Maxwell equations in the quasi-static regime, a linear regression model was employed. More precisely, signals from reference sensors are used as regressors in order to predict the MEG data of interest. The ensuing signal explained by the reference sensors in this model was then removed. The HCP preprocessing pipeline contains two additional steps: ICA was used to remove components not related to brain activity (including eye blinks and heart beats) and then bad trials and bad segments were removed with a combination of automated methods as well as annotations by a human observer. To have a fair comparison and focus on the latter step, the ICA matrices provided by the HCP consortium were applied to the data. We interpolated the missing sensors in $\overbar{X}(clean)$ so that it has the same dimensions as the data from $\overbar{X}(method)$. All the algorithms were executed separately on each run and the evoked response of the two runs was averaged to get $\overbar{X}(method)$.
+
+To enable easy access of the files along with compatibility in MNE-Python, we make use of the open source MNE-HCP package\footnote{http://mne-tools.github.io/mne-hcp/}. For further details on the HCP pipelines, the interested reader can consult the related paper by \citet{larson2013adding} and the HCP S900 reference manual for the MEG3 release.
+
+% automated, non-automated is actually a continuum

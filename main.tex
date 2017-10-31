@@ -13,6 +13,25 @@
 \usepackage{hyperref}
 \usepackage{natbib}
 \usepackage{helvet}	% or \usepackage{lmodern}
+
+\usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+
+% autoreject specific packages
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{rotating}
+
+% alphacsc specific packages
+\usepackage{dsfont} % alphacsc
+\usepackage{subfigure} % alphacsc
+\usepackage{wrapfig} % alphacsc
+\usepackage{algorithm} % alphacsc
+\usepackage{algorithmic} % alphacsc
+
+\usepackage{mathsymbols}
+
 \renewcommand\textnumero{n$^{\textsf{{\tiny O}}}$}
 \renewcommand{\familydefault}{\sfdefault}
 
@@ -169,15 +188,30 @@ Co-encadrement de la thèse:		{\bf Prénom NOM}
 %
 \newpage
 
+%\renewcommand*\rmdefault{ptm}
 \renewcommand{\familydefault}{\rmdefault}
+%\linespread{1.5}
+\setlength{\parskip}{1em}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\input{chapters/dedication.tex}
 \input{chapters/acknowledgement.tex}
 \tableofcontents
 \listoffigures
 \listoftables
 \input{chapters/1-introduction.tex}
 \input{chapters/2-groupstudy.tex}
-\input{chapters/3-autoreject.tex}
-\input{chapters/4-alphacsc.tex}
+% autoreject
+\input{chapters/3-1-autoreject_introduction.tex}
+\input{chapters/3-2-autoreject_methods.tex}
+\input{chapters/3-3-autoreject_validation_protocol.tex}
+\input{chapters/3-4-autoreject_results.tex}
+\input{chapters/3-5-autoreject_discussion.tex}
+\input{chapters/3-6-autoreject_conclusion.tex}
+% alphacsc
+\input{chapters/4-1-alphacsc_introduction.tex}
+\input{chapters/4-2-alphacsc_methods.tex}
+%\input{}
 
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliographystyle{abbrvnat}
