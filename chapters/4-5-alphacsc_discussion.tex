@@ -1,0 +1,9 @@
+%!TEX root = ../nips_2017.tex
+
+\section{Conclusion}
+% This work addresses the present need in the neuroscience community to better capture the complex morphology of brain waves~\cite{cole2017brain, gips2017discovering}. Our data-driven approach to this problem is a probabilistic formulation of a convolutional sparse coding model~\cite{Grosse-etal:2007}. We propose an inference strategy based on Monte Carlo EM to deal efficiently with heavy tailed noise and take into account the polarity of neural activations with a positivity constraint. Our problem formulation allows the use of fast quasi-Newton methods for the M-step which outperform previously proposed state-of-the-art ADMM-based algorithms~\cite{heide2015fast,wohlberg2016efficient,wohlberg2014efficient,bristow2013fast}, even when not making use of our parallel implementation. Results on LFP data demonstrate that such algorithms can be robust to the presence of transient artifacts in data and reveal insights on neural time-series without supervision.
+% \umut{Our code is publicly available.}
+
+\vspace{-5pt}
+
+We address the present need in the neuroscience community to better capture the complex morphology of brain waves. Our approach is based on a probabilistic formulation of a CSC model. We propose an inference strategy based on MCEM to deal efficiently with heavy tailed noise and take into account the polarity of neural activations with a positivity constraint. Our problem formulation allows the use of fast quasi-Newton methods that outperform previously proposed state-of-the-art ADMM-based algorithms, even when not making use of our parallel implementation. Results on LFP data demonstrate that such algorithms can be robust to the presence of transient artifacts in data and reveal insights on neural time-series without supervision.
