@@ -1,7 +1,35 @@
 \chapter{Introduction}
 
-The 21st century has witnessed an unprecedented growth in the volume of data.
+Understanding the human brain is one of the most significant challenges of the 21st century. Even though thousands of papers are published every year about different aspects of the brain, our understanding of this complex organ has not scaled in proportion. A large part of the reason has been attributed to what is known as the replication crisis~\citep{ioannidis2005most, simmons2011false, button2013power}. This has been attributed in part to what is now known as ``power failure'': the tendency to conduct studies using small sample sizes which increases the likelihood of a false discovery just by chance. To alleviate this issue, labs around the world have begun sharing datasets through international consortiums~\citep{van2013wu, ollier2005uk} and data repositories~\citep{poldrack2013toward, gorgolewski2015neurovault}. Data sharing is beneficial not just from the perspective of replication but also from an economic perspective. It involves a change in mindset: rather than collect new data for every new hypothesis, what hypothesis can we already answer from the existing data? Obviously, with the increase in sample sizes, we can tease apart even subtle effects that were not possible before with smaller datasets.
 
-Automation
+However, sharing datasets is not a panacea as the tools, skills and resources to process such large datasets is currently missing. One of the biggest roadblocks to large scale analysis is what is known as `janitor work': the effort required to standardize a dataset before it is actually usable. In the context of neuroimaging, this can involve organizing files at different stages of processing, manually inspecting the data, annotating segments which contain artifacts, and even removing outlier subjects from the analysis. Merely based on anecdotal reports, we can conclude that this can take up to a week of time even for a moderately sized study of 10--20 subjects.
+%If at some point, the researcher realized that a certain parameter early in the pipeline needed to be changed, this would entail redoing all the subsequent steps in the pipeline, including the manual processing. 
+In addition to the cost of human labor, one cannot ignore the subjectivity that these steps produces which can be problematic for reproducibility. As the number of datasets shared increases and neuroscientists are forced to confront statistically rigorous approaches to data analysis, the time is ripe to automate as many steps of the pipeline as possible.
 
-The challenge
+\section{The automated lab}
+Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. But what are the opportunities for automation in the context of neuroimaging? Let us list down some of them:
+\begin{itemize}[noitemsep,nolistsep,nosep]
+\item \textbf{Data organization:} Neuroimaging data can often run into many Terabytes with intermediate files at different stages of processing. Keeping track of this heterogeneous data manually can be a challenging process.
+\item \textbf{Parameter tuning:} Most algorithms, although automated, require hyperparameters to be tuned. This could be the number of trials to perform in an experiment, the number of components to select in a PCA decomposition, or the regularization parameter in inverse solvers.
+\item \textbf{Annotation and labeling:} The challenge of neuroimaging data is that it is often unlabeled. As reliable annotations can be performed only by experts, crowdsourcing is often not a possibility. The alternative is to automatically label different types of signals.
+\item \textbf{Reporting and quality control:} Automated Statistician . MNE web report
+\end{itemize}
+Ultimately, this will lead to higher quality of 
+
+Efficiency, it turns out, is not simply a matter of scale. Even for moderately sized experiments,
+
+% automated statistician
+%
+% This subjectivity can lead to studies which are not reproducible unless every single detail was carefully documented. Even then, it does not rule out a potential confirmation bias: the tendency to favor processing steps which leads one to confirm the hypothesis being tested rather than reject it.
+
+data revolution
+
+\section{The reproducibility crisis}
+
+data sharing, data standards, open source
+
+\section{Automation}
+
+\section{Representation learning}
+
+\section{Contributions}
