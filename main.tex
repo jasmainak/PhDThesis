@@ -17,6 +17,10 @@
 \usepackage{bbm}
 \usepackage{pdfpages}
 
+% groupstudy specific packages
+\usepackage{siunitx}
+\usepackage{listings}
+
 % autoreject specific packages
 \usepackage{enumitem}
 \usepackage{multirow}
@@ -50,13 +54,27 @@
 \setlength{\parskip}{1em}
 \newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
+\newcommand{\MATLAB}{\textsc{Matlab}}
+\newcommand{\code}{\texttt}
+
 \input{chapters/dedication.tex}
 \input{chapters/acknowledgement.tex}
 \tableofcontents
 \listoffigures
 \listoftables
 \input{chapters/1-introduction.tex}
-\input{chapters/2-groupstudy.tex}
+\input{chapters/2-1-groupstudy_introduction.tex}
+\input{chapters/2-2-groupstudy_preprocessing.tex}
+\input{chapters/2-3-groupstudy_sensorstats.tex}
+\input{chapters/2-4-groupstudy_sourcerecon.tex}
+\input{chapters/2-5-groupstudy_groupsourcerecon.tex}
+\input{chapters/2-6-groupstudy_discussion.tex}
+
+% TODOTODOTODOTODOTODO
+% TODOTODOTODOTODOTODO
+% TODOTODOTODOTODOTODO
+% remove duplicate references
+
 % autoreject
 \input{chapters/3-1-autoreject_introduction.tex}
 \input{chapters/3-2-autoreject_methods.tex}
