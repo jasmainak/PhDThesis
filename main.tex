@@ -58,10 +58,22 @@
 \newcommand{\code}{\texttt}
 
 \input{chapters/dedication.tex}
+
+\pagenumbering{roman}
 \input{chapters/acknowledgement.tex}
 \tableofcontents
+\addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
+\addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
+\pagenumbering{arabic}
+
+% TODOTODOTODOTODOTODO
+% TODOTODOTODOTODOTODO
+% TODOTODOTODOTODOTODO
+% remove duplicate references
+
+% Group study
 \input{chapters/1-introduction.tex}
 \input{chapters/2-1-groupstudy_introduction.tex}
 \input{chapters/2-2-groupstudy_preprocessing.tex}
@@ -69,11 +81,6 @@
 \input{chapters/2-4-groupstudy_sourcerecon.tex}
 \input{chapters/2-5-groupstudy_groupsourcerecon.tex}
 \input{chapters/2-6-groupstudy_discussion.tex}
-
-% TODOTODOTODOTODOTODO
-% TODOTODOTODOTODOTODO
-% TODOTODOTODOTODOTODO
-% remove duplicate references
 
 % autoreject
 \input{chapters/3-1-autoreject_introduction.tex}
