@@ -21,7 +21,7 @@ MNE can handle multimodal data containing different channel types, the most comm
 \begin{figure}[htb]
         \centering
         \includegraphics{figures/Maxfilter.pdf}
-        \caption{Evoked responses (filtered between 1 and 40 Hz) in the magnetometer channels from (A) unprocessed data, (B) data processed with \code{maxwell\_filter} in MNE, and (C) the difference between data processed using \code{maxwell\_filter} and Elekta MaxFilter (TM). The colors show the sensor position, with $(x, y, z)$ sensor coordinates converted to $(R, G, B)$ values, respectively.}
+        \caption[Comparison of Elekta MaxFilter (TM) and MNE implementation]{Evoked responses (filtered between 1 and 40 Hz) in the magnetometer channels from (A) unprocessed data, (B) data processed with \code{maxwell\_filter} in MNE, and (C) the difference between data processed using \code{maxwell\_filter} and Elekta MaxFilter (TM). The colors show the sensor position, with $(x, y, z)$ sensor coordinates converted to $(R, G, B)$ values, respectively.}
         \label{fig:fig_maxwell}
 \end{figure}
 
@@ -43,7 +43,7 @@ Results comparing raw data, data processed by Elekta MaxFilter, and data process
         \centering
         \includegraphics{figures/psd.pdf}
         \vspace{-10pt}
-        \caption{Power spectral density per channel for subject 10, run 02. (A) Log scale for the x axis accentuates low frequency drifts in the data. The red lines show the PSD for the bad channels marked manually and provided to us by~\citet{wakeman2015multi}. (B) The same data with a linear x-axis scale. Five peaks corresponding to HPI coils around 300 Hz are visible and marked in gray dotted lines alongside the power line frequency (50 Hz).}
+        \caption[Power spectral density to mark bad channels and check filtering]{Power spectral density per channel for subject 10, run 02. (A) Log scale for the x axis accentuates low frequency drifts in the data. The red lines show the PSD for the bad channels marked manually and provided to us by~\citet{wakeman2015multi}. (B) The same data with a linear x-axis scale. Five peaks corresponding to HPI coils around 300 Hz are visible and marked in gray dotted lines alongside the power line frequency (50 Hz).}
         \label{fig:fig1_plot_psd}
 \end{figure}
 
@@ -62,7 +62,7 @@ When filtering, it is important to take into account the frequency response and 
 \begin{figure}[htb]
     \centering
     \includegraphics{figures/filters.pdf}
-    \caption{Comparison of filters between new (0.16) and old (0.12) MNE versions: (A) The frequency response of the highpass filter; (B) The frequency response of the lowpass filter; (C) The impulse response of the highpass filter; (D) The impulse response of the lowpass filter. The filters in MNE are now adaptive with trade-offs between frequency attenuation and time domain artifacts that by default adapt based on the chosen low-pass and high-pass frequencies.}
+    \caption[Comparison of filters between new (0.16) and old (0.12) MNE versions.]{Comparison of filters between new (0.16) and old (0.12) MNE versions: (A) The frequency response of the highpass filter; (B) The frequency response of the lowpass filter; (C) The impulse response of the highpass filter; (D) The impulse response of the lowpass filter. The filters in MNE are now adaptive with trade-offs between frequency attenuation and time domain artifacts that by default adapt based on the chosen low-pass and high-pass frequencies.}
     \label{fig:fig2_filter}
 \end{figure}
 
@@ -128,7 +128,7 @@ Finally, the epochs were constructed starting 200\,ms before stimulus onset and 
   \hspace{1em}
   \includegraphics{figures/FanningC.pdf}
   \vspace{-10pt}
-\caption{(A) Evoked response in magnetometers for subject 3 with baseline correction. Note how signals tend toward the baseline late in the epochs (where the rightmost time point, 2.9 sec, is the earliest possible start time for the next stimulus). (B) The highpass filtered version of the signal and (C) the signal processed with temporal SSS (tSSS). Both reduce the magnitude of the slow and late sustained responses shown in (A).}
+\caption[Comparison of highpass filtering and tSSS on evoked response.]{(A) Evoked response in magnetometers for subject 3 with baseline correction. Note how signals tend toward the baseline late in the epochs (where the rightmost time point, 2.9 sec, is the earliest possible start time for the next stimulus). (B) The highpass filtered version of the signal and (C) the signal processed with temporal SSS (tSSS). Both reduce the magnitude of the slow and late sustained responses shown in (A).}
 \label{fig:fanning}
 \end{figure}
   

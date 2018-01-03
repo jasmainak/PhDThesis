@@ -5,7 +5,7 @@ An important step in analyzing data at single-subject and group levels is sensor
   \includegraphics{figures/grand_average_highpass-NoneHz.pdf}
   \includegraphics{figures/grand_average_highpass-1Hz.pdf}
   \vspace{-10pt}
-\caption{Grand averaged evoked response across 16 subjects for channel EEG065.
+\caption[Grand averaged evoked response across 16 subjects.]{Grand averaged evoked response across 16 subjects for channel EEG065.
 (A) No highpass filter. (B) Highpass filtered at 1.0 Hz. Note that, similar to (A), the results reported by \cite{wakeman2015multi} (dashed line at 800 ms indicates where their plot stopped) show large drifts, but these return to near-baseline levels toward the end of a sufficiently long interval (here, 2.9 seconds) even without applying a highpass filter.}
 \label{fig:grand_average}
 \end{figure}  
@@ -30,7 +30,7 @@ Two conditions of interest are often compared using a statistical contrast. A pa
 \centering
     \includegraphics{figures/sensorstat_highpass-NoneHz.pdf}
     \includegraphics{figures/time_decoding_highpass-NoneHz.pdf}
-    \caption{Sensor space statistics. (A) A single sensor (EEG065) with temporal clustering statistics. The clustering is based on selecting consecutive time samples that have exceeded the initial paired t-test threshold (0.001), and finding clusters that exceed the size expected by chance according to exchangability under the null hypothesis ($p < 0.01$, shaded areas). (C) Cross-validation score of time-by-time decoding. As opposed to a cluster statistic, time decoding is a multivariate method which pools together the signal from different sensors to find discriminative time points between two conditions.}
+    \caption[Sensor space statistics.]{Sensor space statistics. (A) A single sensor (EEG065) with temporal clustering statistics. The clustering is based on selecting consecutive time samples that have exceeded the initial paired t-test threshold (0.001), and finding clusters that exceed the size expected by chance according to exchangability under the null hypothesis ($p < 0.01$, shaded areas). (C) Cross-validation score of time-by-time decoding. As opposed to a cluster statistic, time decoding is a multivariate method which pools together the signal from different sensors to find discriminative time points between two conditions.}
 \label{fig:fig_sensorstat}
 \end{figure}
 
@@ -41,7 +41,7 @@ Running this nonparametric permutation test on the single sensor EEG065 (also us
 \begin{figure}
 \centering
 \includegraphics{figures/spatiotemporal_stats_cluster_highpass-NoneHz-00.pdf}
-\caption{Spatiotemporal cluster statistics on the EEG sensors. (A) Topographic map of the t-statistic. (B) Average over the sensors that were part of the significant cluster.}
+\caption[Spatiotemporal cluster statistics on EEG sensors.]{Spatiotemporal cluster statistics on the EEG sensors. (A) Topographic map of the t-statistic. (B) Average over the sensors that were part of the significant cluster.}
 \label{fig:stclusterstats}
 \end{figure}
 \emph{Alternatives and caveats.} It is important to note that this clustering permutation test does not provide feature-wise (vertex, sensor, time point, etc.) but \emph{cluster-level} inference. This is because the test statistic is the cluster size and not any specific t-values used to obtain the cluster in the first place. When inspecting a significant cluster, no conclusion can be drawn on which time point or location was more important. A computationally more expensive alternative is the so-called threshold-free cluster enhancement (TFCE) method which provides feature-level inference and, moreover, mitigates the problem of having to set the initial threshold on the t-values to define clusters~\citep{TFCE}. When strong \emph{a priori} hypotheses exist considering few regions of interest in either time, frequency or space can be a viable alternative. In that case, the multiple comparisons problem may be readily alleviated by more conventional measures, such as false discovery rates (FDR) \citep{FDR}.

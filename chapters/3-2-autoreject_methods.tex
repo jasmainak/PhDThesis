@@ -33,7 +33,7 @@ Figure~\ref{fig:cross_val} shows how the average RMSE changes as the threshold v
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.5\linewidth]{figures/figure3.pdf}
-    \caption{A schematic diagram explaining how \emph{autoreject (local)} works. (A) Each cell here is an element of the indicator matrix $C_{ij}$ described in Section~\ref{sec:auto_local}. Sensor-level thresholds are found and bad segments are marked for each sensor. Bad segments shown in red are where $C_{ij}=1$ (B) Trials are rejected if the number of bad sensors is greater than $\kappa$ and otherwise, the worst $\rho$ sensors are interpolated.}
+    \caption[A schematic diagram explaining how \emph{autoreject (local)} works.]{A schematic diagram explaining how \emph{autoreject (local)} works. (A) Each cell here is an element of the indicator matrix $C_{ij}$ described in Section~\ref{sec:auto_local}. Sensor-level thresholds are found and bad segments are marked for each sensor. Bad segments shown in red are where $C_{ij}=1$ (B) Trials are rejected if the number of bad sensors is greater than $\kappa$ and otherwise, the worst $\rho$ sensors are interpolated.}
     \label{fig:schematic}
 \end{figure}
 
@@ -96,7 +96,7 @@ Finally, the best parameters $\rho_{*}$ and $\kappa_{*}$ are estimated using gri
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.7\linewidth]{figures/figure2.pdf}
-    \caption{(A) and (B) The cross-validation curve obtained with sequential Bayesian optimization (see Section~\ref{sec:bayesian_opt} for an explanation) for a regular (MEG 2523) and a globally bad sensor (MEG 2443) from the MNE sample dataset. The mean RMSE is shown in red circles with error bounds in red shades. The red shaded region shows the lower and upper bounds between which the optimization is carried out. Vertical dashed line marks the estimated threshold. (C) and (D) Histogram of peak-to-peak amplitudes of trials in the sensor. The histograms are computed separately for the real data (red) and the data interpolated from other sensors (blue). The estimated threshold correctly marks all the trials as bad for the globally bad sensor.}
+    \caption[Sequential Bayesian optimization cross-validation curves]{(A) and (B) The cross-validation curve obtained with sequential Bayesian optimization (see Section~\ref{sec:bayesian_opt} for an explanation) for a regular (MEG 2523) and a globally bad sensor (MEG 2443) from the MNE sample dataset. The mean RMSE is shown in red circles with error bounds in red shades. The red shaded region shows the lower and upper bounds between which the optimization is carried out. Vertical dashed line marks the estimated threshold. (C) and (D) Histogram of peak-to-peak amplitudes of trials in the sensor. The histograms are computed separately for the real data (red) and the data interpolated from other sensors (blue). The estimated threshold correctly marks all the trials as bad for the globally bad sensor.}
     \label{fig:cross_val_hist}
 \end{figure}
 

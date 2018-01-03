@@ -8,7 +8,7 @@ We conducted qualitative and quantitative performance evaluations of \emph{autor
 \begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.9\linewidth]{figures/figure6.pdf}
-    \caption{A. Histogram of thresholds for subjects in the EEGBCI dataset with \emph{autoreject (global)} B. Histogram of sensor-specific thresholds in gradiometers for the MNE sample dataset (Section~\ref{sec:results}). C. Normalized kernel density plots of maximum peak-to-peak value across sensors for three subjects in the EEGBCI data. Vertical dashed lines indicate estimated thresholds. Density plots and thresholds corresponding to the same subject are the same color. D. Normalized Kernel Density plots of peak-to-peak values for three MEG sensors in the MNE sample dataset. The threshold indeed has to be different depending on the data (subject and sensor).}
+    \caption[Histograms and kernel density plots of peak-to-peak thresholds.]{A. Histogram of thresholds for subjects in the EEGBCI dataset with \emph{autoreject (global)} B. Histogram of sensor-specific thresholds in gradiometers for the MNE sample dataset (Section~\ref{sec:results}). C. Normalized kernel density plots of maximum peak-to-peak value across sensors for three subjects in the EEGBCI data. Vertical dashed lines indicate estimated thresholds. Density plots and thresholds corresponding to the same subject are the same color. D. Normalized Kernel Density plots of peak-to-peak values for three MEG sensors in the MNE sample dataset. The threshold indeed has to be different depending on the data (subject and sensor).}
     \label{fig:hist}
 \end{figure}
 
@@ -22,7 +22,7 @@ With the \emph{autoreject (local)} approach, a threshold is estimated for each s
 \begin{figure}[htb!]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/figure5.pdf}
-    \caption{The evoked response (average of data across trials) on three different datasets before and after applying \emph{autoreject} --- the MNE sample data, the HCP data and the EEG faces data. Each sensor is a line on the plots. On the left, manually annotated bad sensors are shown in red. The algorithm finds the bad sensors automatically and repairs them for the relevant trials. Note that it can even fix multiple sensors at a time and works for different modalities of data acquisition.}
+    \caption[The evoked response (average of data across trials) on three different datasets before and after applying \emph{autoreject}]{The evoked response (average of data across trials) on three different datasets before and after applying \emph{autoreject} --- the MNE sample data, the HCP data and the EEG faces data. Each sensor is a line on the plots. On the left, manually annotated bad sensors are shown in red. The algorithm finds the bad sensors automatically and repairs them for the relevant trials. Note that it can even fix multiple sensors at a time and works for different modalities of data acquisition.}
     \label{fig:sample_evoked}
 \end{figure}
 
@@ -31,14 +31,14 @@ With the \emph{autoreject (local)} approach, a threshold is estimated for each s
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.75\linewidth]{figures/figure4.pdf}
-    \caption{Scatter plots for the results with the HCP data. For each method, the $\infnorm{\cdot}$ norm of the difference between the HCP ground truth and the method is taken. Each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
+    \caption[Scatter plots for the results with the HCP data.]{Scatter plots for the results with the HCP data. For each method, the $\infnorm{\cdot}$ norm of the difference between the HCP ground truth and the method is taken. Each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
     \label{fig:hcp_scatter}
 \end{figure}
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.75\linewidth]{figures/figure7.pdf}
-    \caption{Scatter plots for the results with the 19 subjects from Faces dataset. The first row (A) and (B) is for the condition ``famous" and the second row (C) and (D) is for the condition ``unfamiliar" faces. For each method, the $\infnorm{\cdot}$ norm of the difference between the ground truth and the estimates is computed. Each circle is a subject. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
+    \caption[Scatter plots for the results with the 19 subjects from Faces dataset.]{Scatter plots for the results with the 19 subjects from Faces dataset. The first row (A) and (B) is for the condition ``famous" and the second row (C) and (D) is for the condition ``unfamiliar" faces. For each method, the $\infnorm{\cdot}$ norm of the difference between the ground truth and the estimates is computed. Each circle is a subject. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
     \label{fig:dgw_scatter}
 \end{figure}
 
@@ -57,7 +57,7 @@ Here, we restrict our comparison to RANSAC as it is conceptually the closest to 
 \begin{sidewaysfigure}
 	\centering
 	\includegraphics[width=\textwidth]{figures/figure8.pdf}
-    \caption{An example diagnostic plot from an interactive viewer with \emph{autoreject (local)}. The data plotted here is subject 16 for the condition `famous' in the EEG faces data. Each row is a different sensor. The trials are concatenated along the x axis with dotted vertical lines separating consecutive trials. Each trial is numbered at the bottom and its corresponding trigger code is at the top. The horizontal scroll bar at the bottom allows browsing trials and the vertical scroll bar on the right is for browsing sensors. A trial which is marked as bad is shown in red on the horizontal scroll bar and the corresponding column for the trial is also red. A data segment in a good trial is either i) Good (in black) ii) Bad and interpolated (blue), or iii) Bad but not interpolated (in red). Note that the worst sensors in a trial are typically interpolated.}
+    \caption[An example diagnostic plot from an interactive viewer with \emph{autoreject (local)}]{An example diagnostic plot from an interactive viewer with \emph{autoreject (local)}. The data plotted here is subject 16 for the condition `famous' in the EEG faces data. Each row is a different sensor. The trials are concatenated along the x axis with dotted vertical lines separating consecutive trials. Each trial is numbered at the bottom and its corresponding trigger code is at the top. The horizontal scroll bar at the bottom allows browsing trials and the vertical scroll bar on the right is for browsing sensors. A trial which is marked as bad is shown in red on the horizontal scroll bar and the corresponding column for the trial is also red. A data segment in a good trial is either i) Good (in black) ii) Bad and interpolated (blue), or iii) Bad but not interpolated (in red). Note that the worst sensors in a trial are typically interpolated.}
     \label{fig:diagnostic_plot}
 \end{sidewaysfigure}
 \clearpage
