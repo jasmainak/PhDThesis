@@ -5,7 +5,7 @@
 \section{Introduction}
 Neural time series data, either non-invasive such as \ac{EEG} 
 % \utodo{we shouldn't use abbreviations if they won't be used later in the text.}
-or invasive such as electrocorticography (ECoG) and local field potentials (LFP), are fundamental to modern experimental neuroscience. Such recordings contain a wide variety of `prototypical signals' that range from beta rhythms (12--30 Hz) in motor imagery tasks and alpha oscillations (8--12 Hz) involved in attention mechanisms, to spindles in sleep studies, 
+or invasive such as \ac{ECoG} and \acp{LFP}, are fundamental to modern experimental neuroscience. Such recordings contain a wide variety of `prototypical signals' that range from beta rhythms (12--30 Hz) in motor imagery tasks and alpha oscillations (8--12 Hz) involved in attention mechanisms, to spindles in sleep studies, 
 % \utodo{Does everybody know what this is?}
 and the classical P300 event related potential, a biomarker for surprise. 
 %
@@ -57,7 +57,7 @@ they have several limitations: SWM uses a slow stochastic search inspired by sim
 % The MoTIF\cite{jost2006motif} algorithm, which has been successfully applied to estimate alpha waves from EEG, uses an iterative strategy based on generalized eigenvalue decompositions where the atoms are learned one at a time, under the constraint that successive atoms are orthogonal to each other. \mainak{This presents a limitation when recovering atoms that are correlated to each other.} More recently, the Sliding Window Matching (SWM) algorithms~\cite{gips2017discovering} were proposed to learn time-varying atoms from electrophysiological recordings. However, it is based on a quite ad-hoc inference technique which does not explicitly maximize a likelihood or minimize a cost function.
 % As opposed to traditional dictionary learning in images, we are interested in learning time-invariant representations which are less redundant and more interpretable.
 
-A natural way to cast the problem of learning a dictionary of shift-invariant atoms into an optimization problem is a convolutional sparse coding (CSC) approach~\cite{Grosse-etal:2007}. 
+A natural way to cast the problem of learning a dictionary of shift-invariant atoms into an optimization problem is a \ac{CSC} approach~\cite{Grosse-etal:2007}. 
 % The idea is to replace the matrix factorization of dictionary learning by a convolution operator~\cite{sejnowski1999coding} while keeping an $\ell_1$ or $\ell_0$ regularization to promote sparsity. 
 This approach has gained popularity in computer vision~\cite{heide2015fast,wohlberg2016efficient,zeiler2010deconvolutional, vsorel2016fast,kavukcuoglu2010learning}%
 , biomedical imaging~\cite{pachitariu2013extracting} and audio signal processing~\cite{Grosse-etal:2007,mailhe2008shift},
@@ -69,7 +69,7 @@ In a similar spirit, \citet{brockmeier2016learning} used the matching pursuit al
 % \mjtodo{(I feel a NIPS reviewer may not know MoTIF that well, so I wouldn't use "MoTIF-like")} 
 dictionary update, which is similar to the MoTIF algorithm. 
 %
-In a very recent study, \citet{hitziger2017adaptive} proposed the AWL algorithm, which presents a mathematically more principled CSC approach for modeling neural signals. Yet, as opposed to classical CSC approaches, the AWL algorithm imposes additional combinatorial  constraints, which limit its scope to certain data that contain spike-like atoms. Also, since these constraints increase the complexity of the optimization problem, the authors had to resort to dataset-specific initializations and many heuristics in their inference procedure.
+In a very recent study, \citet{hitziger2017adaptive} proposed the AWL algorithm, which presents a mathematically more principled ac{CSC} approach for modeling neural signals. Yet, as opposed to classical ac{CSC} approaches, the AWL algorithm imposes additional combinatorial  constraints, which limit its scope to certain data that contain spike-like atoms. Also, since these constraints increase the complexity of the optimization problem, the authors had to resort to dataset-specific initializations and many heuristics in their inference procedure.
 %The need for mathematically rigorous CSC tools for analyzing neural signals hence still prevails.  
 
 %to decrease the objective function considered.
@@ -81,12 +81,12 @@ In a very recent study, \citet{hitziger2017adaptive} proposed the AWL algorithm,
 % While this can be alleviated using a very good initialization~\cite{hitziger2017adaptive}, the shape of the atoms are not always known a priori.
 
 
-While the current state-of-the-art CSC methods have a strong potential for modeling neural signals, they might also be limited as they consider an $\ell_2$ reconstruction error, which corresponds to assuming an additive Gaussian noise distribution. While this assumption could be reasonable for several signal processing tasks, it turns out to be very restrictive for neural signals, which often contain heavy noise bursts and have low signal-to-noise ratio.
+While the current state-of-the-art \ac{CSC} methods have a strong potential for modeling neural signals, they might also be limited as they consider an $\ell_2$ reconstruction error, which corresponds to assuming an additive Gaussian noise distribution. While this assumption could be reasonable for several signal processing tasks, it turns out to be very restrictive for neural signals, which often contain heavy noise bursts and have low signal-to-noise ratio.
 
 % While this is often good enough for computer vision applications where data are rarely corrupted by strong impulsive artifacts, it is not adapted to the demands of low signal-to-noise ratio in neural signals. 
 %
 
-In this study, we aim to address the aforementioned concerns and propose a novel probabilistic CSC model called $\alpha$CSC, which is better-suited for neural signals. $\alpha$CSC is based on a family of \emph{heavy-tailed} distributions called $\alpha$-stable distributions \cite{samorodnitsky1994stable} whose rich structure covers a broad range of noise distributions. The heavy-tailed nature of the $\alpha$-stable distributions renders our model robust to impulsive observations. We develop a Monte Carlo expectation maximization (MCEM) algorithm for inference, with a weighted CSC model for the maximization step. We propose efficient optimization strategies that are specifically designed for neural time series.
+In this study, we aim to address the aforementioned concerns and propose a novel probabilistic \ac{CSC} model called $\alpha$CSC, which is better-suited for neural signals. $\alpha$CSC is based on a family of \emph{heavy-tailed} distributions called $\alpha$-stable distributions \citep{samorodnitsky1994stable} whose rich structure covers a broad range of noise distributions. The heavy-tailed nature of the $\alpha$-stable distributions renders our model robust to impulsive observations. We develop a Monte Carlo expectation maximization (MCEM) algorithm for inference, with a weighted \ac{CSC} model for the maximization step. We propose efficient optimization strategies that are specifically designed for neural time series.
 %
 We illustrate the benefits of the proposed approach on both synthetic and real datasets.
 
