@@ -35,6 +35,10 @@
 \usepackage{stmaryrd}
 
 \usepackage{mathsymbols}
+\usepackage{bibentry} % for list of pubs in Intro
+\nobibliography*
+
+\usepackage{emptypage} % remove headers from empty pages
 
 \hypersetup{
     colorlinks,
@@ -43,8 +47,13 @@
     linkcolor=blue,
     urlcolor=blue
 }
+
+\input{acronyms}
+
 %\input{chapters/coverpage.tex}
 \begin{document}
+
+\pagenumbering{roman}
 
 \includepdf[]{build/coverpage}
 
@@ -58,14 +67,14 @@
 \newcommand{\code}{\texttt}
 
 \input{chapters/dedication.tex}
-
-\pagenumbering{roman}
 \input{chapters/acknowledgement.tex}
 \tableofcontents
 \addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
 \addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
+\printacronyms[include-classes=abbrev,name=Abbreviations, heading=chapter*]
+
 \pagenumbering{arabic}
 
 % TODOTODOTODOTODOTODO
