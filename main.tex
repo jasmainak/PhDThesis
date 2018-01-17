@@ -34,6 +34,7 @@
 \usepackage{algorithmic}
 \usepackage{stmaryrd}
 
+\usepackage{fancyhdr} % for formatting headers to be lowercase
 \usepackage{mathsymbols}
 \usepackage{bibentry} % for list of pubs in Intro
 \nobibliography*
@@ -50,6 +51,16 @@
 }
 
 \input{acronyms}
+
+% format header
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\itshape\nouppercase{\rightmark}}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0pt}
 
 %\input{chapters/coverpage.tex}
 \begin{document}
