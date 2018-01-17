@@ -14,32 +14,23 @@ Understanding the human brain is one of the most significant challenges of the 2
 
 \section{The reproducibility crisis}
 
-Even though thousands of papers are published every year about different aspects of the brain, our understanding of this complex organ has not scaled in proportion. A large part of the reason has been attributed to what is known as the replication crisis~\citep{ioannidis2005most, simmons2011false, button2013power}. Replication is closely related to the concept of reproducibility which refers to the idea that an experiment produces the same result when performed again under the same conditions. Replication is a stronger condition as it requires similar results or identical conclusion even if there are some minor variations in the experimental procedures. Progress in science rests on the reproducibility of experiments. In many fields, however, a large fraction of experiments cannot be reproduced. In psychology, for instance, it was estimated that over half of the papers were not reproducible~\citep{open2015estimating}, and even those reproduced tended to have a weaker effect size compared to the original study. 
+Even though thousands of papers are published every year about different aspects of the brain, our understanding of this complex organ has not scaled in proportion. A large part of the reason has been attributed to what is known as the reproducibility crisis~\citep{ioannidis2005most, simmons2011false, button2013power}. %Replication is closely related to the concept of reproducibility which refers to the idea that an experiment produces the same result when performed again under the same conditions. Replication is a stronger condition as it requires similar results or identical conclusion even if there are some minor variations in the experimental procedures. 
+Progress in science rests on reproducible experiments. In many fields, however, a large fraction of experiments cannot be reproduced. In psychology, for instance, it was estimated that over half of the papers were not reproducible~\citep{open2015estimating}, and even those which could be reproduced tended to have a weaker effect size compared to the original study. The reasons for unreproducible results can be many, some being: 1) confirmation bias, the tendency to selectively report only experiments that conform to the researcher's pre-existing beliefs, 2) ``p-hacking''~\citep{simmons2011false}, or the tendency to try multiple hypothesis to get a positive result, 3) publication bias or the absence of incentives to publish negative results, and 4) pressure to publish. There are now an accepted set of recommendations to counter many of these issues: 1) pre-registering research plans to avoid confirmation bias and even report negative results, 2) correct for multiple comparisons, the most conservative method being the Bonferroni correction [ref]. 
 
-This has led the field to look introspectively
-
-preregistration, publishing negative results
- This is due to a number of reasons such as confirmation bias, pressure to publish and absence of incentives to publish negative results, ``p-hacking''~\citep{simmons2011false}. However, brain imaging has its own set of issues which can be linked to replication crisis:
+However, brain imaging has its own set of unique issues which can be linked to reproducibility crisis: 
 
 % vul2009puzzlingly
 % yendiki2014spurious
 
-\begin{itemize}[noitemsep,nolistsep]
-\item Multiple comparison
-\item Differences in software
-\item Complex pipelines~\citep{Carp2012289}
-\item \emph{Power failure}, or the tendency to conduct studies using sample sizes thereby increasing the likelihood of a false discovery just by chance.
-\item Head movements~\citep{yendiki2014spurious}
-\item Lack of data
+\begin{itemize}[noitemsep,partopsep=0pt]
+\item \textbf{Multiple comparison:} Same as in the case of psychology but more widespread due to the presence of large number of voxels or time points [ref]. For instance, in the famous dead salmon study~\citep{bennett2009neural}, an effect was found even if none was expected.
+\item \textbf{Differences in software versions:} For instance in the case of Freesurfer software [ref], it can lead to almost a 1 mm [check] difference in cortical thickness~\citep{gronenschild2012effects}.
+\item \textbf{Complex pipelines:} Neuroimaging pipelines involve a number of choices at each processing stage, and there isn't currently a consensus on how to choose the right pipeline. Often, these methodological choices are not even documented. It is estimated that almost every new study has its own unique pipeline~\citep{Carp2012289}.
+\item \textbf{Power failure:} The statistical power of a study refers to the likelihood of discovering an effect of interest, given the sample size. Small sample sizes translate into underpowered studies which means that the chance of a false discovery is high. In order to discover the effect of interest, the study must be appropriately powered. This is closely related to the problem of multiple comparisons as it is more prevelant in underpowered studies.
+\item \textbf{Methodological concerns:} There are several methodological concerns, but perhaps one that has received some attention is the issue of head movements~\citep{yendiki2014spurious} which can lead to spurious correlations.
 \end{itemize}
 
-Lack of data and power failure are related
-
-list the reasons for reproducibility crisis and how it's unique for neuroimaging as opposed to behavioral sciences
-
-reverse inference
-
-dead salmon~\citep{bennett2009neural}
+The issue of complex pipelines will be revisited in Chapter []. For now, let us turn our attention to data sharing which can help us alleviate the issue of power failure.
 
 \section{Data sharing}
 The history of data sharing can be traced back to Newton and his theory of gravitation~\citep{pointofview2013}. Before Newton had developed his theory, another English astronomer, John Flamsteed had been appointed by the king to observe the stars and produce accurate charts for navigation in the seas. Over a period of 40 years, Flamsteed created a detailed catalogue that tripled the number of entries in the previously used sky atlas. When the great comet of 1680 appeared in the sky twice in close succession, Flamsteed used his data to postulate that it was not two comets but in fact the same comet which first went towards the sun and then turned away from it. Newton initially opposed this theory, but later changed his mind as he gained access to Flamsteed's unpublished catalogue. The comet had indeed turned out to be an important benchmark for Newton's theory of gravitation.
@@ -76,7 +67,6 @@ The development of these standards is going to enable building large databases o
 \section{Automation}
 Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. But what are the opportunities for automation in the context of neuroimaging? Let us list down some of them:
 \begin{itemize}[noitemsep,nolistsep,nosep]
-\item \textbf{Data organization:} Neuroimaging data can often run into many Terabytes with intermediate files at different stages of processing. Keeping track of this heterogeneous data manually can be a challenging process.
 \item \textbf{Parameter tuning:} Most algorithms, although automated, require hyperparameters to be tuned. This could be the number of trials to perform in an experiment, the number of components to select in a \ac{PCA} decomposition, or the regularization parameter in inverse solvers.
 \item \textbf{Annotation and labeling:} The challenge of neuroimaging data is that it is often unlabeled. As reliable annotations can be performed only by experts, crowdsourcing is often not a possibility. The alternative is to automatically label different types of signals.
 \item \textbf{Reporting and quality control:} Automated Statistician . \ac{MNE} web report
