@@ -1,8 +1,13 @@
 \chapter{Introduction}
 
-Understanding the human brain is one of the most significant challenges of the 21st century. The brain is responsible for controlling a wide range of actions
+Understanding the human brain is one of the most significant challenges of the 21st century. The human brain is arguably one of the most important organs of the human body, which performs a wide range of cognitive functions: from visual recognition to language understanding, speech, social interaction, and executive control. Even then, pathologies of the brain are perhaps on of the biggest challenges for western medicine today. Medical interventions and drugs for major infectious diseases are available today, and individuals can expect to live up to the mid 80s and even into their 90s. Yet, we still do not have a grasp over most mental pathologies: Parkinson's, Alzheimer's, dementia, epilepsy to name a few. The scale of the problem is enormous. Today, a person living into their mid 80s has a 50\% chance of contracting Alzheimer's~\citep{alzheimer20162016}.
 
+Our current understanding of the brain is a result of decades of concerted efforts across multiple disciplines ranging from molecular biology, genetics, physiology, cognitive and behavioral neuroscience, to statistics and computer science.
+
+After a brief introduction to modern brain imaging, I will outline four areas of ... and how this thesis progresses the state-of-the-art:
+ 
 \section{Modern brain imaging}
+Brain imaging tools today can be placed along three axes: their temporal resolution, their spatial resolution, and the level to which they are invasive.
 
 \begin{figure}[htb]
 \begin{center}
@@ -12,6 +17,7 @@ Understanding the human brain is one of the most significant challenges of the 2
    \label{fig:neuroimaging_methods}
 \end{figure}
 
+\clearpage
 \section{The reproducibility crisis}
 
 Even though thousands of papers are published every year about different aspects of the brain, our understanding of this complex organ has not scaled in proportion. A large part of the reason has been attributed to what is known as the reproducibility crisis~\citep{ioannidis2005most, simmons2011false, button2013power}. %Replication is closely related to the concept of reproducibility which refers to the idea that an experiment produces the same result when performed again under the same conditions. Replication is a stronger condition as it requires similar results or identical conclusion even if there are some minor variations in the experimental procedures. 
@@ -32,6 +38,7 @@ However, brain imaging has its own set of unique issues which can be linked to r
 
 The issue of complex pipelines will be revisited in Chapter~\ref{chapter:group_study} as we provide concrete guidelines on how to select the appropriate pipeline. For now, let us turn our attention to data sharing which can help us alleviate the issue of power failure.
 
+\clearpage
 \section{Data sharing}
 The history of data sharing can be traced back to Newton and his theory of gravitation~\citep{pointofview2013}. Before Newton had developed his theory, another English astronomer, John Flamsteed had been appointed by the king to observe the stars and produce accurate charts for navigation in the seas. Over a period of 40 years, Flamsteed created a detailed catalogue that tripled the number of entries in the previously used sky atlas. When the great comet of 1680 appeared in the sky twice in close succession, Flamsteed used his data to postulate that it was not two comets but in fact the same comet which first went towards the sun and then turned away from it. Newton initially opposed this theory, but later changed his mind as he gained access to Flamsteed's unpublished catalogue. The comet had indeed turned out to be an important benchmark for Newton's theory of gravitation.
 
@@ -42,59 +49,50 @@ Data sharing is beneficial not just from the perspective of replication but also
 
 \subsection{Brain Imaging Data Structure}
 
-\begin{figure}[htb]
-\begin{center}
-   \includegraphics[width=0.8\linewidth]{figures/clock.pdf}
-\end{center}
-   \caption[Standards in clocks]{Standards in clock design. The time is 07:11 (A) Modern standard, read clockwise and 12 o' clock is at North (B) Anticlockwise and 9 o' clock at North (C) Read clockwise but 5 o' clock is at North. Adapted from \cite{norman2013design}.}
-   \label{fig:clock_standards}
-\end{figure}
-
-While data sharing in neuroscience is on the rise, the amount of data reuse is still limited. For instance, since the release of the Human Connectome Project (HCP)~\citep{larson2013adding} MEG data in 2013, there have been only one or two documented cases~\citep{jas2017autoreject} of reusing the data. Even in these cases, the effort has mostly been to reproduce rather than test new hypotheses. This clearly represents a gap between the ideal of data sharing and the results in practice. Clearly, sharing data is not a panacea as the tools, skills and resources to process such large datasets is currently missing in typical laboratories. 
-
-Perhaps the most important roadblock is standardization of metadata. Data sharing is clearly not productive if the data is not easily  \emph{reusable} in the same way that uncommented and spaghetti code cannot be reused even if it is shared publicly. Neuroimaging experiments are often complicated involving different paradigms (auditory, visual, somatosensory \emph{etc.}), different acquisition parameters (sampling frequency, number of sensors and their location, measurement device \emph{etc.}), and population parameters: subject's gender, age \emph{etc.} Obviously, this metadata is necessary information to reanalyze the data.   
-
-Unfortunately, there has been historically, a lack of consensus amongst different labs and industrial manufacturer's as to what constitutes useful metadata. This points to the need for establishing standards. While on a superficial glance, this may appear to be unnecessary bureaucratic red tape, the need for standards can be appreciated by considering the simple wall clocks in Figure~\ref{fig:clock_standards}.
-
-The wall clock is recognized as an everyday object that is perhaps far simpler than most complex neuroimaging experiments. Even then, there are two degrees of freedom even to this simple device: the direction of motion of the hands, and the anchor point for the 12 o' clock. While all three clocks in the figure can still be readable, it is far more convenient to establish a standard. The upfront cost in conforming to the standard is more than made up by the efficiencies achieved as a result of it.
-
-Apart from the metadata that is stored with the data, the data itself is stored amongst one of 10--20 different file formats and at different stages of processing. While there have been some efforts previously to standardize data structures~\citep{gibson2009minimum, grewe2011bottom, stoewer2013singlefile, teeters2015neurodata, bigdely2016preparing}, it has not gained wide acceptability. Designing a new standard is tricky as it requires gaining a community consensus. At the same time it must strike the right balance between rigidity for efficiency and flexibility for adapting to future technologies. 
-
-The BIDS format is indeed designed with these considerations in mind. The standard involves a hierarchy of folders to describe the imaging technology used, the name of the subject, and the date of the experiment. At each level of hierarchy, files are accompanied by sidecar \code{json} files describing the metadata. These files follow an inheritance principle, that is, a field described in a \code{json} file in a higher level of the hierarchy will be automatically propagated downstream. The main BIDS specification is accompanied by extension specifications which describe specific aspects of describe certain file types. The BIDS consortium is also providing a growing ecosystem of tools to convert datasets into BIDS compatible format as well as to validate data to conform to the standard. 
-
-The development of these standards is going to enable building large databases of neural recordings. In the future, we can envision being able to open a website and query or search through such data by different experimental paradigms or other metadata.
-
+\clearpage
 \section{Automation}
-Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. But what are the opportunities for automation in the context of neuroimaging? Let us list down some of them:
-\begin{itemize}[noitemsep,nolistsep,nosep]
-\item \textbf{Parameter tuning:} Most algorithms, although automated, require hyperparameters to be tuned. This could be the number of trials to perform in an experiment, the number of components to select in a \ac{PCA} decomposition, or the regularization parameter in inverse solvers.
-\item \textbf{Annotation and labeling:} The challenge of neuroimaging data is that it is often unlabeled. As reliable annotations can be performed only by experts, crowdsourcing is often not a possibility. The alternative is to automatically label different types of signals.
-\item \textbf{Reporting and quality control:} Automated Statistician . \ac{MNE} web report
-\end{itemize}
-Ultimately, this will lead to higher quality of 
+Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future of science: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. Automation not only saves time but also makes the research more reproducible, as was noted in a recent guide to improve the transparency and reproducibility of neuroimaging research~\citep{gorgolewski2016practical}. The authors point out that manual work may seem easy at first, if the analysis has to be performed only once. However, this is not always the case as ``quite often in the course of a project, parameters are modified, subjects are changed, and processing steps need to be rerun. This is a situation in which having a set of scripts that can perform all of the processing steps automatically instead of relying on manual interventions can really pay off.''
 
-Efficiency, it turns out, is not simply a matter of scale. Even for moderately sized experiments,
+Let us consider some of the opportunities for automation in neuroimaging:
+\begin{itemize}[noitemsep,nolistsep,nosep]
+\item \textbf{Reducing interactivity:} While interactive graphical user interfaces are excellent tools for browsing the data, they fall short when it comes to scaling the analysis, which is necessary for a sufficiently powered study. 
+
+\item \textbf{Parameter tuning:} Most algorithms, although scripted, still require hyperparameters to be tuned. These hyperparameters could be the number of ICA components to choose or the regularization parameters, and can vary for each subject.
+%This could be the number of trials to perform in an experiment, the number of components to select in a \ac{PCA} decomposition, or the regularization parameter in inverse solvers.
+\item \textbf{Annotation and labeling:} A large fraction of neuroimaging data that is available is unlabeled or at best weakly labeled. This is because expert annotations are expensive, and cannot be crowdsourced. Automated tools based on unsupervised learning can play a major role in this regard.
+\item \textbf{Quality control:} Currently, quality control is performed manually by inspecting the data to spot outliers. While data inspection cannot be overlooked, it can be performed more efficiently through automated documentation of data analysis and log reports such as the Jupyter notebook and the MNE web report. At the same time, advanced statistical trend analyses as in the Automated Statistician project~\citep{duvenaud2013structure} can be used for creating summaries.
+\end{itemize}
+In this thesis, we will consider an algorithm for automated artifact rejection~\citep{jas2016automated, jas2017autoreject}. This is a first step that any M/EEG processing pipeline has to go through but it is often done manually. The reason for this is that existing algorithms are not designed to be \emph{transparency}. Since for more scientists, the key to new insights is an artifact-free dataset, they would rather spend some extra time in doing this manually rather than depend on a generic algorithm which is difficult to interpret. However, this is problematic as it can lead to a selection bias: they might end up rejecting data segments which helps them confirm their hypothesis. Merely based on anecdotal reports, this process can take up to a week even for a moderately sized study of 10--20 subjects.
+
+This is what led us to propose \emph{autoreject}, which we describe in Chapter~\ref{chapter:autoreject}. It is an algorithm which can be used to mark bad segments of the data. The key insight is that, often certain sensors in the device are intermittently corrupted rather than continuously. We validate our algorithm against 3 benchmarks on the HCP dataset~\citep{larson2013adding} which is manually annotated with bad segments.
 
 % automated statistician
 %
 % This subjectivity can lead to studies which are not reproducible unless every single detail was carefully documented. Even then, it does not rule out a potential confirmation bias: the tendency to favor processing steps which leads one to confirm the hypothesis being tested rather than reject it.
 
-data revolution
-
-
-data sharing, data standards, open source
-
-\subsection{Janitor work}
-
-One of the biggest roadblocks to large scale analysis is what is known as `janitor work': the effort required to standardize a dataset before it is actually usable. In the context of neuroimaging, this can involve organizing files at different stages of processing, manually inspecting the data, annotating segments which contain artifacts, and even removing outlier subjects from the analysis. Merely based on anecdotal reports, we can conclude that this can take up to a week of time even for a moderately sized study of 10--20 subjects.
-%If at some point, the researcher realized that a certain parameter early in the pipeline needed to be changed, this would entail redoing all the subsequent steps in the pipeline, including the manual processing. 
-In addition to the cost of human labor, one cannot ignore the subjectivity that these steps produces which can be problematic for reproducibility. As the number of datasets shared increases and neuroscientists are forced to confront statistically rigorous approaches to data analysis, the time is ripe to automate as many steps of the pipeline as possible.
-
+\clearpage
 \section{Representation learning}
-In the last 100 years since the invention of EEG, scientists have discovered several different brain oscillation patterns such as alpha waves, K-complexes, and mu rhythms. The oscillations and interactions between them have served as biomarkers for different brain functions and pathologies. Alpha waves have been implicated in attention, K-complexes in sleep, and mu rhythm in motor activity. However, as these waveforms are buried in the noise, extracting them would require heavy signal processing techniques, particularly those based on Fourier transforms, to emphasize the signal of interest. Obviously, this is not ideal as the sinusoidal bases offered by Fourier transform is not the most compact. A square wave for instance would need to be approximated by a infinite series of sinusoids. Wavelets have therefore been suggested to model the transients. Yet, sinusoidals and wavelets are at best approximations. To best preserve the shape of the waveform, it is necessary to learn the waveform directly from the data. This is the aspiration of representation learning.
+In the last 100 years since the invention of EEG, scientists have discovered several different brain oscillation patterns such as alpha waves, K-complexes, and mu rhythms. The oscillations and interactions between them have served as biomarkers for different brain functions and pathologies. Alpha waves have been implicated in attention, K-complexes in sleep, and mu rhythm in motor activity. 
+
+Considering the complexity of the human brain, clearly these waveforms represent only a fraction of the cognitive functions that the brain may perform. As a result of the wealth of data now available through the data sharing movement described in Section~\ref{chapter:alphacsc}, the future neuroscientist will be able to mine such waveforms from large datasets. Imagine if neuroscientists had at their disposal a tool similar to Google Photos\footnote{\url{https://photos.google.com/}}. Rather than automatically finding faces and grouping photos, it would find prototypical oscillations and cluster the data using them. Clicking on any of these waveforms would retrieve the data associated with them.
+
+\begin{figure}[htb]
+\begin{center}
+   \includegraphics[width=0.7\linewidth]{figures/schema.pdf}
+\end{center}
+   \caption[Convolutional sparse coding]{Convolutional sparse coding}
+   \label{fig:neuroimaging_methods}
+\end{figure}
+
+However, photos are inherently different from neural data. First, neural data can be buried in noise and corrupted by high amplitude artifacts. Second, images are labelled due to datasets such as Imagenet [], but neural data is not. Finally, it is spatiotemporal data with different dynamics than the 3D world that photos capture. This is where convolutional sparse coding (CSC) can play a role by extracting prototypical features from the data. It is an unsupervised algorithm from computer vision, which can learn shift-invariant representations from the data using convolutional operations.
+
+Current efforts in extracting known waveforms capitalize on heavy signal processing based on the Fourier transform. This involves approximating the waveform by a sinusoidal basis
+
+However, as these waveforms are buried in the noise, extracting them would require heavy signal processing techniques, particularly those based on Fourier transforms, to emphasize the signal of interest. Obviously, this is not ideal as the sinusoidal bases offered by Fourier transform is not the most compact. A square wave for instance would need to be approximated by a infinite series of sinusoids. Wavelets have therefore been suggested to model the transients. Yet, sinusoidals and wavelets are at best approximations. To best preserve the shape of the waveform, it is necessary to learn the waveform directly from the data. This is the aspiration of representation learning.
 
 In our work, we focus on dictionary learning, a representation learning technique that allows us to learn prototypical `atoms' and their corresponding `activation' maps. As data sharing increases, such a technology is likely to be indispensable as it will allow mining prototypical waveforms on large datasets.
 
+\clearpage
 \section{Contributions}
 In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an effort to create an MEG standard for the Brain Imaging Data Structure (BIDS)~\citep{galan2017meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. This led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data. 
 
