@@ -1,9 +1,9 @@
-\appendix
-\chapter{Appendix A}
+\begin{appendices}
+\chapter{}
 
 Here, we present additional material that may answer some questions that the reader might have when reading the main text.
 
-\paragraph{$\ell_{2}$ vs $\ell_{\infty}$ norm}: Why not use $\ell_{2}$ norm instead of $\ell_{\infty}$ norm to report the quantitative results in Figure~\ref{fig:hcp_scatter} or Figure~\ref{fig:dgw_scatter}? The reason is that the $\ell_{2}$ norm will average across the sensors. If one sensor is badly corrupted, then this would not be obvious with the $\ell_{2}$ norm because the average in the $\ell_{2}$ norm computation conceals the isolated problematic sensors with large artifacts. However, as the $\ell_\infty$ norm captures the worst sensor, it can be used to visualize pathological cases where even one sensor is corrupted. In Figure~\ref{fig:l2_norm}, we reproduce Figure~\ref{fig:hcp_scatter} using the $\ell_2$ norm instead of $\ell_{\infty}$. We can observe that, although the pattern remains the same, it is much less clear where one method outperforms the other. Even where \emph{autoreject} isn't performing as well, it is not  visible due to the averaging effect.
+\paragraph{$\ell_{2}$ vs $\ell_{\infty}$ norm}: Why not use $\ell_{2}$ norm instead of $\ell_{\infty}$ norm to report the quantitative results in Figure~\ref{fig:hcp_scatter} or Figure~\ref{fig:dgw_scatter}? The reason is that the $\ell_{2}$ norm will average across the sensors. If one sensor is badly corrupted, then this would not be obvious with the $\ell_{2}$ norm because the average in the $\ell_{2}$ norm computation conceals the isolated problematic sensors with large artifacts. However, as the $\ell_\infty$ norm captures the worst sensor, it can be used to visualize pathological cases where even one sensor is corrupted. In Figure~\ref{fig:l2_norm}, we reproduce Figure~\ref{fig:hcp_scatter} using the $\ell_2$ norm instead of $\ell_{\infty}$. We can observe that, although the pattern remains the same, it is much less clear where one method outperforms the other. Even where \emph{autoreject} isn't performing as well, it is not  visible due to the averaging % effect.
 
 \begin{figure}[htb]
 	\centering
@@ -12,8 +12,7 @@ Here, we present additional material that may answer some questions that the rea
     \label{fig:l2_norm}
 \end{figure}
 
-\chapter{Appendix B}
-
+\chapter{}
 
 \section{Details of the E-Step}
 
@@ -215,3 +214,5 @@ Finally, we compare convergence plots of our algorithm using different solvers f
     \caption{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
     \label{fig:convergence_z_update}
 \end{figure}
+
+\end{appendices}
