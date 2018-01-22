@@ -1,5 +1,6 @@
 \begin{appendices}
 \chapter{}
+\vspace{-20pt}
 
 Here, we present additional material that may answer some questions that the reader might have when reading the main text.
 
@@ -7,12 +8,13 @@ Here, we present additional material that may answer some questions that the rea
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.9\linewidth]{figures/figure4_supp.pdf}
+	\includegraphics[width=0.8\linewidth]{figures/figure4_supp.pdf}
     \caption{Scatter plots for the results with the HCP data. This figure uses the same data as in Figure~\ref{fig:hcp_scatter} from the main text, but with  $\|\cdot\|_2$ norm instead of the $\|\cdot\|_\infty$ norm for computing the difference between the HCP ground truth and the method. As before, each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
     \label{fig:l2_norm}
 \end{figure}
 
 \chapter{}
+\vspace{-20pt}
 
 \section{Details of the E-Step}
 
@@ -169,11 +171,11 @@ Solving atoms $d$ (sequential) & $LKTN + qL^2K$ \\
 \begin{figure}[htb]
     \centering
      \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.32\linewidth]{figures/relative_2_32.pdf}}
+     \includegraphics[width=0.31\linewidth]{figures/relative_2_32.pdf}}
      \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.32\textwidth]{figures/relative_2_128.pdf}}
+     \includegraphics[width=0.31\textwidth]{figures/relative_2_128.pdf}}
      \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.32\textwidth]{figures/relative_10_32.pdf}}
+     \includegraphics[width=0.31\textwidth]{figures/relative_10_32.pdf}}
     \vspace{-5pt}
     \caption{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
     \label{fig:convergence_setups}
@@ -188,11 +190,11 @@ Next, in Fig.~\ref{fig:convergence_traditional}, we show more traditional conver
 \begin{figure}[htb]
     \centering
      \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.32\linewidth]{figures/plateau_2_32.pdf}}
+     \includegraphics[width=0.31\linewidth]{figures/plateau_2_32.pdf}}
      \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.32\textwidth]{figures/plateau_2_128.pdf}}
+     \includegraphics[width=0.31\textwidth]{figures/plateau_2_128.pdf}}
      \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.32\textwidth]{figures/plateau_10_32.pdf}}
+     \includegraphics[width=0.31\textwidth]{figures/plateau_10_32.pdf}}
     \vspace{-5pt}
     \caption{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
     \label{fig:convergence_traditional}
@@ -205,11 +207,11 @@ Finally, we compare convergence plots of our algorithm using different solvers f
 \begin{figure}[h]
     \centering
      \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.32\linewidth]{figures/fista_2_32.pdf}}
+     \includegraphics[width=0.31\linewidth]{figures/fista_2_32.pdf}}
      \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.32\textwidth]{figures/fista_2_128.pdf}}
+     \includegraphics[width=0.31\textwidth]{figures/fista_2_128.pdf}}
      \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.32\textwidth]{figures/fista_10_32.pdf}}
+     \includegraphics[width=0.31\textwidth]{figures/fista_10_32.pdf}}
     \vspace{-5pt}
     \caption{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
     \label{fig:convergence_z_update}
