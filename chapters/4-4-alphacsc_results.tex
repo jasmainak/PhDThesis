@@ -17,7 +17,7 @@
 In order to evaluate our approach, we conduct several experiments on both synthetic and real data. 
 First, we show that our proposed optimization scheme for the M-step provides significant improvements in terms
 of convergence speed over the state-of-the-art CSC methods. Then, we provide empirical evidence that our algorithm is more robust to
-artifacts and outliers than three competing CSC methods~\cite{jost2006motif,brockmeier2016learning,wohlberg2016efficient}.
+artifacts and outliers than three competing CSC methods~\citep{jost2006motif,brockmeier2016learning,wohlberg2016efficient}.
 %
 Finally, we consider LFP data, where we illustrate that our algorithm can reveal interesting properties in electrophysiological signals
 without supervision, even in the presence of severe artifacts. The source code is publicly available at \url{https://alphacsc.github.io/}.
@@ -42,7 +42,7 @@ In our first set of synthetic experiments, we illustrate the benefits of our M-s
 %
 We set $N=100$, $T=2000$ and $\lambda=1$, and use different values for $K$ and $L$. To be comparable, we set $\alpha=2$ and add Gaussian noise to the synthesized signals, where the standard deviation is set to $0.01$. In this setting, we  have $w_{n,t}=1/2$ for all $n$, $t$, which reduces the problem to a standard CSC setup. We monitor the convergence of ADMM-based methods by \citet{heide2015fast} and \citet{wohlberg2016efficient} against our M-step algorithm, using both a single-threaded and a parallel version for the $z$-update. 
 % We used here artifact-free data. 
-As the problem is non-convex, even if two algorithms start from the same point, they are not guaranteed to reach the same local minimum\footnote{Note that the M-step can be viewed as a biconvex problem, for which global convergence guarantees can be shown under certain assumptions \cite{agarwal2014learning, gorski2007biconvex}. However, we have observed that it is required to use multiple restarts even for vanilla CSC, implying that these assumptions are not satisfied in this particular problem.}. 
+As the problem is non-convex, even if two algorithms start from the same point, they are not guaranteed to reach the same local minimum\footnote{Note that the M-step can be viewed as a biconvex problem, for which global convergence guarantees can be shown under certain assumptions \citep{agarwal2014learning, gorski2007biconvex}. However, we have observed that it is required to use multiple restarts even for vanilla CSC, implying that these assumptions are not satisfied in this particular problem.}. 
 %
 Hence, for a fair comparison, we use a multiple restart strategy with averaging across $24$ random seeds.
 
@@ -131,7 +131,7 @@ For $\alpha$CSC, we set the number of outer iterations $I=5$, the number of iter
 %
 % We set $I=5$ iterations of the EM algorithm in $\alpha$CSC and , starting with the M-step and ending with the M-step. The MCMC algorithm was run for 10 iterations with the first 5 iterations being discarded for computing the expectation. 
 %
-To enable a fair comparison, we run the standard CSC algorithm for $I\times M$ iterations, i.e.\ the \emph{total} number of M-step iterations in $\alpha$CSC. We also compared $\alpha$CSC against competing state-of-art methods previously applied to neural time series: \citet{brockmeier2016learning} and MoTIF~\cite{jost2006motif}. 
+To enable a fair comparison, we run the standard CSC algorithm for $I\times M$ iterations, i.e.\ the \emph{total} number of M-step iterations in $\alpha$CSC. We also compared $\alpha$CSC against competing state-of-art methods previously applied to neural time series: \citet{brockmeier2016learning} and MoTIF~\citep{jost2006motif}. 
 %
 Starting from multiple random initializations, the estimated atoms with the smallest $\ell_2$ distance with the true atoms are shown in Fig.~\ref{fig:mcem_simulated}.
 
@@ -181,7 +181,7 @@ We set $\lambda=10$, initialized the weights $w_n$ to the inverse of the varianc
 
 % We compared $\alpha$CSC against CSC on artifact-free data and on data corrupted by strong artifacts (see Fig.~\ref{fig:pdf_lfp}). 
 
-As opposed to the first LFP dataset, this dataset contains strong artifacts, as shown in Fig.~\ref{fig:artifacts}. In order to be able to illustrate the potential of CSC on this data, we first \emph{manually} identified and removed the trials that were corrupted by artifacts. In Fig.~\ref{fig:rat3atoms}, we illustrate the estimated atoms with CSC on the manually-cleaned data. We observe that the estimated atoms correspond to canonical waveforms found in the signal. In particular, the high frequency oscillations around $80$\,Hz are modulated in amplitude by the low-frequency oscillation around $3$\,Hz, a phenomenon known as cross-frequency coupling (CFC)~\cite{jensen2007cross}. We can observe this by computing a comodulogram~\cite{tort2010measuring} on the entire signal (Fig.~\ref{fig:comodulogram}). This measures the correlation between the amplitude of the high frequency band and the phase of the low frequency band. 
+As opposed to the first LFP dataset, this dataset contains strong artifacts, as shown in Fig.~\ref{fig:artifacts}. In order to be able to illustrate the potential of CSC on this data, we first \emph{manually} identified and removed the trials that were corrupted by artifacts. In Fig.~\ref{fig:rat3atoms}, we illustrate the estimated atoms with CSC on the manually-cleaned data. We observe that the estimated atoms correspond to canonical waveforms found in the signal. In particular, the high frequency oscillations around $80$\,Hz are modulated in amplitude by the low-frequency oscillation around $3$\,Hz, a phenomenon known as \ac{CFC}~\citep{jensen2007cross}. We can observe this by computing a comodulogram~\citep{tort2010measuring} on the entire signal (Fig.~\ref{fig:comodulogram}). This measures the correlation between the amplitude of the high frequency band and the phase of the low frequency band. 
 
 
 Even though CSC is able to provide these excellent results on the cleaned data set, its performance heavily relies on the manual removal of the artifacts. Finally, we repeated the previous experiment on the full data, without removing the artifacts and compared CSC with $\alpha$CSC, where we set $\alpha=1.2$. The results are shown in the middle and the right sub-figures of Fig.~\ref{fig:rat3atoms}. It can be observed that in the presence of strong artifacts, CSC is not able to recover the atoms anymore. On the contrary, we observe that $\alpha$CSC can still recover atoms as observed in the artifact-free regime. In particular, the cross-frequency coupling phenomenon is still visible.

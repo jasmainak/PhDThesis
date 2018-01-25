@@ -10,7 +10,7 @@ Given the weights $w_n$ that are estimated during the E-step, the objective of t
 This objective function is not jointly convex in $d$ and $z$, yet it is convex if one fix
 either $d$ or $z$.
 % Due to non-convexity, we can only guarantee convergence to a local optimum. 
-Here, similarly to the vanilla CSC approaches~\cite{gips2017discovering,Grosse-etal:2007}, we develop a \emph{block coordinate descent} strategy, where we solve the problem in~\eqref{eq:mstep} for either $d$ or $z$, by keeping respectively $z$ and $d$ fixed.
+Here, similarly to the vanilla CSC approaches~\citep{gips2017discovering,Grosse-etal:2007}, we develop a \emph{block coordinate descent} strategy, where we solve the problem in~\eqref{eq:mstep} for either $d$ or $z$, by keeping respectively $z$ and $d$ fixed.
 %
 % Since the overall problem is non-convex, one can only aim for obtaining a local optimum. For obtaining a local minimum, several approaches have been proposed \umut{cite}. These methods are based on alternating minimization, where the problem is iteratively solved for either for the atoms while keeping the codes fixed, or vice versa. Both of the two subproblems are convex. \umut{Deficiencies of the algorithms. Algorithms can be made more efficient}
 %
@@ -26,7 +26,7 @@ The matrices $D^k$ are never constructed in practice, and all operations are car
 This problem can be solved by various constrained optimization algorithms. Here, we choose the quasi-Newton L-BFGS-B algorithm~\cite{byrd1995limited} with a box constraint: $0 \leq z_{n,t}^k \leq \infty$. This approach only requires the simple computation of the gradient of the objective function with respect to $z$ (\textit{cf.} supplementary material). Note that, since each trial is independent from each other, we can solve this problem for each $z_n$ in parallel. 
 
 % \subsection{Solving for atoms}
-We then solve the problem for the atoms $d$ while keeping $z$ fixed. This optimization problem turns out to be a constrained weighted least-squares problem. In the non-weighted case, this problem can be solved either in the time domain or in the Fourier domain~\cite{Grosse-etal:2007,heide2015fast,wohlberg2016efficient}. The Fourier transform simplifies the convolutions that appear in least-squares problem, but it also induces several difficulties, such as that the atom $d_k$ have to be in a finite support $L$, an important issue ignored in the seminal work of~\cite{Grosse-etal:2007} and addressed with an ADMM solver  in\cite{heide2015fast,wohlberg2016efficient}.
+We then solve the problem for the atoms $d$ while keeping $z$ fixed. This optimization problem turns out to be a constrained weighted least-squares problem. In the non-weighted case, this problem can be solved either in the time domain or in the Fourier domain~\citep{Grosse-etal:2007,heide2015fast,wohlberg2016efficient}. The Fourier transform simplifies the convolutions that appear in least-squares problem, but it also induces several difficulties, such as that the atom $d_k$ have to be in a finite support $L$, an important issue ignored in the seminal work of~\cite{Grosse-etal:2007} and addressed with an ADMM solver  in \cite{heide2015fast,wohlberg2016efficient}.
 In the weighted case, it is not clear how to solve this problem in the Fourier domain. We thus perform all the computations in the time domain.
 
 
@@ -35,14 +35,14 @@ In the weighted case, it is not clear how to solve this problem in the Fourier d
 
 
 % The performances of our strategy will be demonstrated in benchmarks in the next section. for estimating finite impulse response filters  \in \bbR^{T-L+1}
-Following the traditional filter identification approach~\cite{moulines1995subspace}, we need to embed the one-dimensional signals $z_n^k$ into a matrix of delayed signals $Z_n^{k} \in \bbR^{T \times L}$, where $ (Z_n^{k})_{i,j} = z_{n,i + j - L + 1}^k$ if $ L - 1 \le i+j < T$ and $0$ elsewhere. Equation~\eqref{eq:problem_definition} then becomes:
+Following the traditional filter identification approach~\citep{moulines1995subspace}, we need to embed the one-dimensional signals $z_n^k$ into a matrix of delayed signals $Z_n^{k} \in \bbR^{T \times L}$, where $ (Z_n^{k})_{i,j} = z_{n,i + j - L + 1}^k$ if $ L - 1 \le i+j < T$ and $0$ elsewhere. Equation~\eqref{eq:problem_definition} then becomes:
 %
 \begin{align}
 & \min_{d} \sum_{n=1}^{N} \|\sqrt{w_n} \odot (x_{n} - \sum_{k=1}^{K}Z_{n}^{k}d^{k})\|_{2}^{2}, \quad \text{  s.t.  } \|d^k\|_2^2 \leq 1 \enspace.
 \label{eq:problem_definition_d}
 \end{align}
 %
-Due to the constraint, we must resort to an iterative approach. The options are to use (accelerated) projected gradient methods such as FISTA~\cite{beck2009fast} applied to~\eqref{eq:problem_definition_d}, or to solve a dual problem as done in~\cite{Grosse-etal:2007}. The dual is also a smooth constraint problem yet with a simpler positivity box constraint (\textit{cf.} supplementary material). The dual can therefore be optimized with L-BFGS-B. Using such a quasi-Newton solver turned out to be more efficient than any accelerated first order method in either the primal or the dual (\textit{cf.} benchmarks in supplementary material).
+Due to the constraint, we must resort to an iterative approach. The options are to use (accelerated) projected gradient methods such as FISTA~\citep{beck2009fast} applied to~\eqref{eq:problem_definition_d}, or to solve a dual problem as done in~\cite{Grosse-etal:2007}. The dual is also a smooth constraint problem yet with a simpler positivity box constraint (\textit{cf.} supplementary material). The dual can therefore be optimized with L-BFGS-B. Using such a quasi-Newton solver turned out to be more efficient than any accelerated first order method in either the primal or the dual (\textit{cf.} benchmarks in supplementary material).
 % As in existing literature\cite{}, we first attempted to solve this problem by transforming Equation~\ref{eq:problem_definition} into the frequency domain using a Fourier transform so as to change the convolution into an elementwise multiplication. In fact, this can greatly speed up the computation, but for one crucial fact: truncating the higher order coefficients in the inverse Fourier transform of the estimated atom can make the objective function non-monotonic in the presence of noise. It turns out that the correct approach involves a constraint on the support of the atoms which does not offer similar computational benefits (as will be seen in our Results section).
 %
 

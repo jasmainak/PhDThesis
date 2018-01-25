@@ -1,9 +1,7 @@
-\chapter{Convolutional Sparse Coding}
+\chapter{Temporal representation learning}
 \label{chapter:alphacsc}
 
 \epigraph{\small\itshape \hspace{100pt} ``Sparse is better than dense.''}{\small\textit{---The Zen of Python}}
-
-% (Sparse is better than dense. -- zen of python)
 
 %!TEX root = ../nips_2017.tex
 
@@ -23,12 +21,12 @@ or invasive such as \ac{ECoG} and \acp{LFP}, are fundamental to modern experimen
 % \utodo{Does everybody know what this is?}
 and the classical P300 event related potential, a biomarker for surprise. 
 %
-These prototypical waveforms are considered critical in clinical and cognitive research~\cite{cole2017brain}, thereby motivating the development of computational tools for learning such signals from data.
+These prototypical waveforms are considered critical in clinical and cognitive research~\citep{cole2017brain}, thereby motivating the development of computational tools for learning such signals from data.
 %\mjtodo{Stylistic remark: This is the same as first sentence in abstract.}
 
 
-Despite the underlying complexity in the morphology of neural signals, the majority of the computational tools in the community are based on representing the signals with rather simple, predefined bases, such as the Fourier or wavelet bases~\cite{cohen2014analyzing}.
-While such bases lead to computationally efficient algorithms, they often fall short at capturing the precise morphology of signal waveforms, as demonstrated by a number of recent studies~\cite{jones2016brain,mazaheri2008asymmetric}. An example of such a failure is the disambiguation of the alpha rhythm from the mu rhythm~\cite{hari2017meg}, both of which have a component around $10$\,Hz but with different morphologies that cannot be captured by Fourier- or wavelet-based representations.
+Despite the underlying complexity in the morphology of neural signals, the majority of the computational tools in the community are based on representing the signals with rather simple, predefined bases, such as the Fourier or wavelet bases~\citep{cohen2014analyzing}.
+While such bases lead to computationally efficient algorithms, they often fall short at capturing the precise morphology of signal waveforms, as demonstrated by a number of recent studies~\citep{jones2016brain,mazaheri2008asymmetric}. An example of such a failure is the disambiguation of the alpha rhythm from the mu rhythm~\citep{hari2017meg}, both of which have a component around $10$\,Hz but with different morphologies that cannot be captured by Fourier- or wavelet-based representations.
 
 % with logarithmic complexities --> logarithmic in what?
 
@@ -40,7 +38,7 @@ While such bases lead to computationally efficient algorithms, they often fall s
 %~\cite{durka2005multichannel,jost2006motif,sieluzyckiamultivariate,benar2009consensus,barthelemy2013multivariate}
 % These observations is what has spurred the recent 
 
-Recently, there have been several attempts for extracting more realistic and precise morphologies directly from unfiltered electrophysiology signals, via dictionary learning approaches \cite{jost2006motif,brockmeier2016learning,hitziger2017adaptive,gips2017discovering}.
+Recently, there have been several attempts for extracting more realistic and precise morphologies directly from unfiltered electrophysiology signals, via dictionary learning approaches \citep{jost2006motif,brockmeier2016learning,hitziger2017adaptive,gips2017discovering}.
 %
 These methods all aim to extract certain \emph{shift-invariant} prototypical waveforms (called `atoms' in this context) to better capture the temporal structure of the signals.
 %
@@ -57,7 +55,7 @@ As opposed to using generic bases that have predefined shapes, such as the Fouri
 
 In this line of research, \citet{jost2006motif} proposed the MoTIF algorithm, which uses an iterative strategy based on generalized eigenvalue decompositions, where the atoms are assumed to be orthogonal to each other and learnt one by one in a greedy way.
 %
-More recently, the `sliding window matching' (SWM) algorithm \cite{gips2017discovering} was proposed for learning time-varying atoms by using a correlation-based approach that aims to identify the recurring patterns. Even though some success has been reported with these algorithms,
+More recently, the `sliding window matching' (SWM) algorithm \citep{gips2017discovering} was proposed for learning time-varying atoms by using a correlation-based approach that aims to identify the recurring patterns. Even though some success has been reported with these algorithms,
 they have several limitations: SWM uses a slow stochastic search inspired by simulated annealing and MoTIF poorly handles correlated atoms, simultaneously activated, or having varying amplitudes; some cases which often occur in practical applications.
 % On the other hand,
 % %
@@ -73,8 +71,8 @@ they have several limitations: SWM uses a slow stochastic search inspired by sim
 
 A natural way to cast the problem of learning a dictionary of shift-invariant atoms into an optimization problem is a \ac{CSC} approach~\cite{Grosse-etal:2007}. 
 % The idea is to replace the matrix factorization of dictionary learning by a convolution operator~\cite{sejnowski1999coding} while keeping an $\ell_1$ or $\ell_0$ regularization to promote sparsity. 
-This approach has gained popularity in computer vision~\cite{heide2015fast,wohlberg2016efficient,zeiler2010deconvolutional, vsorel2016fast,kavukcuoglu2010learning}%
-, biomedical imaging~\cite{pachitariu2013extracting} and audio signal processing~\cite{Grosse-etal:2007,mailhe2008shift},
+This approach has gained popularity in computer vision~\citep{heide2015fast,wohlberg2016efficient,zeiler2010deconvolutional, vsorel2016fast,kavukcuoglu2010learning}%
+, biomedical imaging~\cite{pachitariu2013extracting} and audio signal processing~\citep{Grosse-etal:2007,mailhe2008shift},
 due to its ability to obtain compact representations of the signals and to incorporate the temporal structure of the signals via convolution.
 %\mainak{Additionally, it comes with known theoretical guarantees~\cite{papyan2016working1,papyan2016working2}.
 In the neuroscience context, \citet{barthelemy2013multivariate} used an extension of the K-SVD algorithm using convolutions on EEG data. 
