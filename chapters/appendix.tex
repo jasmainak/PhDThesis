@@ -9,7 +9,7 @@ Here, we present additional material that may answer some questions that the rea
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/figure4_supp.pdf}
-    \caption{Scatter plots for the results with the HCP data. This figure uses the same data as in Figure~\ref{fig:hcp_scatter} from the main text, but with  $\|\cdot\|_2$ norm instead of the $\|\cdot\|_\infty$ norm for computing the difference between the HCP ground truth and the method. As before, each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
+    \caption[Scatter plots for the results with the HCP data with $l2$ norm instead of $l_\infty$ norm]{Scatter plots for the results with the HCP data. This figure uses the same data as in Figure~\ref{fig:hcp_scatter} from the main text, but with  $\|\cdot\|_2$ norm instead of the $\|\cdot\|_\infty$ norm for computing the difference between the HCP ground truth and the method. As before, each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
     \label{fig:l2_norm}
 \end{figure}
 
@@ -159,7 +159,7 @@ Solving atoms $d$ (sequential) & $LKTN + qL^2K$ \\
 \hline
 \end{tabular}
 \vspace{5pt}
-\caption{Complexity analysis of the M-step, where $p$ and $q$ are the number of iterations in the L-BFGS-B solvers for the activations and atoms updates.}
+\caption[Complexity analysis of the M-step.]{Complexity analysis of the M-step, where $p$ and $q$ are the number of iterations in the L-BFGS-B solvers for the activations and atoms updates.}
 \label{table:complexity_m}
 \end{center}
 \end{table}
@@ -177,7 +177,7 @@ Solving atoms $d$ (sequential) & $LKTN + qL^2K$ \\
      \subfigure[$K=10$, $L=32$.]{
      \includegraphics[width=0.31\textwidth]{figures/relative_10_32.pdf}}
     \vspace{-5pt}
-    \caption{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
+    \caption[Convergence speed of the relative objective function.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
     \label{fig:convergence_setups}
 \end{figure}
 
@@ -196,7 +196,7 @@ Next, in Fig.~\ref{fig:convergence_traditional}, we show more traditional conver
      \subfigure[$K=10$, $L=32$.]{
      \includegraphics[width=0.31\textwidth]{figures/plateau_10_32.pdf}}
     \vspace{-5pt}
-    \caption{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
+    \caption[Convergence of the objective function as a function of time.]{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
     \label{fig:convergence_traditional}
 \end{figure}
 
@@ -213,7 +213,7 @@ Finally, we compare convergence plots of our algorithm using different solvers f
      \subfigure[$K=10$, $L=32$.]{
      \includegraphics[width=0.31\textwidth]{figures/fista_10_32.pdf}}
     \vspace{-5pt}
-    \caption{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
+    \caption[Comparison of solvers for the activations subproblem.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
     \label{fig:convergence_z_update}
 \end{figure}
 
