@@ -3,6 +3,16 @@
 
 \epigraph{\small\itshape \hspace{100pt} ``Sparse is better than dense.''}{\small\textit{---The Zen of Python}}
 
+Representations are the building blocks of signal processing. It is quite easy to convince ourselves of this fact, if we simply consider the example of low-pass filtering. When we low-pass filter the data, we are in effect, decomposing it into a sum of sinusoids of varying frequency, and then suppressing the high-frequency components. If on the other hand, we are interested in a time-frequency analysis, the choice of representation would be Morlet wavelets rather than sinusoids.
+
+Traditionally, the choice of representation has been mainly driven by analytical concern and easy of mathematical manipulation. However, the recent surge of deep learning has ignited an interest in data-driven representations. It is because good representations or features that compactly capture the properties of the data, are essential for efficient and accurate learning systems. In computer vision, for instance, handcrafted features such as GIST [ref], Deformable Parts Model (DPM) [ref], Histogram of Oriented Gradients [ref] \emph{etc} had been the norm, before it was realized that unsupervised learning and autoencoders performed much better.
+
+Today, unsupervised learning is used as a first step for a supervised learning task in computer vision. Representation learning, by itself, is perhaps not as interesting, except for diagnostic purposes [ref]. Despite this, there has always an interest in understanding representations in the human brain (visual system particularly), as it was thought that this would help us build better learning systems. The earliest pioneer in this area of research is Bruno Olhausen [ref, check spelling], whose work on dictionary learning demonstrated that Gabor patches are indeed fundamental to natural images, similar to the ones that Hubel and Wiesel [ref, spelling] found in the cat visual cortex, and what is used in GIST features.
+
+Dictionary learning has grown as a field, from learning either the dictionary, or the coefficients, to now learning both the dictionary and the coefficients. It is being used for denoising [ref], inpainting [ref], and classification [ref]. Even then, the utility of extracting \emph{meaningful} representations has been somewhat limited. The representation itself did not matter as long as the classification or reconstruction error was low. However, this is exactly the case, when it comes to neural signals. Here, the fidelity of the learned representation is important as the shape is crucial in many clinical applications [ref].
+
+A parallel development in the field of neuroimaging has been the rise in interest for learning prototypical shapes which are shift invariant. The models proposed so far had fallen short in terms of handling the noise aspect, and also made many simplifying assumptions, which would turn out to be insufficient, if we were interested in mining such representations from the data at a large scale.
+
 %!TEX root = ../nips_2017.tex
 
 \noindent\fcolorbox{white}{lightgray}{%
