@@ -38,7 +38,7 @@ The development of these standards is going to enable building large databases o
 
 \subsection{BIDS}
 
-The BIDS-MEG fields and data organization were defined, bearing in mind best-practice guidelines for conducting MEG research11. The initiative fostered contributions from multiple MEG experts, with a face-to-face discussion at the 2016 International Conference on Biomagnetism, where the first incarnation of BIDS-MEG was introduced12. The first set of feedback comments and the minutes from further group discussions are publically available
+The BIDS-MEG fields and data organization were defined, bearing in mind best-practice guidelines for conducting MEG research~\citep{gross2013good}. The initiative fostered contributions from multiple MEG experts, with a face-to-face discussion at the 2016 International Conference on Biomagnetism, where the first incarnation of BIDS-MEG was introduced12. The first set of feedback comments and the minutes from further group discussions are publically available
 (\url{https://groups.google.com/d/msg/bids-discussion/xTHBsGhu0hk/MN25xbxRBwAJ}).
 
 A first version of the present manuscript was shared via the preprint server bioRxiv, from where more comments stemming from the community were collected and considered for improvement of BIDS-MEG. A poll survey to probe the interest of the concerned community was also conducted (see main results on Figure 1).
@@ -54,13 +54,20 @@ There is no common, open or standard file format in MEG, equivalent to DICOM or 
 
 For a given investigator or research group, BIDS-MEG describes a hierarchical structure that descends from a ‘Study’ folder. Multiple ‘Subject’ subfolders contain the data from the participants enrolled. They are arranged by ‘Session’, each session subfolder containing ‘Run’ folders and eventually, data and metadata files. 
 
-The ‘Run’ folder includes a variety of files: MEG recording files in native format, a sidecar JSON document (\code{*\_meg.json}), a channel description table (\code{*\_channel.tsv}), and other general BIDS files, such as task events tables (\code{*\_events.tsv}) that are likely to be specific of each run. ‘Session’ specific files include the coordinates of anatomical landmarks and head-localization coils stored in a JSON document (\code{*\_fid.json}), optional photographs of the anatomical landmarks and/or head localization coils  (\code{*\_photo.jpg}), fiducials information (\code{*\_fidinfo.txt}), 3-D scalp digitalization files (*\_headshape.<manufacturer\_specific\_format>) and acquisition times (scans.tsv). The ‘Subject’ and ‘Study’ specific files are inherited directly from the general BIDS specifications (e.g., participants.tsv). Note that in case of conflict between fields of different runs/sessions, it the inheritance principle should be applied: the description file closer to the data prevails (see Section ‘3.5 The Inheritance Principle’ of the BIDS specifications1.
+The ‘Run’ folder includes a variety of files: MEG recording files in native format, a sidecar JSON document (\code{*\_meg.json}), a channel description table (\code{*\_channel.tsv}), and other general BIDS files, such as task events tables (\code{*\_events.tsv}) that are likely to be specific of each run. ‘Session’ specific files include the coordinates of anatomical landmarks and head-localization coils stored in a JSON document (\code{*\_fid.json}), optional photographs of the anatomical landmarks and/or head localization coils  (\code{*\_photo.jpg}), fiducials information (\code{*\_fidinfo.txt}), 3-D scalp digitalization files (*\_headshape.<manufacturer\_specific\_format>) and acquisition times (\code{scans.tsv}). The ‘Subject’ and ‘Study’ specific files are inherited directly from the general BIDS specifications (e.g., participants.tsv). Note that in case of conflict between fields of different runs/sessions, it the inheritance principle should be applied: the description file closer to the data prevails (see Section ‘3.5 The Inheritance Principle’ of the BIDS specifications1.
 
 One issue that required special attention was the multiplicity of coordinate systems and units between MEG systems. To impose a unique coordinate system for BIDS based on the subjects’ brain anatomy (e.g., MNI coordinates or equivalent) was an appealing solution, which however would lack generalizability in the MEG practice. MEG data can be collected without anatomical information, such as empty-room noise recordings, which are important to optimal source modeling6. BIDS-MEG therefore associates all recordings with a coordinate file defined according to the MEG system used. Again, BIDS-MEG compatible software can read and interpret this information properly.
 
 Akin to MRI, we anticipate that the systematic data organization enabled by BIDS-MEG will be supported by an increasing number of neuroimaging tools, and that more shared data repositories will be organized accordingly. The straightforward design of BIDS-MEG makes it an interoperable common exchange format for transferring data between investigators and community repositories e.g., OMEGA4 and OpenfMRI14,15. It also facilitates multimodal integration (between MRI, fMRI, MEG, etc), as the data from multiple modalities follow the same organization scheme.
 
-[figure for standard hierarchy]
+
+\begin{figure}[htb]
+\begin{center}
+   \includegraphics[width=0.95\linewidth]{figures/MEG-BIDS.png}
+\end{center}
+   \caption{ A) BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folder are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all level the data hierarchy, and document conveniently the metadata contents. B) BIDS-MEG general overview}
+   \label{fig:clock_standards}
+\end{figure}
 
 \noindent\fcolorbox{white}{lightgray}{%
 \begin{minipage}{\dimexpr\textwidth-2\fboxrule-2\fboxsep\relax}
