@@ -54,6 +54,7 @@ Starting from MNE version 0.14, we show channel-wise PSD plots rather than an av
 \emph{Alternatives} The same could have been achieved with the multitaper method~\citep{percival1993spectral, slepian1978prolate}, where the data is multiplied element-wise by orthogonal data tapers. However, this method can be an order of magnitude slower than the Welch method for long continuous recordings. The multitaper method is indeed recommended for short data segments. Here we are interested in the PSD for diagnostic purposes on the raw continuous data, and we therefore use the Welch method, a.k.a. averaged periodogram method.
 
 \subsection{Temporal filtering}
+\label{sec:group_study_temporal_filtering}
 
 In this study, we focused on event-related brain signals below 40\,Hz. We low-pass filtered our data at a 40\,Hz cutoff frequency with 10 Hz transition band. Such a filter does not affect \ac{ERP} signals of interest, attenuates the line frequency of 50\,Hz and all HPI coil frequencies. It also limits the effects of temporal ringing thanks to a wide transition band. Because the low-pass was sufficiently low, we did not employ a notch filter separately. Note that such a choice of filters is not necessarily a good default for all studies of event-related brain responses, as ERFs or ERPs can contain rather high frequencies (see for example \citep{gotz-etal:15}).
 
