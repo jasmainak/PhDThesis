@@ -2,9 +2,8 @@
 An important step in analyzing data at single-subject and group levels is sensor-space analysis. Here we show how several different techniques can be employed to understand the data.
 
 \begin{figure}[t]
-  \includegraphics{figures/grand_average_highpass-NoneHz.pdf}
-  \includegraphics{figures/grand_average_highpass-1Hz.pdf}
-  \vspace{-10pt}
+  \includegraphics[width=0.49\linewidth]{figures/grand_average_highpass-NoneHz.pdf}
+  \includegraphics[width=0.49\linewidth]{figures/grand_average_highpass-1Hz.pdf}
 \caption[Grand averaged evoked response across 16 subjects.]{Grand averaged evoked response across 16 subjects for channel EEG065.
 (A) No highpass filter. (B) Highpass filtered at 1.0 Hz. Note that, similar to (A), the results reported by \cite{wakeman2015multi} (dashed line at 800 ms indicates where their plot stopped) show large drifts, but these return to near-baseline levels toward the end of a sufficiently long interval (here, 2.9 seconds) even without applying a highpass filter.}
 \label{fig:grand_average}
@@ -28,8 +27,8 @@ Two conditions of interest are often compared using a statistical contrast. A pa
 
 \begin{figure}
 \centering
-    \includegraphics{figures/sensorstat_highpass-NoneHz.pdf}
-    \includegraphics{figures/time_decoding_highpass-NoneHz.pdf}
+    \includegraphics[width=0.49\linewidth]{figures/sensorstat_highpass-NoneHz.pdf}
+    \includegraphics[width=0.49\linewidth]{figures/time_decoding_highpass-NoneHz.pdf}
     \caption[Sensor space statistics.]{Sensor space statistics. (A) A single sensor (EEG065) with temporal clustering statistics. The clustering is based on selecting consecutive time samples that have exceeded the initial paired t-test threshold (0.001), and finding clusters that exceed the size expected by chance according to exchangability under the null hypothesis ($p < 0.01$, shaded areas). (C) Cross-validation score of time-by-time decoding. As opposed to a cluster statistic, time decoding is a multivariate method which pools together the signal from different sensors to find discriminative time points between two conditions.}
 \label{fig:fig_sensorstat}
 \end{figure}
@@ -40,7 +39,7 @@ Running this nonparametric permutation test on the single sensor EEG065 (also us
 
 \begin{figure}
 \centering
-\includegraphics{figures/spatiotemporal_stats_cluster_highpass-NoneHz-00.pdf}
+\includegraphics[width=\linewidth]{figures/spatiotemporal_stats_cluster_highpass-NoneHz-00.pdf}
 \caption[Spatiotemporal cluster statistics on EEG sensors.]{Spatiotemporal cluster statistics on the EEG sensors. (A) Topographic map of the t-statistic. (B) Average over the sensors that were part of the significant cluster.}
 \label{fig:stclusterstats}
 \end{figure}
