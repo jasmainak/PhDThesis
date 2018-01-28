@@ -49,9 +49,9 @@ The development of these standards is going to enable building large databases o
 
 \begin{figure}[htb]
 \begin{center}
-   \includegraphics[width=0.1\linewidth]{figures/MEG-BIDS.png}
+   \includegraphics[width=0.5\linewidth]{figures/MEG-BIDS.png}
 \end{center}
-   \caption{ A) BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folder are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all level the data hierarchy, and document conveniently the metadata contents. B) BIDS-MEG general overview}
+   \caption[BIDS-MEG data organization scheme.]{ A) BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folder are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all level the data hierarchy, and document conveniently the metadata contents. B) BIDS-MEG general overview}
    \label{fig:BIDS-MEG}
 \end{figure}
 
@@ -75,7 +75,7 @@ The ‘Run’ folder includes a variety of files: MEG recording files in native 
 
 One issue that required special attention was the multiplicity of coordinate systems and units between MEG systems. To impose a unique coordinate system for BIDS based on the subjects’ brain anatomy (e.g., MNI coordinates or equivalent) was an appealing solution, which however would lack generalizability in the MEG practice. MEG data can be collected without anatomical information, such as empty-room noise recordings, which are important to optimal source modeling~\citep{gross-etal:13}. BIDS-MEG therefore associates all recordings with a coordinate file defined according to the MEG system used. Again, BIDS-MEG compatible software can read and interpret this information properly.
 
-Akin to MRI, we anticipate that the systematic data organization enabled by BIDS-MEG will be supported by an increasing number of neuroimaging tools, and that more shared data repositories will be organized accordingly. The straightforward design of BIDS-MEG makes it an interoperable common exchange format for transferring data between investigators and community repositories e.g., OMEGA~\citep{niso2016omega} and OpenfMRI~\citep{poldrack2017openfmri},15. It also facilitates multimodal integration (between MRI, fMRI, MEG, etc), as the data from multiple modalities follow the same organization scheme.
+Akin to MRI, we anticipate that the systematic data organization enabled by BIDS-MEG will be supported by an increasing number of neuroimaging tools, and that more shared data repositories will be organized accordingly. The straightforward design of BIDS-MEG makes it an interoperable common exchange format for transferring data between investigators and community repositories e.g., OMEGA~\citep{niso2016omega} and OpenfMRI~\citep{poldrack2017openfmri}. It also facilitates multimodal integration (between MRI, fMRI, MEG, etc), as the data from multiple modalities follow the same organization scheme.
 
 \noindent\fcolorbox{white}{lightgray}{%
 \begin{minipage}{\dimexpr\textwidth-2\fboxrule-2\fboxsep\relax}
