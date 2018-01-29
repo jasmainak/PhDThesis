@@ -3,6 +3,21 @@
 
 \epigraph{\small\itshape \hspace{100pt} ``Sparse is better than dense.''}{\small\textit{---The Zen of Python}}
 
+\begin{figure}[ht!]
+\centering
+\begingroup
+\etocstandardlines
+%\renewcommand{\etocbkgcolorcmd}{\color{lightgray}}
+\renewcommand{\etocbelowtocskip}{0pt\relax}
+\fboxsep1ex
+\etocframedstyle [1]{\fbox{\makebox[.4\linewidth]{\etocfontminusone
+Contents}}}
+\localtableofcontents
+\endgroup
+\end{figure}
+
+% \etocruledstyle[1]{Contents} \localtableofcontents
+
 Representations are the building blocks of signal processing. It is quite easy to convince ourselves of this fact, if we simply consider the example of low-pass filtering. When we low-pass filter the data, we are in effect, decomposing it into a sum of sinusoids of varying frequency, and then suppressing the high-frequency components. If on the other hand, we are interested in a time-frequency analysis, the choice of representation would be Morlet wavelets rather than sinusoids.
 
 Traditionally, the choice of representation has been mainly driven by analytical concern and ease of mathematical manipulation. However, the recent surge of deep learning has ignited an interest in data-driven representations. It is because good representations or features that compactly capture the properties of the data, are essential for efficient and accurate learning systems. In computer vision, for instance, handcrafted features such as SIFT~\citep{lowe1999object} and GIST descriptors~\citep{oliva2001modeling}, Deformable Parts Model (DPM)~\citep{felzenszwalb2010object}, Histogram of Oriented Gradient (HOG)~\citep{dalal2005histograms} \emph{etc.} had been the norm, before it was realized that unsupervised learning and autoencoders performed much better.
@@ -36,7 +51,9 @@ A parallel development in the field of neuroimaging has been the rise in interes
 \end{itemize}
 \end{minipage}}%
 
-\section{Learning the morphology of neural signals using alpha-stable convolutional sparse coding}
+\clearpage
+
+\section{Introduction}
 \label{sec:alphacsc_intro}
 Neural time series data, either non-invasive such as \ac{EEG} 
 % \utodo{we shouldn't use abbreviations if they won't be used later in the text.}
