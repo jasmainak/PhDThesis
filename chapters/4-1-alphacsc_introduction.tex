@@ -18,6 +18,8 @@ Contents}}}
 
 % \etocruledstyle[1]{Contents} \localtableofcontents
 
+\section{Background}
+
 Representations are the building blocks of signal processing. It is quite easy to convince ourselves of this fact, if we simply consider the example of low-pass filtering. When we low-pass filter the data, we are in effect, decomposing it into a sum of sinusoids of varying frequency, and then suppressing the high-frequency components. If on the other hand, we are interested in a time-frequency analysis, the choice of representation would be Morlet wavelets rather than sinusoids.
 
 Traditionally, the choice of representation has been mainly driven by analytical concern and ease of mathematical manipulation. However, the recent surge of deep learning has ignited an interest in data-driven representations. It is because good representations or features that compactly capture the properties of the data, are essential for efficient and accurate learning systems. In computer vision, for instance, handcrafted features such as SIFT~\citep{lowe1999object} and GIST descriptors~\citep{oliva2001modeling}, Deformable Parts Model (DPM)~\citep{felzenszwalb2010object}, Histogram of Oriented Gradient (HOG)~\citep{dalal2005histograms} \emph{etc.} had been the norm, before it was realized that unsupervised learning and autoencoders performed much better.
@@ -26,7 +28,7 @@ Today, unsupervised learning is used as a first step for a supervised learning t
 
 Barring this finding, the representation itself is usually not as meaningful as the prediction score or reconstruction loss. However, we realized that, in the case of neural signals, this is not the case and the fidelity of the representation is in itself interesting as the shape is crucial in many clinical applications~\citep{cole2017brain}. Before approaching this problem, we will give a brief overview of dictionary learning, its evolution into shift-invariant sparse coding, and parallel attempts in the neuroscience community.
 
-\section{Dictionary learning}
+\subsection{Dictionary learning}
 
 A dictionary is a set of atoms (also known as filters) which can be combined with certain coefficients to approximate the data. As such, there is no requirement of orthogonality on the atoms. To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse. Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients. This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
 
