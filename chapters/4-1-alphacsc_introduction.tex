@@ -17,7 +17,7 @@ Contents}}}
 \end{figure}
 
 % \etocruledstyle[1]{Contents} \localtableofcontents
-
+\clearpage
 \section{Background}
 
 Representations are the building blocks of signal processing. It is quite easy to convince ourselves of this fact, if we simply consider the example of low-pass filtering. When we low-pass filter the data, we are in effect, decomposing it into a sum of sinusoids of varying frequency, and then suppressing the high-frequency components. If on the other hand, we are interested in a time-frequency analysis, the choice of representation would be Morlet wavelets rather than sinusoids.
@@ -43,7 +43,7 @@ Even so, most work so far in this space has proposed new methods, and not much t
 
 A parallel development in the field of neuroimaging has been the rise in interest for learning prototypical shapes which are shift invariant~\citep{jost2006motif, barthelemy2013multivariate, brockmeier2016learning, hitziger2017adaptive}. It is motivated by the fact that existing approximations using the Fourier basis often distorts the signal. There is, for example, a debate regarding the type of filters that should be used (See Section~\ref{sec:group_study_temporal_filtering} and \cite{widmann2015digital,parks1987digital,ifeachor2002digital, gotz-etal:15}). However, there has been so far very little cross-pollination of ideas between the sparse coding and neuroimaging communities. Our work is an attempt to bridge this gap. We propose a model which builds upon existing shift-invariant sparse coding models to be able to handle heavy-tailed noise. It assumes positivity of the coefficients to account for the fact that an atom does not change polarity over time. The upcoming sections describe how this could be achieved.
 
-\section{Solvers}
+\subsection{Solvers}
 
 %!TEX root = ../nips_2017.tex
 

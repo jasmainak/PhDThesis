@@ -21,11 +21,51 @@ Contents}}}
 %copy pasted abstract below
 We present an automated algorithm for unified rejection and repair of bad trials in magnetoencephalography (MEG) and electroencephalography (EEG) signals. Our method capitalizes on cross-validation in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold - a quantity commonly used for identifying bad trials in M/EEG. This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. All steps of the algorithm are fully automated thus lending itself to the name Autoreject. In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing MEG and EEG recordings from more than 200 subjects. The comparisons include purely qualitative efforts as well as quantitatively benchmarking against human supervised and semi-automated preprocessing pipelines. The algorithm allowed us to automate the preprocessing of MEG data from the Human Connectome Project (HCP) going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
 
+Here, I will briefly introduce some of the tools that we will use for our work in Section~\ref{sec:introduction} to Section~\ref{sec:autoreject_conclusion}.
+
 \subsection{Norms}
-[explain l1 vs l-inf norm vs frobenius]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+
+\begin{definition}{($\ell_2$ norm.)}
+The $\ell_2$ norm of a vector $x$ is defined by:
+\begin{equation}
+\|x\|_2 = \sqrt{\sum_n \ \lvert x_n \rvert^2}
+\end{equation}
+\end{definition}
+%
+\begin{definition}{($\ell_\infty$ norm.)}
+The $\ell_\infty$ norm of a vector $x$ is defined by:
+\begin{equation}
+\|x\|_{\infty} = \sup_n \ \lvert x_n \rvert
+\end{equation}
+\end{definition}
+As we are taking the supremum, this norm is sensitive to large values in the vector.
+%
+\begin{definition}{(Frobenius norm.)}
+The $\ell_\infty$ norm of a real-valued matrix $A$ is defined by:
+\begin{equation}
+\|A\|_{\mathrm{Fro}} = \| \mathrm{vec}(A) \|_2 = \sqrt{\mathrm{trace}(AA^\top)}
+\end{equation}
+%
+The Frobenius norm is a matrix norm that is simply the $\ell_2$ vector norm of the vectorized matrix $\mathrm{vec}(A)$.
+
+\end{definition}
+
 \subsection{Cross validation}
-[explain stratified and different types of cross val]
+
+Cross validation is a statistical technique to estimate how well a predictive model will \emph{generalize} to unseen data. This is normally done by partitioning the data into two and learning the model from one part (typically the larger one) and validating it on the other. These two parts are known as the \emph{training} and the \emph{validation} sets respectively. In order to get reliable estimates of the model performance, this procedure is repeated multiple times and the results are averaged.
+
+Depending on the data, different types of partitioning schemes are preferred. In \emph{K-fold} cross validation, the data is divided into $K$ equal parts (with or without shuffling the samples), where $K - 1$ parts are used for training and the $K$th part is used for validation. In a \emph{stratified} cross-validation scheme, the partitions are done such that each partition has roughly equal number of samples from each class.
+
+\paragraph{Grid search: } When cross validation is used for selecting the best model by exhaustively searching over all possible parameters that the model can admit, it is known as grid search.
+
+\paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is the reason a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
+
 \subsection{Bayesian optimization}
+
+% \subsection{Interpolation schemes}
 
 \noindent\fcolorbox{white}{lightgray}{%
 \begin{minipage}{\dimexpr\textwidth-2\fboxrule-2\fboxsep\relax}
