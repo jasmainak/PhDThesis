@@ -208,9 +208,7 @@ where $=^+$ denotes equality up to additive constants, $\odot$ denotes the Hadam
 % \parfillskip=0pt
 % \parskip=0pt
 % \par}
-\begin{wrapfigure}{R}{0.52\textwidth}
-\vspace{-10pt}
-    \begin{minipage}{0.52\textwidth}
+
     \begin{algorithm}[H]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
       \REQUIRE Regularization: $\lambda \in \real_+$, Num. atoms: $K$, Atom length: $L$, Num. iterations: $I$ , $J$, $M$
@@ -233,9 +231,7 @@ where $=^+$ denotes equality up to additive constants, $\odot$ denotes the Hadam
         \caption{$\alpha$-stable Convolutional Sparse Coding}
         \label{alg:alpha_csc}
     \end{algorithm}
-\end{minipage}
-\vspace{-20pt}
-\end{wrapfigure}
+
 Unfortunately, the weights $w^{(i)}$ cannot be computed analytically, therefore we need to resort to
 approximate methods. In this study, we develop a Markov chain Monte Carlo (MCMC) method to approximately compute the weights, where we approximate the intractable expectations with a finite sample average, given as follows: $w_{n,t}^{(i)} \approx (1/{J}) \sum_{j=1}^{J} 1/{\phi_{n,t}^{(i,j)}}$, where $\phi_{n,t}^{(i,j)}$ are some samples that are ideally drawn from the posterior distribution $p(\phi|x,z^{(i)},d^{(i)})$. Unfortunately, directly drawing samples from the posterior distribution of $\phi$ is not tractable either, and therefore, we develop a \emph{Metropolis-Hastings} algorithm \citep{chib1995understanding}, that asymptotically generates samples from the \emph{target} distribution $p(\phi|\cdot)$ in two steps. In the $j$-th iteration of this algorithm, we first draw a random sample for each $n$ and $t$ from the prior distribution (cf.\ \eqref{eqn:sas_condgauss}), \textit{i.e.}, $\phi_{n,t}'\sim p(\phi_{n,t})$. We then compute an acceptance probability for each $\phi_{n,t}'$ that is defined as follows:
 %
