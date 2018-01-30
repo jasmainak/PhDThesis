@@ -24,7 +24,7 @@ We present an automated algorithm for unified rejection and repair of bad trials
 Here, I will briefly introduce some of the tools that we will use for our work in Section~\ref{sec:introduction} to Section~\ref{sec:autoreject_conclusion}.
 
 \subsection{Norms}
-
+We will be using different types of norms for measuring our cross-validation error.
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
 
@@ -44,7 +44,7 @@ The $\ell_\infty$ norm of a vector $x$ is defined by:
 As we are taking the supremum, this norm is sensitive to large values in the vector.
 %
 \begin{definition}{(Frobenius norm.)}
-The $\ell_\infty$ norm of a real-valued matrix $A$ is defined by:
+The Frobenius norm of a real-valued matrix $A$ is defined by:
 \begin{equation}
 \|A\|_{\mathrm{Fro}} = \| \mathrm{vec}(A) \|_2 = \sqrt{\mathrm{trace}(AA^\top)}
 \end{equation}
@@ -61,9 +61,17 @@ Depending on the data, different types of partitioning schemes are preferred. In
 
 \paragraph{Grid search: } When cross validation is used for selecting the best model by exhaustively searching over all possible parameters that the model can admit, it is known as grid search.
 
+\paragraph{Random search: } Sometimes grid search is too slow, and it is better to try parameters sampled randomly without a considerable loss in performance. This is known as random search.
+
 \paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is the reason a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
 
 \subsection{Bayesian optimization}
+
+Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
+
+Since this method works for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
+
+In order solve this dilemma, we use what is known as an \emph{acquisition function}. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon Gaussian Processes (GPs). Given the points evaluated until now, a GP can be used to estimate the uncertainty in the rest of the search space. 
 
 % \subsection{Interpolation schemes}
 
