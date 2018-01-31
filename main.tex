@@ -48,6 +48,7 @@
 \usepackage{etoc} % for local table of contents
 \usepackage{microtype} % for long words not exceeding page width
 \usepackage{amsthm} % for theorems / definitions
+\usepackage{acro} % for acronyms
 
 % for epigraphs
 \setlength{\epigraphwidth}{0.7\textwidth}
@@ -77,18 +78,35 @@
 \input{acronyms}
 
 % format header
+%\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{#1}}
+%\pagestyle{fancy}
+%\fancyhf{}
+%\fancyhead[LE,RO]{\thepage}
+%\fancyhead[LO]{\itshape\nouppercase{\rightmark}}
+%\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+%\renewcommand{\headrulewidth}{0pt}
+
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{#1}}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE,RO]{\thepage}
-\fancyhead[LO]{\itshape\nouppercase{\rightmark}}
-\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
 \renewcommand{\headrulewidth}{0pt}
+
+\fancypagestyle{frontmatter}{
+	\fancyhf{}
+	\fancyfoot[C]{\thepage}
+}
+
+\fancypagestyle{mainmatter}{
+	\fancyhf{}
+	\fancyhead[LE,RO]{\thepage}
+	\fancyhead[LO]{\itshape\nouppercase{\rightmark}}
+	\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+}
 
 %\input{chapters/coverpage.tex}
 \begin{document}
 
+\pagestyle{frontmatter}
 \pagenumbering{roman}
 
 \includepdf[]{build/coverpage}
@@ -103,20 +121,22 @@
 
 \input{chapters/dedication.tex}
 \input{chapters/acknowledgement.tex}
+\addcontentsline{toc}{chapter}{Acknowledgements}
 \input{chapters/abstract.tex}
 \addcontentsline{toc}{chapter}{Abstract}
+
 \tableofcontents
 \addcontentsline{toc}{chapter}{\listfigurename}
 \listoffigures
 \addcontentsline{toc}{chapter}{\listtablename}
 \listoftables
 \printacronyms[include-classes=abbrev,name=Abbreviations, heading=chapter*]
+\addcontentsline{toc}{chapter}{Abbreviations}
 
 % for local table of contents
 %\etocsettocstyle{\bigskip\hrule\medskip}{\medskip\hrule\vfill}
 
-\pagenumbering{arabic}
-
+\clearpage
 % Group study
 \input{chapters/1-introduction.tex}
 

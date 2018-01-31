@@ -5,12 +5,12 @@
 % \paragraph{The M-Step:}
 % \label{sec:solve_activation}
 \textbf{The M-Step:} 
-Given the weights $w_n$ that are estimated during the E-step, the objective of the M-step~\eqref{eq:mstep} is to solve a weighted CSC problem, which is much easier when compared to our original problem. 
+Given the weights $w_n$ that are estimated during the E-step, the objective of the M-step~\eqref{eq:mstep} is to solve a weighted \ac{CSC} problem, which is much easier when compared to our original problem. 
 %
 This objective function is not jointly convex in $d$ and $z$, yet it is convex if one fix
 either $d$ or $z$.
 % Due to non-convexity, we can only guarantee convergence to a local optimum. 
-Here, similarly to the vanilla CSC approaches~\citep{gips2017discovering,Grosse-etal:2007}, we develop a \emph{block coordinate descent} strategy, where we solve the problem in~\eqref{eq:mstep} for either $d$ or $z$, by keeping respectively $z$ and $d$ fixed.
+Here, similarly to the vanilla \ac{CSC} approaches~\citep{gips2017discovering,Grosse-etal:2007}, we develop a \emph{block coordinate descent} strategy, where we solve the problem in~\eqref{eq:mstep} for either $d$ or $z$, by keeping respectively $z$ and $d$ fixed.
 %
 % Since the overall problem is non-convex, one can only aim for obtaining a local optimum. For obtaining a local minimum, several approaches have been proposed \umut{cite}. These methods are based on alternating minimization, where the problem is iteratively solved for either for the atoms while keeping the codes fixed, or vice versa. Both of the two subproblems are convex. \umut{Deficiencies of the algorithms. Algorithms can be made more efficient}
 %
@@ -49,7 +49,7 @@ Due to the constraint, we must resort to an iterative approach. The options are 
 
 
 
-Our entire EM approach can be summarized in the Algorithm~\ref{alg:alpha_csc}.
+Our entire \ac{EM} approach can be summarized in the Algorithm~\ref{alg:alpha_csc}.
 Note that during the alternating minimization, thanks to convexity we can warm start the $d$ update and the $z$ update using the solution from the previous update. This significantly speeds up the convergence of the L-BFGS-B algorithm, particularly in the later iterations of the overall algorithm.
 % \mjtodo{We don't talk about warm starting the iterations of EM anywhere. Maybe not very important ...}
 
@@ -68,7 +68,7 @@ where $\phi_{n,t}^{(j)}$ are some samples drawn from $\pi(\phi_{n,t}) \triangleq
 
 %  through a transition kernel;  $ \mathbf{\Theta}^{(i+1)} \sim {\cal T}(\mathbf{\Theta}|\mathbf{\Theta}^{(i)})$
 
-MCMC methods generate samples from the target distribution $\pi(\phi_{n,t})$ by forming a Markov chain, whose stationary distribution is $\pi(\phi_{n,t})$, 
+\ac{MCMC} methods generate samples from the target distribution $\pi(\phi_{n,t})$ by forming a Markov chain, whose stationary distribution is $\pi(\phi_{n,t})$, 
 %
 so that $\pi(\phi_{n,t}) = \int {\cal T}(\phi_{n,t}|\phi_{n,t}') p(\phi_{n,t}') d\phi_{n,t}'$, where ${\cal T}$ denotes the transition kernel of the Markov chain. 
 

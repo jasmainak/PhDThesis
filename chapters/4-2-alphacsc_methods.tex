@@ -86,10 +86,10 @@ where $\psi_\alpha(\omega) = \log |\omega| $ for $\alpha =1$, $\psi_\alpha(\omeg
 %
 As an important special case of the $\alpha$-stable distributions, we obtain the Gaussian distribution when $\alpha = 2$ and $\beta =0$, \textit{i.e.}\ ${\cal S}(2,0,\sigma,\mu) = {\cal N}(\mu,2 \sigma^2)$. 
 %
-In Fig.~\ref{fig:stable_pdf}, we illustrate the (approximately computed) probability density functions (PDF) of the $\alpha$-stable distribution for different values of $\alpha$ and $\beta$. The distribution becomes heavier-tailed as we decrease $\alpha$, whereas the tails vanish quickly when $\alpha=2$. 
+In Fig.~\ref{fig:stable_pdf}, we illustrate the (approximately computed) \acp{PDF} of the $\alpha$-stable distribution for different values of $\alpha$ and $\beta$. The distribution becomes heavier-tailed as we decrease $\alpha$, whereas the tails vanish quickly when $\alpha=2$. 
 
 
-The moments of the $\alpha$-stable distributions can only be defined up to the order $\alpha$, i.e. $\mathds{E}[|x|^p] < \infty $ if and only if $p <\alpha$, which implies the distribution has infinite variance when $\alpha<2$. Furthermore, despite the fact that the PDFs of $\alpha$-stable distributions do not admit an analytical form, it is straightforward to draw random samples from them~\citep{chambers1976method}.
+The moments of the $\alpha$-stable distributions can only be defined up to the order $\alpha$, i.e. $\mathds{E}[|x|^p] < \infty $ if and only if $p <\alpha$, which implies the distribution has infinite variance when $\alpha<2$. Furthermore, despite the fact that the \acp{PDF} of $\alpha$-stable distributions do not admit an analytical form, it is straightforward to draw random samples from them~\citep{chambers1976method}.
 
 
 
@@ -100,7 +100,7 @@ The moments of the $\alpha$-stable distributions can only be defined up to the o
 \subsection{The Model}
 
 
-From a probabilistic perspective, the CSC problem can be also formulated as a maximum a-posteriori (MAP) estimation problem on the following probabilistic generative model:
+From a probabilistic perspective, the \ac{CSC} problem can be also formulated as a \ac{MAP} estimation problem on the following probabilistic generative model:
 %
 \begin{align}
 z_{n,t}^k \sim {\cal E}(\lambda),
@@ -112,7 +112,7 @@ z_{n,t}^k \sim {\cal E}(\lambda),
 %
 Here, $z_{n,t}^k$ denotes the $t$th element of $z_{n}^k$. We use the same notations for $x_{n,t}$ and $\hat{x}_{n,t}$. It is easy to verify that the MAP estimate for this probabilistic model, \textit{i.e.}\ $\max_{d,z} \log p(d,z|x)$, is identical to the original optimization problem defined in~\eqref{eq:problem_definition}\footnote{Note that the positivity constraint on the activations is equivalent to an exponential prior for the regularization term rather than the more common Laplacian prior.}.
 
-It has been long known that, due to their light-tailed nature, Gaussian models often fail at handling noisy high amplitude observations or outliers~\citep{Huber81a}. As a result, the `vanilla' CSC model turns out to be highly sensitive to outliers and impulsive noise that frequently occur in electrophysiological recordings, as illustrated in Fig.~\ref{fig:artifacts}. Possible origins of such artifacts are movement, muscle contractions, ocular blinks or electrode contact losses.
+It has been long known that, due to their light-tailed nature, Gaussian models often fail at handling noisy high amplitude observations or outliers~\citep{Huber81a}. As a result, the `vanilla' \ac{CSC} model turns out to be highly sensitive to outliers and impulsive noise that frequently occur in electrophysiological recordings, as illustrated in Fig.~\ref{fig:artifacts}. Possible origins of such artifacts are movement, muscle contractions, ocular blinks or electrode contact losses.
  % \umut{Mention the figure from the LFP data.} % albeit it has been shown to be successful for audio processing and computer vision applications.
 
 
@@ -120,7 +120,7 @@ It has been long known that, due to their light-tailed nature, Gaussian models o
 
 % \cite{samoradnitsky1994stable}
 
-In this study, we aim at developing a probabilistic CSC model that would be capable of modeling challenging electrophysiological signals. We propose an extension of the original CSC model defined in~\eqref{eqn:csc_prob} by replacing the light-tailed Gaussian likelihood (corresponding to the $\ell_2$ reconstruction loss in~\eqref{eq:problem_definition}) with heavy-tailed $\alpha$-stable distributions. We define the proposed probabilistic model ($\alpha$CSC) as follows:
+In this study, we aim at developing a probabilistic \ac{CSC} model that would be capable of modeling challenging electrophysiological signals. We propose an extension of the original CSC model defined in~\eqref{eqn:csc_prob} by replacing the light-tailed Gaussian likelihood (corresponding to the $\ell_2$ reconstruction loss in~\eqref{eq:problem_definition}) with heavy-tailed $\alpha$-stable distributions. We define the proposed probabilistic model ($\alpha$CSC) as follows:
 \begin{align}
 z_{n,t}^k \sim {\cal E}( \lambda),  \quad
 x_{n,t} | z, d \sim {\cal S} (\alpha, 0, 1/\sqrt{2}, \hat{x}_{n,t} ) \enspace , \label{eqn:acsc_org}
@@ -129,7 +129,7 @@ where ${\cal S}$ denotes the $\alpha$-stable distribution.
 %
 %\footnote{\mainak{We remark here that even though mixture models could also be used to achive robustness, this would most likely be a worse choice compared to alpha stable distributions~\citep{swami2000non}.} \umut{I really don't think these explanations are necessary.}}. 
 %
-While still being able to capture the temporal structure of the observed signals via convolution, the proposed model has a richer structure and would allow large variations and outliers, thanks to the heavy-tailed $\alpha$-stable distributions. Note that the vanilla CSC defined in \eqref{eqn:csc_prob} appears as a special case of $\alpha$CSC, as the $\alpha$-stable distribution coincides with the Gaussian distribution when $\alpha=2$. 
+While still being able to capture the temporal structure of the observed signals via convolution, the proposed model has a richer structure and would allow large variations and outliers, thanks to the heavy-tailed $\alpha$-stable distributions. Note that the vanilla \ac{CSC} defined in \eqref{eqn:csc_prob} appears as a special case of $\alpha$CSC, as the $\alpha$-stable distribution coincides with the Gaussian distribution when $\alpha=2$. 
 
 
 % \mainak{We remark here that even though mixture models could also be used to achive robustness, this would most likely be a worse choice compared to alpha stable distributions~\citep{swami2000non}. Further, even though biconvex problems have theoretical guarantees\citep{agarwal2014learning, gorski2007biconvex}, we observe that in practice, the sampling route does not come with any additional disadvantage due to our multiple restart strategy.} 
@@ -149,7 +149,7 @@ Given the observed signals $x$, we are interested in the MAP estimates, defined 
 \begin{align}
 (d^\star,z^\star) = \argmax_{d,z}  \sum_{n,t} \Bigl( \log p(x_{n,t}|d,z) + \sum_k \log p(z_{n,t}^k)  \Bigr).
 \end{align}
-As opposed to the Gaussian case, unfortunately, this optimization problem is not amenable to classical optimization tools, since the PDF of the $\alpha$-stable distributions does not admit an analytical expression.  
+As opposed to the Gaussian case, unfortunately, this optimization problem is not amenable to classical optimization tools, since the \ac{PDF} of the $\alpha$-stable distributions does not admit an analytical expression.  
 %
 As a remedy, we use the product property of the symmetric $\alpha$-stable densities \citep{samorodnitsky1994stable,godsill1999bayesian} and re-express the $\alpha$CSC model as conditionally Gaussian. It leads to:
 \begin{align}
@@ -159,15 +159,15 @@ z_{n,t}^k \sim {\cal E}( \lambda),  \quad
 x_{n,t} | z, d, \phi \sim {\cal N}\Bigl(\hat{x}_{n,t},\frac{1}{2}\phi_{n,t} \Bigr) \enspace ,
 \label{eqn:sas_condgauss}
 \end{align}
-where $\phi$ is called the \emph{impulse} variable that is drawn from a \emph{positive} $\alpha$-stable distribution (i.e.\ $\beta =1$), whose PDF is illustrated in Fig.~\ref{fig:stable_pdf}. It can be shown that both formulations of the $\alpha$CSC model are identical by marginalizing the joint distribution $p(x,d,z,\phi)$ over $\phi$ \cite[Proposition 1.3.1]{samorodnitsky1994stable}. 
+where $\phi$ is called the \emph{impulse} variable that is drawn from a \emph{positive} $\alpha$-stable distribution (i.e.\ $\beta =1$), whose \ac{PDF} is illustrated in Fig.~\ref{fig:stable_pdf}. It can be shown that both formulations of the $\alpha$CSC model are identical by marginalizing the joint distribution $p(x,d,z,\phi)$ over $\phi$ \cite[Proposition 1.3.1]{samorodnitsky1994stable}. 
 
 The impulsive structure of the $\alpha$CSC model becomes more prominent in this formulation: the variances of the Gaussian observations are modulated by stable random variables with infinite variance, where the impulsiveness depends on the value of $\alpha$. 
 %
-It is also worth noting that when $\alpha = 2$, $\phi_{n,t}$ becomes deterministic and we can again verify that $\alpha$CSC coincides with the vanilla CSC. 
+It is also worth noting that when $\alpha = 2$, $\phi_{n,t}$ becomes deterministic and we can again verify that $\alpha$CSC coincides with the vanilla \ac{CSC}. 
 
 % One of the main advantages of the augmented model \eqref{eqn:sas_condgauss} is its conditional Gaussianity
 
-The conditionally Gaussian structure of the augmented model has a crucial practical implication: if the impulse variable $\phi$ were to be known, then the MAP estimation problem over $d$ and $z$ in this model would turn into a `weighted' CSC problem, which is a much easier task compared to the original problem. In order to be able to exploit this property, we propose an expectation-maximization (EM) algorithm, which iteratively maximizes a lower bound of the log-posterior $\log p(d,z|x)$, and algorithmically boils down to computing the following steps in an iterative manner:
+The conditionally Gaussian structure of the augmented model has a crucial practical implication: if the impulse variable $\phi$ were to be known, then the \ac{MAP} estimation problem over $d$ and $z$ in this model would turn into a `weighted' \ac{CSC} problem, which is a much easier task compared to the original problem. In order to be able to exploit this property, we propose an \ac{EM} algorithm, which iteratively maximizes a lower bound of the log-posterior $\log p(d,z|x)$, and algorithmically boils down to computing the following steps in an iterative manner:
 \begin{align}
 &\text{E-Step:} \hspace{20pt} {\cal B}^{(i)}(d,z) = \mathds{E}\left[\log p(x,\phi,z|d)\right]_{p(\phi|x,z^{(i)},d^{(i)})}, \\
 &\text{M-Step:} \hspace{20pt} (d^{(i+1)}, z^{(i+1)}) = \argmax\nolimits_{d,z} {\cal B}^{(i)}(d,z). \label{eq:mstep}
@@ -190,7 +190,7 @@ where $\mathds{E}[f(x)]_{q(x)}$ denotes the expectation of a function $f$ under 
 
 % \paragraph{The E-Step:}
 \textbf{The E-Step:} 
-In the first step of our algorithm, we need to compute the EM lower bound ${\cal B}$ that has the following form:
+In the first step of our algorithm, we need to compute the \ac{EM} lower bound ${\cal B}$ that has the following form:
 \begin{align}
 {\cal B}^{(i)}(d,z) =^+ - \sum_{n=1}^N \Big( \|\sqrt{w_{n}^{(i)}} \odot (x_{n} - \sum_{k=1}^{K}d^{k} * z_{n}^{k})\|_{2}^{2} + \lambda \sum_{k=1}^K{\|z_{n}^{k}\|_1}\Big),
 \end{align}
@@ -233,14 +233,14 @@ where $=^+$ denotes equality up to additive constants, $\odot$ denotes the Hadam
     \end{algorithm}
 
 Unfortunately, the weights $w^{(i)}$ cannot be computed analytically, therefore we need to resort to
-approximate methods. In this study, we develop a Markov chain Monte Carlo (MCMC) method to approximately compute the weights, where we approximate the intractable expectations with a finite sample average, given as follows: $w_{n,t}^{(i)} \approx (1/{J}) \sum_{j=1}^{J} 1/{\phi_{n,t}^{(i,j)}}$, where $\phi_{n,t}^{(i,j)}$ are some samples that are ideally drawn from the posterior distribution $p(\phi|x,z^{(i)},d^{(i)})$. Unfortunately, directly drawing samples from the posterior distribution of $\phi$ is not tractable either, and therefore, we develop a \emph{Metropolis-Hastings} algorithm \citep{chib1995understanding}, that asymptotically generates samples from the \emph{target} distribution $p(\phi|\cdot)$ in two steps. In the $j$-th iteration of this algorithm, we first draw a random sample for each $n$ and $t$ from the prior distribution (cf.\ \eqref{eqn:sas_condgauss}), \textit{i.e.}, $\phi_{n,t}'\sim p(\phi_{n,t})$. We then compute an acceptance probability for each $\phi_{n,t}'$ that is defined as follows:
+approximate methods. In this study, we develop a \ac{MCMC} method to approximately compute the weights, where we approximate the intractable expectations with a finite sample average, given as follows: $w_{n,t}^{(i)} \approx (1/{J}) \sum_{j=1}^{J} 1/{\phi_{n,t}^{(i,j)}}$, where $\phi_{n,t}^{(i,j)}$ are some samples that are ideally drawn from the posterior distribution $p(\phi|x,z^{(i)},d^{(i)})$. Unfortunately, directly drawing samples from the posterior distribution of $\phi$ is not tractable either, and therefore, we develop a \emph{Metropolis-Hastings} algorithm \citep{chib1995understanding}, that asymptotically generates samples from the \emph{target} distribution $p(\phi|\cdot)$ in two steps. In the $j$-th iteration of this algorithm, we first draw a random sample for each $n$ and $t$ from the prior distribution (cf.\ \eqref{eqn:sas_condgauss}), \textit{i.e.}, $\phi_{n,t}'\sim p(\phi_{n,t})$. We then compute an acceptance probability for each $\phi_{n,t}'$ that is defined as follows:
 %
 \begin{align}
   % \text{acc}(\phi_{n,t}^{(i,j)} \rightarrow \phi_{n,t}' ) \triangleq \exp \Bigl\{ (\log \phi_{n,t}^{(i,j)} - \log \phi_{n,t}')/2 + (x_{n,t} - \hat{x}^{(i)}_{n,t})^2 (1/{\phi_{n,t}^{(i,j)}} - 1/{\phi_{n,t}'}) \Bigr\}
   \text{acc}(\phi_{n,t}^{(i,j)} \rightarrow \phi_{n,t}' ) \triangleq \min \Bigl\{1, {p(x_{n,t}|d^{(i)},z^{(i)},\phi'_{n,t})}/{p(x_{n,t}|d^{(i)},z^{(i)},\phi_{n,t}^{(i,j)})} \Bigr\} \label{eqn:mcmc_acc}
 \end{align}
 %
-where $j$ denotes the iteration number of the MCMC algorithm. 
+where $j$ denotes the iteration number of the \ac{MCMC} algorithm. 
 % and $\hat{x}^{(i)}_{n}$ is computed as in \eqref{eqn:csc_prob} by using the current iterates $d^{(i)}$ and $z^{(i)}$. 
 Finally, we draw a uniform random number $u_{n,t} \sim {\cal U}([0, 1])$ for each $n$ and $t$. If $u_{n,t} < \text{acc}(\phi_{n,t}^{(i)} \rightarrow \phi_{n,t}')$, we accept the sample and set $\phi_{n,t}^{(i+1)} = \phi_{n,t}'$; otherwise we reject the sample and set $\phi_{n,t}^{(i+1)} = \phi_{n,t}^{(i)}$. This procedure forms a Markov chain that leaves the target distribution $p(\phi|\cdot)$ invariant, where under mild ergodicity conditions, it can be shown that the finite-sample averages converge to their true values when $J$ goes to infinity \citep{Liu2008}. More detailed explanation of this procedure is given in the supplementary document.
 
