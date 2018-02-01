@@ -23,7 +23,7 @@ We first focus on solving the problem for $z$ while keeping $d$ fixed, given as 
 \end{align} 
 Here, we expressed the convolution of $d^k$ and $z_n^k$ as the inner product of the zero-padded activations $\bar{z}_n^k \triangleq [(z_n^k)^\top, 0 \cdots 0]^\top \in \bbR^{T}_+$, with a Toeplitz matrix $D^k \in \bbR^{T \times T}$, that is constructed from $d^k$.
 The matrices $D^k$ are never constructed in practice, and all operations are carried out using convolutions.
-This problem can be solved by various constrained optimization algorithms. Here, we choose the quasi-Newton L-BFGS-B algorithm~\cite{byrd1995limited} with a box constraint: $0 \leq z_{n,t}^k \leq \infty$. This approach only requires the simple computation of the gradient of the objective function with respect to $z$ (\textit{cf.} supplementary material). Note that, since each trial is independent from each other, we can solve this problem for each $z_n$ in parallel. 
+This problem can be solved by various constrained optimization algorithms. Here, we choose the quasi-Newton L-BFGS-B algorithm~\cite{byrd1995limited} with a box constraint: $0 \leq z_{n,t}^k \leq \infty$. This approach only requires the simple computation of the gradient of the objective function with respect to $z$ (\textit{cf.} Section~\ref{sec:m-step}). Note that, since each trial is independent from each other, we can solve this problem for each $z_n$ in parallel. 
 
 % \subsection{Solving for atoms}
 We then solve the problem for the atoms $d$ while keeping $z$ fixed. This optimization problem turns out to be a constrained weighted least-squares problem. In the non-weighted case, this problem can be solved either in the time domain or in the Fourier domain~\citep{Grosse-etal:2007,heide2015fast,wohlberg2016efficient}. The Fourier transform simplifies the convolutions that appear in least-squares problem, but it also induces several difficulties, such as that the atom $d_k$ have to be in a finite support $L$, an important issue ignored in the seminal work of~\cite{Grosse-etal:2007} and addressed with an ADMM solver  in \cite{heide2015fast,wohlberg2016efficient}.
@@ -55,7 +55,7 @@ Note that during the alternating minimization, thanks to convexity we can warm s
 
 
 \section{Details of the E-Step}
-
+\label{sec:e-step}
 %\umut{I will put more derivations here.}
 
 Computing the weights that are required in the M-step requires us to compute the expectation of $\frac1{\phi_{n,t}}$ under the posterior distribution $p(\phi_{n,t}|x,d,z)$, which is not analytically available. 
@@ -87,7 +87,7 @@ The acceptance probability requires the prior distribution of $\phi$ to be evalu
 Thanks to the simplification, this probability is tractable and can be easily computed. 
 
 \section{Details of the M-Step}
-
+\label{sec:m-step}
 \subsection{Solving for the activations}
 In the M-step, we optimize~\eqref{eq:problem_definition_z} to find the activations $z_n^{(i)}$ of each trial $n$ independently. To keep the notation simple, we will drop the index for the iteration number $i$ of the EM algorithm.
 

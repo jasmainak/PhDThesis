@@ -8,22 +8,33 @@ Understanding the human brain is one of the most significant challenges of the 2
 
 Our current understanding of the brain is a result of decades of concerted efforts across multiple disciplines ranging from molecular biology, genetics, physiology, cognitive and behavioral neuroscience, to statistics, computer science, and data science. A relatively new subfield here is brain imaging, also known as neuroimaging. Brain imaging refer to a set of technologies where a snapshot of the brain is taken to measure either the anatomy or various aspects of function. The grand vision of is to be deploy them in hospitals to help diagnosis, in surgeries, in \acp{BCI}, or in research for neuroscientists to better understand the brain. In this thesis, we will focus our attention on measuring the electric and/or corresponding magnetic field from the brain, using electroencephalography, magnetoencephalography, and local field potentials. These methods have the property of possessing a high temporal resolution, which is particularly useful for extracting the temporal dynamics of brain signals.
 
-In the following sections, I will describe how the brain imaging landscape has been shaped in recent years by the reproducibility crisis, and how data sharing is going to help alleviate this problem to a large extent. However, the rise of data sharing and large sample sizes makes it difficult to still rely on manual data analysis which does not scale and is not reproducible. To cope with this challenge, we must start relying on automated and data-driven methods for discovering new effects.
+In the following sections, I will describe the context surrounding the thesis. After a brief introduction to the field of electrophysiology, I will delve into how the field has been shaped in recent years by the reproducibility crisis, and how data sharing is going to help alleviate this problem to a large extent. However, the rise of data sharing and large sample sizes makes it difficult to still rely on manual data analysis which does not scale and is not reproducible. To cope with this challenge, we must start relying on automated and data-driven methods for discovering new effects.
  
 %\section{Modern brain imaging}
 %Brain imaging tools today can be placed along three axes: their temporal resolution, their spatial resolution, and the level to which they are invasive.
 
-%\begin{figure}[htb]
-%\begin{center}
-%   \includegraphics[width=0.4\linewidth]%{figures/neuroimaging_methods.pdf}
-%\end{center}
-%   \caption[Various neuroimaging methods differ in terms of the information they measure.]{Various neuroimaging methods differ in terms of the information they measure. MEG=magnetoencephalography, EEG=electroencephalography, NIRS=near-infrared spectroscopy, PET=positron emission tomography, SPECT=single photon emission tomography, and INI=Inverse imaging, a method to speed up acquisition of fMRI images.}
-%   \label{fig:neuroimaging_methods}
-%\end{figure}
-
 \clearpage
 
 \section{Electrophysiology}
+
+\begin{figure}[htb]
+\begin{center}
+   \includegraphics[width=0.4\linewidth]{figures/neuroimaging_methods.pdf}
+\end{center}
+   \caption[Various neuroimaging methods differ in terms of the information they measure.]{Various neuroimaging methods differ in terms of the information they measure. MEG=magnetoencephalography, EEG=electroencephalography, NIRS=near-infrared spectroscopy, PET=positron emission tomography, SPECT=single photon emission tomography, and INI=Inverse imaging, a method to speed up acquisition of fMRI images.}
+   \label{fig:neuroimaging_methods}
+\end{figure}
+
+The study of electrical properties of the biological cells and tissues is known as electrophysiology. Biological tissues have electrical properties due to the presence of ions. Just as we can measure voltages in electrical appliances, it is possible also to measure these voltages on living tissues. These modalities have the advantage of directly measuring the brain activity, as opposed to an indirect measure, which is for example the case in \ac{fMRI}.
+Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution. In the case of \ac{fMRI}, as it measures the blood flow which is a response to neural activity and slowly changing, its temporal resolution cannot be high. 
+
+There are a number of modalities to measure the electrical potentials, the most well-known being perhaps \ac{ECG} which is used to measure the heart beats. However, in our work, we will focus on only three which are relevant for studying the brain.
+
+\paragraph{Electroencephalography: } \Ac{EEG} is a portable and non-invasive measurement modality that is frequently used in the context of \acp{BCI}. In electroencephalography, an array of electrodes on an \ac{EEG} cap are placed on the scalp to measure the voltages with respect to a reference electrode. The voltage it measure is not the result of a single neuron but instead a summed potential of populations of thousands of neurons. It has a high temporal resolution (in the order of \emph{ms}), however the spatial resolution is not so high as the skull smears the signal.
+
+\paragraph{Magnetoencephalography: } Any electric current is associated with magnetic fields as a consequence of Maxwell's theory. Therefore, the brain generates tiny magnetic fields which are wrap around the currents according to Maxwell's right hand thumb rule. The flux is tiny ($\sim10^{-12}T$) compared to the earth's magnetic field ($10^{-4}T$), and to measure this one would need very sensitive electronics and heavy noise cancellation. The measurement itself is done done in a shielded magnetic room made of three layers of metals. The sensors are superconducting coils which capture the magnetic flux. They are immersed in liquid helium cooled to very low temperatures, so as to lower any loss in signal due to resistance. A typical device contains two types of sensors: gradiometers and magnetometers. While the magnetometer measures the absolute magnitude of magnetic field, the gradiometer measures derivative of the field. It is therefore less sensitive to external noise [\mainak{check}]. MEG has the advantage that the skull does not deteriorate the signal quality.
+
+\paragraph{Local Field Potential}
 
 \section{The reproducibility crisis}
 
@@ -47,7 +58,6 @@ Brain imaging has its own set of issues which can be linked to reproducibility c
 
 In Chapter~\ref{chapter:group_study} of the thesis, we will provide concrete guidelines on how to build processing pipelines for \ac{MEG}/\ac{EEG} data. Our contribution will touch upon the issue of complex pipelines, multiple comparison, and differences in software versions in the context of \ac{MEG}/\ac{EEG}. The issue of power failure can be alleviated through data sharing as I will discuss in the next section.
 
-\clearpage
 \section{Data sharing}
 \label{sec:intro_datasharing}
 Power failure is essentially a consequence of small datasets. In today's collaborative and data-driven scientific environment, data sharing is useful not only from the perspective of reproducibility but also to build datasets with large sample sizes. With large datasets, it would be possible to tease apart even subtle effects~\citep{smith2017statistical} that were not possible with smaller datasets. Data sharing is beneficial not just from the perspective of replication but also from an economic perspective. Rather than collect new data for every new hypothesis, researchers can now reuse known data for answering their hypotheses.
@@ -58,7 +68,6 @@ It is hard to imagine in this day and age that a theory as fundamental as the la
 
 Of course, neuroscientists are beginning to realize the importance of sharing data. In recent times, neural data has started being shared through international consortiums~\citep{van2013wu, ollier2005uk} and data repositories~\citep{poldrack2013toward, gorgolewski2015neurovault}. While in the case of Newton, he gained access to the catalogue without permission, today it is possible to publish dataset papers in targeted journals so as to assign the credit where it is due. Yet, there is an unaddressed gap in terms of the ideal of data sharing and the practice of data sharing. Neuroimaging experiments are often very complicated, and it is not enough to share simply the data, but also the metadata and information regarding the experimental protocols in a well-structured format. In the absence of this information, shared data is not \emph{reusable} in the same way that uncommented and spaghetti code is not useful even if shared publicly. There isn't an accepted consensus in the community on the practices of sharing data and there is a need to establish a standard. In Chapter~\ref{chapter:group_study}, we will present a new standard known as the \ac{BIDS}, which is intended to address this gap. It is a collaborative effort between software developers and neuroscientists across various laboratories to establish a consensus on the standards and build tools to facilitate adoption of the standard.
 
-\clearpage
 \section{Automation}
 Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future of science: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. Automation not only saves time but also makes the research more reproducible, as was noted in a recent guide to improve the transparency and reproducibility of neuroimaging research~\citep{gorgolewski2016practical}. The authors point out that manual work may seem easy at first, if the analysis has to be performed only once. However, this is not always the case as ``quite often in the course of a project, parameters are modified, subjects are changed, and processing steps need to be rerun. This is a situation in which having a set of scripts that can perform all of the processing steps automatically instead of relying on manual interventions can really pay off.'' As large datasets become more common in neuroimaging, automation will indeed become a necessity rather than a luxury.
 
@@ -76,7 +85,6 @@ Merely based on anecdotal reports, this process can take up to a week even for a
 
 This is what led us to propose \emph{autoreject}, which we describe in Chapter~\ref{chapter:autoreject}. It is an algorithm which can be used to mark bad segments of the data. The key insight is that, often certain sensors in the device are intermittently corrupted rather than continuously. We validate our algorithm against 3 benchmarks on the \ac{HCP} dataset~\citep{larson2013adding} which is manually annotated with bad segments.
 
-\clearpage
 \section{Representation learning for data-driven discovery}
 In the last 100 years since the invention of \ac{EEG}, scientists have discovered several different brain oscillation patterns such as alpha waves, K-complexes, and mu rhythms. The oscillations and interactions between them have served as biomarkers for different brain functions and pathologies. Alpha waves have been implicated in attention, K-complexes in sleep, and mu rhythm in motor activity. 
 
@@ -97,7 +105,9 @@ However, photos are inherently different from neural data. First, neural data ca
 In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional \ac{CSC} algorithms for heavy-tailed noise. We reformulate the optimization problem as a \ac{MAP} inference with an alpha-stable distribution to replace the reconstruction loss. Our results show that this kind of algorithm is robust to the presence of artifacts and can be used to uncover temporal structures from neural signals, even those involving nested oscillations.
 
 \section{Contributions}
-In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an effort to create an \ac{MEG} standard for  \ac{BIDS}~\citep{galan2017meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. This led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data. 
+In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an international collaboration to create an \ac{MEG} standard for  \ac{BIDS}~\citep{galan2017meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. This led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data~\citep{jas2017learning}. 
+
+The thesis is organized by chapters to highlight these four main  contributions: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. Each chapter contains the text from the original paper (which has been minimally edited in some parts) preceded by a section on necessary background and context surrounding the work.
 
 \subsection*{Journal publications}
 \bibentry{jas2017autoreject}\ \\ \\

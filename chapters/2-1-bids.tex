@@ -19,7 +19,7 @@ Contents}}}
 
 \clearpage
 
-\section{Introduction}
+\section{Context}
 While data sharing in neuroscience is on the rise, the amount of data reuse is still limited. For instance, since the release of the Human Connectome Project (HCP)~\citep{larson2013adding} MEG data in 2013, there have been only one or two documented cases~\citep{jas2017autoreject} of reusing the data. Even in these cases, the effort has mostly been to reproduce rather than test new hypotheses. This clearly represents a gap between the ideal of data sharing and the consequences in practice. 
 
 % Clearly, sharing data is not a panacea as the tools, skills and resources to process such large datasets is currently missing in typical laboratories. Perhaps the most important roadblock is standardization of metadata.
@@ -54,6 +54,14 @@ The development of these standards is going to enable building large databases o
   \item \bibentry{galan2017meg}
 \end{itemize}
 \end{minipage}}%
+
+\section{Introduction}
+The Brain Imaging Data Structure (BIDS) is an emerging standard for the organization of neuroimaging data1. The significance of BIDS is timely: there is increasing availability of open neuroimaging data resources, and strong interest in aggregating large, heterogeneous datasets to harness machine learning techniques and address a new range of scientific questions, with greater statistical power. A single neuroimaging study by itself can represent a large and intricate volume of data, with multiple protocols and modalities, and several categories of participants possibly enrolled in repeated sessions. These aspects are challenging to data organization, harmonization and sharing. The situation is aggravated by the lack of a unique neuroscience standard for digital data across, and sometimes within, modalities such as electrophysiology. Consequently, present data management practices are often based on solutions that do not generalize between labs, or even between persons within the same group. This leads to suboptimal usage of human (time lost retrieving data), infrastructure (data storage space) and financial (limited longevity and value of disorganized data after first publication) resources. Poor or lacking data management strategies also negatively affects the reproducibility of results, even within the lab where the data were collected. 
+BIDS is a standard to describe the organization of magnetic resonance imaging (MRI) data. It is based on a simple, hierarchical folder structure, with key study parameters documented in text-based metadata files. One benefit is the handling of multiple MRI data sequences, with minimal curation overheads, which reduces the possibility of data-handling errors. An important secondary outcome is the facilitation of interoperability between tools for data analytics, provided that software and pipelines adopt BIDS for data inputs. 
+
+We describe here a key extension of BIDS to electrophysiology data. The technical sophistication of MEG makes it the most challenging electrophysiology data type for standardization2. For this reason, BIDS-MEG can readily be generalized to electroencephalography, multiunit recordings, and local field potentials. Further to strengthening and rationalizing data management in MEG labs, BIDS-MEG provides a common structure to present and future large MEG open-data repositories3,4,5. The absence of unique data file format in MEG is compensated by BIDS-MEG’s standard data organization: the sharing and processing of large and complex data hierarchies is simplified, and made compatible and reproducible across tools for data analytics. 
+
+To derive the BIDS-MEG specifications, we have combined perspectives from investigators, technical support staff and data managers. We also involved the expertise of leading academic software developers for MEG science6, including Brainstorm7, FieldTrip8, MNE9, and SPM10. The proposed BIDS-MEG specifications are presently compatible with these software applications and toolboxes.
 
 \section{Technical specification}
 \label{sec:BIDS-MEG}

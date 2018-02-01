@@ -44,6 +44,44 @@ Even so, most work so far in this space has proposed new methods, and not much t
 A parallel development in the field of neuroimaging has been the rise in interest for learning prototypical shapes which are shift invariant~\citep{jost2006motif, barthelemy2013multivariate, brockmeier2016learning, hitziger2017adaptive}. It is motivated by the fact that existing approximations using the Fourier basis often distorts the signal. There is, for example, a debate regarding the type of filters that should be used (See Section~\ref{sec:group_study_temporal_filtering} and \cite{widmann2015digital,parks1987digital,ifeachor2002digital, gotz-etal:15}). However, there has been so far very little cross-pollination of ideas between the sparse coding and neuroimaging communities. Our work is an attempt to bridge this gap. We propose a model which builds upon existing shift-invariant sparse coding models to be able to handle heavy-tailed noise. It assumes positivity of the coefficients to account for the fact that an atom does not change polarity over time. The upcoming sections describe how this could be achieved.
 
 \subsection{Solvers}
+In this work, we will be using a number of convex optimization methods. It will be used to solve unconstrained minimization problems of the form:
+\begin{equation}
+x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
+\end{equation}
+%
+\mainak{give dimensions of A and b}
+using updates of the form:
+%
+\begin{equation}
+x_{k + 1} = x_{k} + \rho_k d_k,
+\end{equation}
+%
+where $\rho_k$ is the step size and $d_k$ is the search direction.
+If there was no regularization term $\Omega(x)$, we could solve this in closed form and get $x^{\star} = {(A^{\top}A)}^{-1}A^{\top}b$. However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative where it is not smooth. Thus, we may have to resort to iterative methods, which we shall refer to as \emph{solvers}. The simplest of these solvers use first order methods. In these cases, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size depends on the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. 
+
+\paragraph{FISTA: }[ref] A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso [ref]. It enforces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate. The proximal operator for the $\ell_1$ norm is given by:
+
+\begin{equation}
+\mathrm{prox}_{\lambda \|x\|_1}(v) = \begin{cases}
+v - \lambda \quad \text{if } \lambda < v \\
+0 \quad \text{if } \lambda \leq v < v\\
+v + \lambda \quad \text{if } v < -\lambda
+\end{cases}
+\end{equation}
+
+The derivation of this operator is slightly subtle, but can be found in standard textbooks [ref], therefore we will skip it for the sake of readability. The resulting algorithm is known as ISTA [ref], which has a convergence rate of [].
+
+A faster rate of convergence can be achieved using Nesterov accelerations [ref].
+
+Here we will describe FISTA [ref] and LBFGS-B, 
+
+\paragraph{Duality}
+
+\paragraph{LBFGS-B}
+
+\paragraph{Coordinate descent}
+
+Block
 
 %!TEX root = ../nips_2017.tex
 

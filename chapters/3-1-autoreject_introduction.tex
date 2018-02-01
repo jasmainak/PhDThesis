@@ -16,12 +16,15 @@ Contents}}}
 \endgroup
 \end{figure}
 
+\clearpage
 \section{Background}
 
-%copy pasted abstract below
-We present an automated algorithm for unified rejection and repair of bad trials in magnetoencephalography (MEG) and electroencephalography (EEG) signals. Our method capitalizes on cross-validation in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold - a quantity commonly used for identifying bad trials in M/EEG. This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. All steps of the algorithm are fully automated thus lending itself to the name Autoreject. In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing MEG and EEG recordings from more than 200 subjects. The comparisons include purely qualitative efforts as well as quantitatively benchmarking against human supervised and semi-automated preprocessing pipelines. The algorithm allowed us to automate the preprocessing of MEG data from the Human Connectome Project (HCP) going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
+In the previous chapter, we discussed the reproducibility challenges when performing group studies in \ac{MEG} and \ac{EEG}. One of the ways to improve reproducibility is automation, and we briefly touched upon an algorithm for automating detection of bad data segments, known as \emph{autoreject}.
 
-Here, I will briefly introduce some of the tools that we will use for our work in Section~\ref{sec:introduction} to Section~\ref{sec:autoreject_conclusion}.
+%copy pasted abstract below
+In this chapter, we will present this algorithm which rejects and repairs bad trials in \ac{MEG} and \ac{EEG} signals. The method capitalizes on cross-validation in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold - a quantity commonly used for identifying bad trials in M/EEG. This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. All steps of the algorithm are fully automated thus lending itself to the name \emph{autoreject}. In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing \ac{MEG} and \ac{EEG} recordings from more than 200 subjects. The comparisons include purely qualitative efforts as well as quantitatively benchmarking against human supervised and semi-automated preprocessing pipelines. The algorithm allowed us to automate the preprocessing of \ac{MEG} data from the \ac{HCP} going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
+
+Before introducing the algorithm in Section~\ref{sec:introduction} to Section~\ref{sec:autoreject_conclusion}, we will briefly revisit some of the tools that we will be needed for developing \emph{autoreject}.
 
 \subsection{Norms}
 We will be using different types of norms for measuring our cross-validation error.
@@ -41,7 +44,7 @@ The $\ell_\infty$ norm of a vector $x$ is defined by:
 \|x\|_{\infty} = \sup_n \ \lvert x_n \rvert
 \end{equation}
 \end{definition}
-As we are taking the supremum, this norm is sensitive to large values in the vector.
+As we are taking the supremum, this norm is sensitive to large values in the vector, which is needed for measuring artifacts.
 %
 \begin{definition}{(Frobenius norm.)}
 The Frobenius norm of a real-valued matrix $A$ is defined by:
@@ -71,7 +74,7 @@ Sometimes grid search is too slow and random search is not as accurate for tunin
 
 Since this method works for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
 
-In order solve this dilemma, we use what is known as an \emph{acquisition function}. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon Gaussian Processes (GPs). Given the points evaluated until now, a GP can be used to estimate the uncertainty in the rest of the search space. 
+In order solve this dilemma, we use what is known as an \emph{acquisition function}. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
 
 % \subsection{Interpolation schemes}
 
