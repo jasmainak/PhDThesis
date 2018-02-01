@@ -70,6 +70,7 @@ Depending on the data, different types of partitioning schemes are preferred. In
 
 \subsection{Bayesian optimization}
 
+\mainak{needs figure}
 Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
 
 Since this method works for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
@@ -92,7 +93,7 @@ In order solve this dilemma, we use what is known as an \emph{acquisition functi
 
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.55\linewidth]{figures/figure1.pdf}
+	\includegraphics[width=0.65\linewidth]{figures/figure1.pdf}
     \caption[Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset.]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
     \label{fig:cross_val}
 \end{figure}

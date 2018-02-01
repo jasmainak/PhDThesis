@@ -139,21 +139,14 @@ Starting from multiple random initializations, the estimated atoms with the smal
 
 \begin{figure}[b]
     \centering
-    \begin{minipage}{\linewidth}
-        \begin{minipage}{0.75\textwidth}
              \subfigure[LFP spike data from \cite{hitziger2017adaptive}]{
-             \includegraphics[height=2.3cm]{figures/spike_atomsa.pdf}
+             \includegraphics[height=3cm]{figures/spike_atomsa.pdf}
              \label{fig:spikedata}}
              \subfigure[Estimated atoms]{
-             \includegraphics[height=2.2cm]{figures/spike_atomsb.pdf}
+             \includegraphics[height=2.9cm]{figures/spike_atomsb.pdf}
              \label{fig:spikeatoms}}
-        \end{minipage}
-        \hfill
-        \begin{minipage}{0.23\textwidth}
+
             \caption[Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.]{Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.}
-        \end{minipage}
-    % \vspace{-10pt}
-    \end{minipage}
 \end{figure}
 
 In the artifact-free scenario, all algorithms perform equally well, except for MoTIF that suffers from the presence of activations with varying amplitudes. This is because it aligns the data using correlations before performing the eigenvalue decomposition, without taking into account the strength of activations in each trial. The performance of \citet{brockmeier2016learning} and CSC degrades as the level of corruption increases. On the other hand, $\alpha$CSC is clearly more robust to the increasing level of corruption and recovers reasonable atoms even when 20\% of the trials are corrupted. 
