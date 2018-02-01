@@ -35,7 +35,7 @@ Figure~\ref{fig:fig_trans} shows one example obtained with this function with th
 \begin{figure}
 \centering
     
-\includegraphics{figures/sub001_alignment.pdf}
+\includegraphics[width=\linewidth]{figures/sub001_alignment.pdf}
  \caption[Visualization of coregistration quality]{The result of head-to-MRI (and MEG-to-head) transformations with inner skull and outer skin surfaces for one subject. Note that the MEG helmet is well-aligned with the digitization points. The digitized fiducial points are shown with large dots, EEG electrodes with small pink dots, and extra head digitization points with small gray dots. Note that the anonymization of the MRI produces a mismatch between digitized points and outer skin surface at the front of the head.}
 \label{fig:fig_trans}
 \end{figure}
@@ -55,7 +55,6 @@ For the LCMV beamformer, we also need to estimate a signal covariance. For this 
 \begin{figure}
 \centering
  \includegraphics{figures/sub004_highpass-NoneHz-plot_white_meg.pdf}
-\vspace{-10pt}
 \caption[Whitened MEG data at the evoked level for one subject]{Whitened MEG data for subject 4 and the global field power (GFP) which follows a $\chi^2$ distribution if the data is assumed Gaussian. The dotted horizontal red lines represent the expected GFP during the baseline for Gaussian data. Here the data slowly return to baseline at the end of the epoch.}
 \label{fig:plot_white}
 \end{figure}
