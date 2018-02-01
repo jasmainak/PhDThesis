@@ -63,11 +63,10 @@ Note that the y-axis is the precision relative to the objective value obtained u
 In the right subplot, we show how long it takes for the algorithms to reach a relative precision of $0.01$ for different settings (\textit{cf.} supplementary material for more benchmarks). Our method consistently performs better and the difference is even more striking for more challenging setups. This speed improvement on the M-step is crucial for us as this step will be repeatedly executed. % in the EM algorithm. 
 %This sets the stage for us to apply $\alpha$CSC on datasets of realistic dimensions.
 %
-\newcommand{\tmpsize}{0.14}
+\newcommand{\tmpsize}{0.15}
 \begin{figure}[t]
 %\vskip 0.2in
 \begin{center}
-\vspace{-10pt}
 \subfigure[No corruption.]{
  \setlength{\tabcolsep}{0.5pt} 
     \begin{tabular}{c c}
@@ -100,10 +99,8 @@ In the right subplot, we show how long it takes for the algorithms to reach a re
     \end{tabular}
 }
 \end{center}
-\vspace{-15pt}
 \caption[Simulation to compare state-of-the-art methods against $\alpha$CSC.]{Simulation to compare state-of-the-art methods against $\alpha$CSC.}
-\label{fig:mcem_simulated} 
-\vspace{-10pt}
+\label{fig:mcem_simulated}
 \end{figure}
 %
 %
@@ -193,7 +190,6 @@ Even though CSC is able to provide these excellent results on the cleaned data s
     \vspace{-10pt}
     \caption[Three atoms learnt from a rodent striatal LFP channel, using CSC on cleaned data, and both CSC and $\alpha$CSC on the full data.]{(a)~Three atoms learnt from a rodent striatal LFP channel, using CSC on cleaned data, and both CSC and $\alpha$CSC on the full data. The atoms capture the cross-frequency coupling of the data (dashed rectangle). (b)~Comodulogram presents the cross-frequency coupling intensity computed between pairs of frequency bands on the entire cleaned signal, following \cite{tort2010measuring}.}
     \label{fig:ratdata}
-    \vspace{-10pt}
 \end{figure}
 
 
