@@ -69,6 +69,8 @@ It is hard to imagine in this day and age that a theory as fundamental as the la
 Of course, neuroscientists are beginning to realize the importance of sharing data. In recent times, neural data has started being shared through international consortiums~\citep{van2013wu, ollier2005uk} and data repositories~\citep{poldrack2013toward, gorgolewski2015neurovault}. While in the case of Newton, he gained access to the catalogue without permission, today it is possible to publish dataset papers in targeted journals so as to assign the credit where it is due. Yet, there is an unaddressed gap in terms of the ideal of data sharing and the practice of data sharing. Neuroimaging experiments are often very complicated, and it is not enough to share simply the data, but also the metadata and information regarding the experimental protocols in a well-structured format. In the absence of this information, shared data is not \emph{reusable} in the same way that uncommented and spaghetti code is not useful even if shared publicly. There isn't an accepted consensus in the community on the practices of sharing data and there is a need to establish a standard. In Chapter~\ref{chapter:group_study}, we will present a new standard known as the \ac{BIDS}, which is intended to address this gap. It is a collaborative effort between software developers and neuroscientists across various laboratories to establish a consensus on the standards and build tools to facilitate adoption of the standard.
 
 \section{Automation}
+\mainak{cite tal yarkoni and neurosynth and automation}
+
 Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future of science: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. Automation not only saves time but also makes the research more reproducible, as was noted in a recent guide to improve the transparency and reproducibility of neuroimaging research~\citep{gorgolewski2016practical}. The authors point out that manual work may seem easy at first, if the analysis has to be performed only once. However, this is not always the case as ``quite often in the course of a project, parameters are modified, subjects are changed, and processing steps need to be rerun. This is a situation in which having a set of scripts that can perform all of the processing steps automatically instead of relying on manual interventions can really pay off.'' As large datasets become more common in neuroimaging, automation will indeed become a necessity rather than a luxury.
 
 In neuroimaging, there are in fact several avenues for automation:
@@ -103,6 +105,127 @@ However, photos are inherently different from neural data. First, neural data ca
 \ac{CSC} algorithms do not approximate the signal using Fourier (or sinusoidal) basis. While this is the conventional technique for extracting signals buried in noise, the approximation can degrade the shape of the signal, which can be a biomarker in many clinical diseases~\citep{cole2017brain}. As an example, a square wave would need an infinite series of sinusoids for a good approximation. Of course, transients can be better approximated using wavelets but it is clearly not sufficient for other shapes of data. Rather than fix the basis to be Fourier or wavelet, the \ac{CSC} approach is to learn \emph{both} the basis and the coefficients.
 
 In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional \ac{CSC} algorithms for heavy-tailed noise. We reformulate the optimization problem as a \ac{MAP} inference with an alpha-stable distribution to replace the reconstruction loss. Our results show that this kind of algorithm is robust to the presence of artifacts and can be used to uncover temporal structures from neural signals, even those involving nested oscillations.
+
+\section{Background}
+
+Here, we will introduce some basic linear algebra, optimization, and machine learning concepts that will be useful in the rest of the thesis.
+
+\subsection{Norms}
+Informally speaking, a norm is used to measure the length of size of a vector. It must also satisfy some properties, but it will not be of concern for us in this thesis. It is sufficient to know the mathematical expression, how it behaves, and the physical property that it captures.
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+
+\begin{definition}{($\ell_p$ norm.)}
+For $1 \leq p < \infty$, the $\ell_p$ norm of a vector $x$ is defined by:
+\begin{equation}
+\|x\|_p = \Big(\sum_n \ \lvert x_n \rvert^p \Big)^{1/p}
+\end{equation}
+\end{definition}
+%
+\begin{definition}{($\ell_\infty$ norm.)}
+The $\ell_\infty$ norm of a vector $x$ is defined by:
+\begin{equation}
+\|x\|_{\infty} = \sup_n \ \lvert x_n \rvert
+\end{equation}
+\end{definition}
+As we are taking the supremum, this norm is sensitive to large values in the vector, which is needed for measuring artifacts.
+%
+\begin{definition}{(Frobenius norm.)}
+The Frobenius norm of a real-valued matrix $A$ is defined by:
+\begin{equation}
+\|A\|_{\mathrm{Fro}} = \| \mathrm{vec}(A) \|_2 = \sqrt{\mathrm{trace}(AA^\top)}
+\end{equation}
+%
+The Frobenius norm is a matrix norm that is simply the $\ell_2$ vector norm of the vectorized matrix $\mathrm{vec}(A)$.
+
+\end{definition}
+
+\subsection{Cross validation}
+
+Cross validation is a statistical technique to estimate how well a predictive model will \emph{generalize} to unseen data. This is normally done by partitioning the data into two and learning the model from one part (typically the larger one) and validating it on the other. These two parts are known as the \emph{training} and the \emph{validation} sets respectively. In order to get reliable estimates of the model performance, this procedure is repeated multiple times and the results are averaged.
+
+Depending on the data, different types of partitioning schemes are preferred. In \emph{K-fold} cross validation, the data is divided into $K$ equal parts (with or without shuffling the samples), where $K - 1$ parts are used for training and the $K$th part is used for validation. In a \emph{stratified} cross-validation scheme, the partitions are done such that each partition has roughly equal number of samples from each class.
+
+\paragraph{Grid search: } When cross validation is used for selecting the best model by exhaustively searching over all possible parameters that the model can admit, it is known as grid search.
+
+\paragraph{Random search: } Sometimes grid search is too slow, and it is better to try parameters sampled randomly without a considerable loss in performance. This is known as random search.
+
+\paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is the reason a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
+
+\subsection{Bayesian optimization}
+
+\mainak{needs figure}
+Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
+
+Since this method works for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
+
+In order solve this dilemma, we use what is known as an \emph{acquisition function}. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
+
+\subsection{Solvers}
+In this work, we will be using a number of convex optimization methods. It will be used to solve unconstrained minimization problems of the form:
+\begin{equation}
+x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
+\end{equation}
+%
+\mainak{give dimensions of A and b}
+using updates of the form:
+%
+\begin{equation}
+x_{k + 1} = x_{k} + \rho_k d_k,
+\end{equation}
+%
+where $\rho_k$ is the step size and $d_k$ is the search direction.
+If there was no regularization term $\Omega(x)$, we could solve this in closed form and get $x^{\star} = {(A^{\top}A)}^{-1}A^{\top}b$. However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative where it is not smooth. Thus, we may have to resort to iterative methods, which we shall refer to as \emph{solvers}. The simplest of these solvers use first order methods. In these cases, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size depends on the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. 
+
+\paragraph{FISTA: }[ref] A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso [ref]. It enforces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate. The proximal operator for the $\ell_1$ norm is given by:
+
+\begin{equation}
+\mathrm{prox}_{\lambda \|x\|_1}(v) = \begin{cases}
+v - \lambda \quad \text{if } \lambda < v \\
+0 \quad \text{if } \lambda \leq v < v\\
+v + \lambda \quad \text{if } v < -\lambda
+\end{cases}
+\end{equation}
+
+The derivation of this operator is slightly subtle, but can be found in standard textbooks [ref], therefore we will skip it for the sake of readability. The resulting algorithm is known as ISTA [ref], which has a convergence rate of [].
+
+A faster rate of convergence can be achieved using Nesterov accelerations [ref], which adds a momentum term to the update. When the condition number of the function is high, this can be really
+
+ Intuitively speaking, one can think of 
+
+the most optimal method when we have access to only gradients and function evaluations.
+
+The full algorithm is summarized in
+
+    \begin{algorithm}[H]
+      \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
+      \REQUIRE Regularization: $\lambda \in \real_+$, Design matrix A, b
+      \STATE $x^1=0=z^1, \beta^1=1$
+        \FOR{$t=1$ to $I$}
+          
+          \STATE $x^{t+1} = \mathrm{prox}_{\lambda R/L}(z^t - \frac{1}{L}L(z^t))$
+          \STATE $\beta^{t+1} = \frac{1 + \sqrt{1 + 4(\beta^t)^2}}{2}$
+          \STATE $x^{t + 1} = x^{t + 1} + \frac{\beta^t - 1}{\beta^{t + 1}}(x^{t + 1} - x^t)$
+        \ENDFOR
+        \RETURN $x^{T + 1}$
+        \end{algorithmic}
+        \caption{Fast iterative soft thresholding algorithm}
+        \label{alg:fista}
+    \end{algorithm}
+
+Here we will describe FISTA [ref] and LBFGS-B, 
+
+\paragraph{Duality}
+
+\paragraph{LBFGS-B}
+
+\paragraph{Coordinate descent}
+
+how does ISTA and FISTA scale but LBFGS-B does not. And a primer of what we are going to see later.
+
+Block
+
+% \subsection{Interpolation schemes}
 
 \section{Contributions}
 In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an international collaboration to create an \ac{MEG} standard for  \ac{BIDS}~\citep{galan2017meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. This led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data~\citep{jas2017learning}. 

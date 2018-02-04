@@ -42,7 +42,7 @@ Following the traditional filter identification approach~\citep{moulines1995subs
 \label{eq:problem_definition_d}
 \end{align}
 %
-Due to the constraint, we must resort to an iterative approach. The options are to use (accelerated) projected gradient methods such as FISTA~\citep{beck2009fast} applied to~\eqref{eq:problem_definition_d}, or to solve a dual problem as done in~\cite{Grosse-etal:2007}. The dual is also a smooth constraint problem yet with a simpler positivity box constraint (\textit{cf.} supplementary material). The dual can therefore be optimized with L-BFGS-B. Using such a quasi-Newton solver turned out to be more efficient than any accelerated first order method in either the primal or the dual (\textit{cf.} benchmarks in supplementary material).
+Due to the constraint, we must resort to an iterative approach. The options are to use (accelerated) projected gradient methods such as FISTA~\citep{beck2009fast} applied to~\eqref{eq:problem_definition_d}, or to solve a dual problem as done in~\cite{Grosse-etal:2007}. The dual is also a smooth constraint problem yet with a simpler positivity box constraint (\textit{cf.} Section~\ref{sec:m-step}). The dual can therefore be optimized with L-BFGS-B. Using such a quasi-Newton solver turned out to be more efficient than any accelerated first order method in either the primal or the dual (\textit{cf.} benchmarks in Section~\ref{sec:additional_experiments}).
 % As in existing literature\cite{}, we first attempted to solve this problem by transforming Equation~\ref{eq:problem_definition} into the frequency domain using a Fourier transform so as to change the convolution into an elementwise multiplication. In fact, this can greatly speed up the computation, but for one crucial fact: truncating the higher order coefficients in the inverse Fourier transform of the estimated atom can make the objective function non-monotonic in the presence of noise. It turns out that the correct approach involves a constraint on the support of the atoms which does not offer similar computational benefits (as will be seen in our Results section).
 %
 
@@ -203,6 +203,7 @@ Solving atoms $d$ (sequential) & $LKTN + qL^2K$ \\
 \end{table}
 
 \section{Additional Experiments: M-step speed benchmark}
+\label{sec:additional_experiments}
 
 \subsection{Comparison with state of the art}
 
