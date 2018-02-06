@@ -238,7 +238,7 @@ approximate methods. In this study, we develop a \ac{MCMC} method to approximate
 %
 where $j$ denotes the iteration number of the \ac{MCMC} algorithm. 
 % and $\hat{x}^{(i)}_{n}$ is computed as in \eqref{eqn:csc_prob} by using the current iterates $d^{(i)}$ and $z^{(i)}$. 
-Finally, we draw a uniform random number $u_{n,t} \sim {\cal U}([0, 1])$ for each $n$ and $t$. If $u_{n,t} < \text{acc}(\phi_{n,t}^{(i)} \rightarrow \phi_{n,t}')$, we accept the sample and set $\phi_{n,t}^{(i+1)} = \phi_{n,t}'$; otherwise we reject the sample and set $\phi_{n,t}^{(i+1)} = \phi_{n,t}^{(i)}$. This procedure forms a Markov chain that leaves the target distribution $p(\phi|\cdot)$ invariant, where under mild ergodicity conditions, it can be shown that the finite-sample averages converge to their true values when $J$ goes to infinity \citep{Liu2008}. More detailed explanation of this procedure is given in the supplementary document.
+Finally, we draw a uniform random number $u_{n,t} \sim {\cal U}([0, 1])$ for each $n$ and $t$. If $u_{n,t} < \text{acc}(\phi_{n,t}^{(i)} \rightarrow \phi_{n,t}')$, we accept the sample and set $\phi_{n,t}^{(i+1)} = \phi_{n,t}'$; otherwise we reject the sample and set $\phi_{n,t}^{(i+1)} = \phi_{n,t}^{(i)}$. This procedure forms a Markov chain that leaves the target distribution $p(\phi|\cdot)$ invariant, where under mild ergodicity conditions, it can be shown that the finite-sample averages converge to their true values when $J$ goes to infinity \citep{Liu2008}. More detailed explanation of this procedure is given in Section~\ref{sec:e-step}.
 
 %
 
