@@ -18,8 +18,6 @@ Contents}}}
 
 % \etocruledstyle[1]{Contents} \localtableofcontents
 \clearpage
-\section{Background}
-
 Representations are the building blocks of signal processing. It is quite easy to convince ourselves of this fact, if we simply consider the example of low-pass filtering. When we low-pass filter the data, we are in effect, decomposing it into a sum of sinusoids of varying frequency, and then suppressing the high-frequency components. If on the other hand, we are interested in a time-frequency analysis, the choice of representation would be Morlet wavelets rather than sinusoids.
 
 Traditionally, the choice of representation has been mainly driven by analytical concern and ease of mathematical manipulation. However, the recent surge of deep learning has ignited an interest in data-driven representations. It is because good representations or features that compactly capture the properties of the data, are essential for efficient and accurate learning systems. In computer vision, for instance, handcrafted features such as SIFT~\citep{lowe1999object} and GIST descriptors~\citep{oliva2001modeling}, Deformable Parts Model (DPM)~\citep{felzenszwalb2010object}, Histogram of Oriented Gradient (HOG)~\citep{dalal2005histograms} \emph{etc.} had been the norm, before it was realized that unsupervised learning and autoencoders performed much better.
@@ -29,20 +27,26 @@ Today, unsupervised learning is used as a first step for a supervised learning t
 Barring this finding, the representation itself is usually not as meaningful as the prediction score or reconstruction loss. However, we realized that, in the case of neural signals, this is not the case and the fidelity of the representation is in itself interesting as the shape is crucial in many clinical applications~\citep{cole2017brain}. Before approaching this problem, we will give a brief overview of dictionary learning, its evolution into shift-invariant sparse coding, and parallel attempts in the neuroscience community.
 
 \mainak{Add abstract before this and move everything after this to introduction}
-\subsection{Dictionary learning}
 
-A dictionary is a set of atoms (also known as filters) which can be combined with certain coefficients to approximate the data. As such, there is no requirement of orthogonality on the atoms. To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse. Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients. This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
-
-It is easy to see that this approach is memory intensive due to the overcompleteness of the dictionary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. In the present day, it is more common to learn the dictionary and the atoms itself, and so this is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method like matrix factorization [ref], but with a sparse regularization. Typically, the convex relaxation of the $\ell_0$ penalty, the $\ell_1$ penalty is used in these situations. Here, the atoms form the columns of the dictionary matrix. The problem is biconvex after the relaxation, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising [ref], inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
-
-\subsection{Coding for shift invariance}
-In traditional dictionary learning, the signal or the image is divided into patches and these patches are used as samples for the learning. The main disadvantage of this method is that it results in redundant atoms that are shifted versions of each other. This is the reason a shift-invariant version of dictionary learning is needed. One of the earliest paper in this regard can be credited to \cite{lewicki1999coding}. In their work, the dictionary was fixed and the shift-invariance was encoded using convolutions. For the estimation, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. More recent work by \cite{grosse2012shift} made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
-
-Even so, most work so far in this space has proposed new methods, and not much thought has been given to the evaluation of these algorithms -- both computationally as well as qualitatively. For example, it is not even clear if using the Fourier transform has any computational advantage over using a simple Toeplitz matrix. Evaluating the computational complexity of these models is not so straightforward for a number of reasons. First, the problem is non-convex, and as a result, the convergence depends on the initialization. Second, the overall speed depends on the convergence rate, but also on the complexity of each iteration. Finally, the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. It is because of this that in our work~\citep{jas2017learning}, we focus more on the experimental evaluation of speed, rather than a theoretical comparison of complexity. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data. 
-
-\subsection{The neuroscientific viewpoint}
+\paragraph{The neuroscientific viewpoint}
 
 A parallel development in the field of neuroimaging has been the rise in interest for learning prototypical shapes which are shift invariant~\citep{jost2006motif, barthelemy2013multivariate, brockmeier2016learning, hitziger2017adaptive}. It is motivated by the fact that existing approximations using the Fourier basis often distorts the signal. There is, for example, a debate regarding the type of filters that should be used (See Section~\ref{sec:group_study_temporal_filtering} and \cite{widmann2015digital,parks1987digital,ifeachor2002digital, gotz-etal:15}). However, there has been so far very little cross-pollination of ideas between the sparse coding and neuroimaging communities. Our work is an attempt to bridge this gap. We propose a model which builds upon existing shift-invariant sparse coding models to be able to handle heavy-tailed noise. It assumes positivity of the coefficients to account for the fact that an atom does not change polarity over time. The upcoming sections describe how this could be achieved.
+
+% abstract below
+One of the goals for analyzing such
+data is hence to extract such ‘shift-invariant’ atoms. Even though some success has been reported
+with existing algorithms, they are limited in applicability due to their heuristic nature. Moreover,
+they are often vulnerable to artifacts and impulsive noise, which are typically present in raw neural
+recordings. In this study, we address these issues and propose a novel probabilistic convolutional
+sparse coding (CSC) model for learning shift-invariant atoms from raw neural signals containing
+potentially severe artifacts. In the core of our model, which we call $\alpha$CSC, lies a family of heavy-tailed
+distributions called $\alpha$-stable distributions. We develop a novel, computationally efficient Monte Carlo
+expectation-maximization algorithm for inference. The maximization step boils down to a weighted
+CSC problem, for which we develop a computationally efficient optimization algorithm. Our results
+show that the proposed algorithm achieves state-of-the-art convergence speeds. Besides, $\alpha$CSC is
+significantly more robust to artifacts when compared to three competing algorithms: it can extract
+spike bursts, oscillations, and even reveal more subtle phenomena such as cross-frequency coupling
+when applied to noisy neural time series.
 
 %!TEX root = ../nips_2017.tex
 
