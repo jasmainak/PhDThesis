@@ -71,7 +71,6 @@ It is hard to imagine in this day and age that a theory as fundamental as the la
 Of course, neuroscientists are beginning to realize the importance of sharing data. In recent times, neural data has started being shared through international consortiums~\citep{van2013wu, ollier2005uk} and data repositories~\citep{poldrack2013toward, gorgolewski2015neurovault}. While in the case of Newton, he gained access to the catalogue without permission, today it is possible to publish dataset papers in targeted journals so as to assign the credit where it is due. Yet, there is an unaddressed gap in terms of the ideal of data sharing and the practice of data sharing. Neuroimaging experiments are often very complicated, and it is not enough to share simply the data, but also the metadata and information regarding the experimental protocols in a well-structured format. In the absence of this information, shared data is not \emph{reusable} in the same way that uncommented and spaghetti code is not useful even if shared publicly. There isn't an accepted consensus in the community on the practices of sharing data and there is a need to establish a standard. In Chapter~\ref{chapter:group_study}, we will present a new standard known as the \ac{BIDS}, which is intended to address this gap. It is a collaborative effort between software developers and neuroscientists across various laboratories to establish a consensus on the standards and build tools to facilitate adoption of the standard.
 
 \section{Automation}
-\mainak{cite tal yarkoni and neurosynth and automation}
 
 Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future of science: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. Automation not only saves time but also makes the research more reproducible, as was noted in a recent guide to improve the transparency and reproducibility of neuroimaging research~\citep{gorgolewski2016practical}. The authors point out that manual work may seem easy at first, if the analysis has to be performed only once. However, this is not always the case as ``quite often in the course of a project, parameters are modified, subjects are changed, and processing steps need to be rerun. This is a situation in which having a set of scripts that can perform all of the processing steps automatically instead of relying on manual interventions can really pay off.'' As large datasets become more common in neuroimaging, automation will indeed become a necessity rather than a luxury.
 
@@ -84,10 +83,13 @@ In neuroimaging, there are in fact several avenues for automation:
 \item \textbf{Annotation and labeling:} A large fraction of neuroimaging data that is available is unlabeled or at best weakly labeled. This is because expert annotations are expensive, and cannot be crowdsourced. Automated tools based on unsupervised learning can play a major role in this regard.
 \item \textbf{Quality control:} Currently, quality control is performed manually by inspecting the data to spot outliers. While data inspection cannot be overlooked, it can be performed more efficiently through automated documentation of data analysis and log reports such as the Jupyter notebook and the MNE web report. At the same time, advanced statistical trend analyses as in the Automated Statistician project~\citep{duvenaud2013structure} can be used for creating summaries.
 \end{itemize}
+
+There have been some steps taken in this direction, most notably the Neurosynth platform~\citep{yarkoni2011large} which facilitates large-scale meta analysis to integrate activations maps across studies using machine learning. On the software side, the Freesurfer software package~\citep{dale-fischl-etal:99, fischl-serena-etal:99} provides a \code{recon-all} command that performs cortical segmentation automatically without any human intervention. In MNE, this philosophy is now being adopted~\citep{engemann2015automated_new} starting with automated covariance estimation.
+
 In this thesis, we will consider an algorithm that automatically annotates artifacts in the data~\citep{jas2016automated, jas2017autoreject}. This is a first step that any \ac{MEG}/\ac{EEG} processing pipeline has to go through but it is often done manually. A reason for this is that existing algorithms are not designed to be \emph{transparent}. Since for most scientists, the key to new insights is an artifact-free dataset, they would rather spend extra effort in doing this manually rather than depend on a generic algorithm which is difficult to interpret. %However, this is problematic as it can lead to a selection bias: they might end up rejecting data segments which helps them confirm their hypothesis. 
 Merely based on anecdotal reports, this process can take up to a week even for a moderately sized study of 10--20 subjects.
 
-This is what led us to propose \emph{autoreject}, which we describe in Chapter~\ref{chapter:autoreject}. It is an algorithm which can be used to mark bad segments of the data. The key insight is that, often certain sensors in the device are intermittently corrupted rather than continuously. We validate our algorithm against 3 benchmarks on the \ac{HCP} dataset~\citep{larson2013adding} which is manually annotated with bad segments.
+This is what led us to propose \emph{autoreject}, which we describe in Chapter~\ref{chapter:autoreject}. It is an algorithm which can be used to mark bad segments of the data. The key insight is that, often certain sensors in the device are intermittently corrupted rather than continuously. We validate our algorithm against 3 benchmarks on the \ac{HCP} dataset~\citep{larson2013adding} which is manually annotated with bad segments. In the process, our work also represents one of the first attempts at reanalyzing the MEG component of the HCP dataset.
 
 \section{Representation learning for data-driven discovery}
 In the last 100 years since the invention of \ac{EEG}, scientists have discovered several different brain oscillation patterns such as alpha waves, K-complexes, and mu rhythms. The oscillations and interactions between them have served as biomarkers for different brain functions and pathologies. Alpha waves have been implicated in attention, K-complexes in sleep, and mu rhythm in motor activity. 
@@ -104,7 +106,7 @@ Considering the complexity of the human brain, clearly these waveforms represent
 
 However, photos are inherently different from neural data. First, neural data can be buried in noise and corrupted by high amplitude artifacts. Second, images are labelled owing to crowdsourced data as in the case of  Imagenet~\citep{deng2009imagenet}, but neural data is not. 
 Expert annotations in the case of neural data are not easily available.
-Finally, it is spatiotemporal data with different dynamics than the 3D world that photos capture. This is where \ac{CSC} can play a role by extracting prototypical features from the data. It is an unsupervised algorithm from computer vision, which can learn shift-invariant dictionaries of prototypical waveforms (atoms) from the data using the convolution operations.
+Finally, it is spatiotemporal data with different dynamics than the 3D world that photos capture. This is where \ac{CSC} can play a role by extracting prototypical features from the data. It is an unsupervised algorithm from computer vision, which can learn shift-invariant dictionaries of prototypical waveforms (atoms) from the data using the convolution operations. For a more comprehensive background on \ac{CSC}, the reader may read Section~\ref{sec:background_dict_learning} later in this chapter.
 
 \ac{CSC} algorithms do not approximate the signal using Fourier (or sinusoidal) basis. While this is the conventional technique for extracting signals buried in noise, the approximation can degrade the shape of the signal, which can be a biomarker in many clinical diseases~\citep{cole2017brain}. As an example, a square wave would need an infinite series of sinusoids for a good approximation. Of course, transients can be better approximated using wavelets but it is clearly not sufficient for other shapes of data. Rather than fix the basis to be Fourier or wavelet, the \ac{CSC} approach is to learn \emph{both} the basis and the coefficients.
 
@@ -132,6 +134,7 @@ The $\ell_\infty$ norm of a vector $x$ is defined by:
 \begin{equation}
 \|x\|_{\infty} = \sup_n \ \lvert x_n \rvert
 \end{equation}
+\label{def:norm}
 \end{definition}
 As we are taking the supremum, this norm is sensitive to large values in the vector, which is needed for measuring artifacts.
 %
@@ -172,46 +175,16 @@ Sometimes grid search is too slow and random search is not as accurate for tunin
 
 Since these method must work for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
 
-In order solve this dilemma, an \emph{acquisition function} is typically used. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
+In order solve this dilemma, an \emph{acquisition function} is typically used. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}~\citep{rasmussen2004gaussian}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
 
-\subsection{Dictionary learning}
 
-A dictionary is a set of atoms (also known as filters) which can be combined with certain coefficients to approximate the data. As such, there is no requirement of orthogonality on the atoms. To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse. Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients. This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
-
-It is easy to see that this approach is memory intensive due to the overcompleteness of the dictionary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. In the present day, it is more common to learn the dictionary and the atoms itself, and so this is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method like matrix factorization, but with a sparse regularization. Typically, the convex relaxation of the $\ell_0$ penalty, the $\ell_1$ penalty is used in these situations. Here, the atoms form the columns of the dictionary matrix. 
-The problem is biconvex after the relaxation, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising \mainak{[ref]}, inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
-
-\paragraph{Coding for shift invariance:}
-In traditional dictionary learning, the signal or the image is divided into patches and these patches are used as samples for the learning. The main disadvantage of this method is that it results in redundant atoms that are shifted versions of each other. This is the reason a shift-invariant version of dictionary learning is needed. One of the earliest paper in this regard can be credited to \cite{lewicki1999coding}. In their work, the dictionary was fixed and the shift-invariance was encoded using convolutions. 
-This is possible because the convolution operator is defined by an integration (correspondingly summation in the discrete domain) as below.
-\vspace{\parskip}
-%
-\begin{definition}{(Convolution)}
-A convolution of two functions $f$ and $g$ is written $f * g$ and computed as:
-\begin{equation}
-(f * g)(t) \triangleq \int_{-\infty}^{\infty} f(\tau)g(t-\tau) d\tau
-\end{equation}
-\end{definition}
-
-In the discrete case where $f$ and $g$ are vectors with finite support $[0..M]$ and $[0..N]$ and $N > M$, this can be rewritten as:
-%
-\begin{equation}
-(f * g)[n] = \sum_{m=0}^{M-1} f[m]g[n-m]
-\end{equation}
-%
-so that $f * g$ has a support of $[0..(N - M + 1)]$ if the edges are truncated. As we can see, if either $f$ or $g$ is zero padded, the other function can be shifted along these zeros yielding the same result.
-
-In practice, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. This is the same formulation which is still being used to code shift invariance even if the learning algorithms are more sophisticated now. More recent work by \cite{grosse2012shift} have made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
-
-Even so, most work so far in this space has proposed new methods, and not much thought has been given to the evaluation of these algorithms -- both computationally as well as qualitatively. For example, it is not even clear if using the Fourier transform has any computational advantage over using a simple Toeplitz matrix. Evaluating the computational complexity of these models is not so straightforward for a number of reasons. First, the problem is non-convex, and as a result, the convergence depends on the initialization. Second, the overall speed depends on the convergence rate, but also on the complexity of each iteration. Finally, the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. It is because of this that in our work~\citep{jas2017learning}, we focus more on the experimental evaluation of speed, rather than a theoretical comparison of complexity. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data. 
-
-\subsection{Solvers}
+\subsection{Iterative solvers for convex problems}
 In this work, we will be using a number of convex optimization methods. It will be used to solve unconstrained minimization problems of the form:
 \begin{equation}
 x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
 \end{equation}
 %
-where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. The updates will be of the  form:
+where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. A penalty or regularization term $\Omega(x)$ is added to prevent solutions that overfit. The updates will be of the  form:
 %
 \begin{equation}
 x_{k + 1} = x_{k} + \rho_k d_k,
@@ -269,6 +242,39 @@ how does ISTA and FISTA scale but LBFGS-B does not. And a primer of what we are 
 Block
 
 % \subsection{Interpolation schemes}
+
+\subsection{Dictionary learning}
+\label{sec:background_dict_learning}
+
+\paragraph{Sparse Coding:} A \emph{dictionary} is a set of \emph{atoms} (also known as filters sometimes) which can be combined with certain \emph{coefficients} to approximate the data. The atoms could be fixed (for example wavelets or Gabor), or they could be learned directly from the data itself. As such, there is no requirement of orthogonality on the atoms. To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse, \emph{i.e.}, they have very few non-zero values. The learning algorithm is therefore called \emph{sparse coding} and the coefficients learned are known as the \emph{sparse code}.
+
+Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. Note that the $\ell_0$ ``norm'' simply counts the number of elements in the vector (c.f., Definition~\ref{def:norm}) , therefore adding it as a regularizer will favour solutions that have fewer non-zero elements. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients (keeping the atoms fixed). This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
+
+\paragraph{Learning atoms:} It is easy to see that the overcomplete approach is memory intensive as it has more atoms that necessary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. Nowadays, it is more common to learn the atoms in addition to the sparse code, which is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method (or matrix factorization) technique (like \ac{PCA} or \ac{ICA}), but with a sparse regularization. Typically, the convex relaxation of the $\ell_0$ penalty, the $\ell_1$ penalty is used in these situations. The problem is biconvex after the relaxation, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising~\citep{elad2006image}, inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
+
+\paragraph{Coding for shift invariance:}
+In traditional dictionary learning, the signal or the image is divided into patches and these patches are used as samples for the learning. The main disadvantage of this method is that it results in redundant atoms that are shifted versions of each other. This is the reason a shift-invariant version of dictionary learning is needed. One of the earliest paper in this regard can be credited to \cite{lewicki1999coding}. In their work, the dictionary was fixed and the shift-invariance was encoded using convolutions. 
+This is possible because the convolution operator is defined by an integration (correspondingly summation in the discrete domain) as below.
+\vspace{\parskip}
+%
+\begin{definition}{(Convolution)}
+A convolution of two functions $f$ and $g$ is written $f * g$ and computed as:
+\begin{equation}
+(f * g)(t) \triangleq \int_{-\infty}^{\infty} f(\tau)g(t-\tau) d\tau
+\end{equation}
+\end{definition}
+
+In the discrete case where $f$ and $g$ are vectors with finite support $[0..M]$ and $[0..N]$ and $N > M$, this can be rewritten as:
+%
+\begin{equation}
+(f * g)[n] = \sum_{m=0}^{M-1} f[m]g[n-m]
+\end{equation}
+%
+so that $f * g$ has a support of $[0..(N - M + 1)]$ if the edges are truncated. As we can see, if either $f$ or $g$ is zero padded, the other function can be shifted along these zeros yielding the same result.
+
+In practice, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. This is the same formulation which is still being used to code shift invariance even if the learning algorithms are more sophisticated now. More recent work by \cite{grosse2012shift} have made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
+
+Even so, most work so far in this space has proposed new methods, and not much thought has been given to the evaluation of these algorithms -- both computationally as well as qualitatively. For example, it is not even clear if using the Fourier transform has any computational advantage over using a simple Toeplitz matrix. Evaluating the computational complexity of these models is not so straightforward for a number of reasons. First, the problem is non-convex, and as a result, the convergence depends on the initialization. Second, the overall speed depends on the convergence rate, but also on the complexity of each iteration. Finally, the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. It is because of this that in our work~\citep{jas2017learning}, we focus more on the experimental evaluation of speed, rather than a theoretical comparison of complexity. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data. 
 
 \clearpage
 \section{Contributions}
