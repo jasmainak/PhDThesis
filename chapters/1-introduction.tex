@@ -33,10 +33,10 @@ There are a number of modalities to measure the electrical potentials, the most 
 
 \paragraph{Electroencephalography: } \Ac{EEG} is a portable and non-invasive measurement modality that is frequently used in the context of \acp{BCI}. In electroencephalography, an array of electrodes on an \ac{EEG} cap are placed on the scalp to measure the voltages with respect to a reference electrode. The voltage it measure is not the result of a single neuron but instead a summed potential of populations of thousands of neurons. It has a high temporal resolution (in the order of \emph{ms}), however the spatial resolution is not so high as the skull smears the signal.
 
-\paragraph{Magnetoencephalography: } Any electric current is associated with magnetic fields as a consequence of Maxwell's theory. Therefore, the brain generates tiny magnetic fields which are wrap around the currents according to Maxwell's right hand thumb rule. The flux is tiny ($\sim10^{-12}T$) compared to the earth's magnetic field ($10^{-4}T$), and to measure this one would need very sensitive electronics and heavy noise cancellation. The measurement itself is done done in a shielded magnetic room made of three layers of metals. The sensors are superconducting coils which capture the magnetic flux. They are immersed in liquid helium cooled to very low temperatures, so as to lower any loss in signal due to resistance. A typical device contains two types of sensors: gradiometers and magnetometers. While the magnetometer measures the absolute magnitude of magnetic field, the gradiometer measures derivative of the field. It is therefore less sensitive to external noise [\mainak{check}]. MEG has the advantage that the skull does not deteriorate the signal quality.
+\paragraph{Magnetoencephalography: } Any electric current is associated with magnetic fields as a consequence of Maxwell's theory. Therefore, the brain generates tiny magnetic fields which are wrap around the currents according to Maxwell's right hand thumb rule. The flux is tiny ($\sim10^{-12}T$) compared to the earth's magnetic field ($10^{-4}T$), and to measure this one would need very sensitive electronics and heavy noise cancellation. The measurement itself is done done in a shielded magnetic room made of three layers of metals. The sensors are superconducting coils which capture the magnetic flux. They are immersed in liquid helium cooled to very low temperatures, so as to lower any loss in signal due to resistance. A typical device contains two types of sensors: gradiometers and magnetometers. While the magnetometer measures the absolute magnitude of magnetic field, the gradiometer measures derivative of the field. It is therefore less sensitive to external noise [\mainak{check}]. \ac{MEG} has the advantage that the skull does not deteriorate the signal quality.
 
-\paragraph{Local Field Potential}
-\paragraph{Electrocorticography}
+\paragraph{Local Field Potential (LFP)}
+The Local Field Potential is an invasive method that measures the electrical potential in the extracellular space of the brain tissue. In contrast to \ac{EEG}, LFP are recorded in depth, from within the cortical tissue and can therefore measure more localized populations of neurons.
 
 \section{The reproducibility crisis}
 
@@ -113,10 +113,10 @@ In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional 
 \clearpage
 \section{Background}
 
-Here, we will introduce some basic linear algebra, optimization, and machine learning concepts that will be useful in the rest of the thesis.
+Here, we will introduce some basic linear algebra, optimization, and machine learning concepts that will be useful particularly in Chapters~\ref{chapter:autoreject} and \ref{chapter:alphacsc}.
 
 \subsection{Norms}
-Informally speaking, a norm is used to measure the length of size of a vector. It must also satisfy some properties, but it will not be of concern for us in this thesis. It is sufficient to know the mathematical expression, how it behaves, and the physical property that it captures.
+Informally speaking, a norm is used to measure the length or size of a vector. It must also satisfy some properties, but it will not be of concern for us in this thesis. It is sufficient to know the mathematical expression, how it behaves, and the physical property that it captures.
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
 
@@ -159,23 +159,49 @@ Depending on the data, different types of partitioning schemes are preferred. In
 
 \subsection{Bayesian optimization}
 
-\mainak{needs figure}
+
+\begin{figure}[htb]
+\begin{center}
+   \includegraphics[width=0.7\linewidth]{figures/bayes_opt.pdf}
+\end{center}
+   \caption[Bayesian optimization for parameter tuning]{An illustration of how Bayesian optimization works by combining (A) Gaussian process to estimate uncertainties on the objective function for the parameter space, and (B) Acquisition function to balance the ``exploration'' \emph{vs} ``exploitation'' dilemma.}
+   \label{fig:bayes_opt}
+\end{figure}
+
 Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
 
-Since this method works for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
+Since these method must work for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
 
-In order solve this dilemma, we use what is known as an \emph{acquisition function}. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
+In order solve this dilemma, an \emph{acquisition function} is typically used. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
 
 \subsection{Dictionary learning}
 
 A dictionary is a set of atoms (also known as filters) which can be combined with certain coefficients to approximate the data. As such, there is no requirement of orthogonality on the atoms. To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse. Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients. This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
 
-It is easy to see that this approach is memory intensive due to the overcompleteness of the dictionary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. In the present day, it is more common to learn the dictionary and the atoms itself, and so this is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method like matrix factorization [ref], but with a sparse regularization. Typically, the convex relaxation of the $\ell_0$ penalty, the $\ell_1$ penalty is used in these situations. Here, the atoms form the columns of the dictionary matrix. The problem is biconvex after the relaxation, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising [ref], inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
+It is easy to see that this approach is memory intensive due to the overcompleteness of the dictionary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. In the present day, it is more common to learn the dictionary and the atoms itself, and so this is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method like matrix factorization, but with a sparse regularization. Typically, the convex relaxation of the $\ell_0$ penalty, the $\ell_1$ penalty is used in these situations. Here, the atoms form the columns of the dictionary matrix. 
+The problem is biconvex after the relaxation, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising \mainak{[ref]}, inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
 
 \paragraph{Coding for shift invariance:}
-In traditional dictionary learning, the signal or the image is divided into patches and these patches are used as samples for the learning. The main disadvantage of this method is that it results in redundant atoms that are shifted versions of each other. This is the reason a shift-invariant version of dictionary learning is needed. One of the earliest paper in this regard can be credited to \cite{lewicki1999coding}. In their work, the dictionary was fixed and the shift-invariance was encoded using convolutions. For the estimation, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. More recent work by \cite{grosse2012shift} made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
+In traditional dictionary learning, the signal or the image is divided into patches and these patches are used as samples for the learning. The main disadvantage of this method is that it results in redundant atoms that are shifted versions of each other. This is the reason a shift-invariant version of dictionary learning is needed. One of the earliest paper in this regard can be credited to \cite{lewicki1999coding}. In their work, the dictionary was fixed and the shift-invariance was encoded using convolutions. 
+This is possible because the convolution operator is defined by an integration (correspondingly summation in the discrete domain) as below.
+\vspace{\parskip}
+%
+\begin{definition}{(Convolution)}
+A convolution of two functions $f$ and $g$ is written $f * g$ and computed as:
+\begin{equation}
+(f * g)(t) \triangleq \int_{-\infty}^{\infty} f(\tau)g(t-\tau) d\tau
+\end{equation}
+\end{definition}
 
-\mainak{remind the reader about convolution operator?}
+In the discrete case where $f$ and $g$ are vectors with finite support $[0..M]$ and $[0..N]$ and $N > M$, this can be rewritten as:
+%
+\begin{equation}
+(f * g)[n] = \sum_{m=0}^{M-1} f[m]g[n-m]
+\end{equation}
+%
+so that $f * g$ has a support of $[0..(N - M + 1)]$ if the edges are truncated. As we can see, if either $f$ or $g$ is zero padded, the other function can be shifted along these zeros yielding the same result.
+
+In practice, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. This is the same formulation which is still being used to code shift invariance even if the learning algorithms are more sophisticated now. More recent work by \cite{grosse2012shift} have made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
 
 Even so, most work so far in this space has proposed new methods, and not much thought has been given to the evaluation of these algorithms -- both computationally as well as qualitatively. For example, it is not even clear if using the Fourier transform has any computational advantage over using a simple Toeplitz matrix. Evaluating the computational complexity of these models is not so straightforward for a number of reasons. First, the problem is non-convex, and as a result, the convergence depends on the initialization. Second, the overall speed depends on the convergence rate, but also on the complexity of each iteration. Finally, the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. It is because of this that in our work~\citep{jas2017learning}, we focus more on the experimental evaluation of speed, rather than a theoretical comparison of complexity. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data. 
 
@@ -185,8 +211,7 @@ In this work, we will be using a number of convex optimization methods. It will 
 x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
 \end{equation}
 %
-\mainak{give dimensions of A and b}
-using updates of the form:
+where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. The updates will be of the  form:
 %
 \begin{equation}
 x_{k + 1} = x_{k} + \rho_k d_k,
