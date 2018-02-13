@@ -171,7 +171,7 @@ Depending on the data, different types of partitioning schemes are preferred. In
    \label{fig:bayes_opt}
 \end{figure}
 
-Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
+Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization~\citep{snoek2012practical} is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
 
 Since these method must work for any kind of function which is unknown and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
 
@@ -179,57 +179,67 @@ In order solve this dilemma, an \emph{acquisition function} is typically used. W
 
 
 \subsection{Iterative solvers for convex problems}
-In this work, we will be using a number of convex optimization methods. It will be used to solve unconstrained minimization problems of the form:
+
+In this thesis, we will be using a number of convex optimization methods. Let us first recall what is a convex function before diving into the details of these methods.
+\vspace{\parskip}
+\begin{definition}{(Convex function)}
+A function $f$ is convex if it satisfies
+\begin{equation}
+\forall x_1, x_2 \in X, \forall t \in [0, 1]: f(tx_1 + (1 - t)x_2) \leq tf(x_1) + (1 - t)f(x_2)
+\end{equation}
+\end{definition}
+
+In other words, for any two points on the function, the line joining those two points lies above the graph of the function. A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minima is not only the global minima, but also it is unique.
+
+We will be solving unconstrained minimization problems of the form:
 \begin{equation}
 x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
 \end{equation}
 %
-where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. A penalty or regularization term $\Omega(x)$ is added to prevent solutions that overfit. The updates will be of the  form:
+where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. A penalty or regularization term $\Omega(x)$ is added to prevent solutions that overfit. 
+If there was no regularization term $\Omega(x)$, we could solve this in closed form and get $x^{\star} = {(A^{\top}A)}^{-1}A^{\top}b$. However, this can be computationally prohibitive as inverting $A^{\top}A$ is $\mathcal{O}(p^3)$, and iterative methods based on gradient descent are more efficient as they require only a matrix-vector dot product. These are what we shall refer to as \emph{solvers}. More importantly, these gradient based methods can work for arbitrary functions as long as we have access to the gradient (or even its approximation).
+
+In gradient based methods, we make updates of the  form:
 %
 \begin{equation}
 x_{k + 1} = x_{k} + \rho_k d_k,
 \end{equation}
 %
 where $\rho_k$ is the step size and $d_k$ is the search direction.
-If there was no regularization term $\Omega(x)$, we could solve this in closed form and get $x^{\star} = {(A^{\top}A)}^{-1}A^{\top}b$. However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative where it is not smooth. Thus, we may have to resort to iterative methods, which we shall refer to as \emph{solvers}. The simplest of these solvers use first order methods. In these cases, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size depends on the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. 
 
-\paragraph{FISTA: }[ref] A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso [ref]. It enforces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate. The proximal operator for the $\ell_1$ norm is given by:
+In the case of gradient descent, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size $\rho_k=1/L$ where $L$ is the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. 
+
+However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative at all points. In these cases, we must resort to proximal gradient methods.
+
+\paragraph{\Ac{FISTA}: } A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate to induce sparsity. The proximal operator can be thought of as a generalized projection operator~\citep{parikh2014proximal} and for the $\ell_1$ norm, it is the soft thresholding function $\mathcal{S}_\lambda(\cdot)$ given by:
 
 \begin{equation}
-\mathrm{prox}_{\lambda \|x\|_1}(v) = \begin{cases}
-v - \lambda \quad \text{if } \lambda < v \\
-0 \quad \text{if } \lambda \leq v < v\\
+\mathcal{S}_{\lambda}(v) = \begin{cases}
+v - \lambda \quad \text{if }  v > \lambda \\
+0 \quad \hspace{22pt} \text{if } -\lambda \leq v < \lambda\\
 v + \lambda \quad \text{if } v < -\lambda
 \end{cases}
 \end{equation}
 
-The derivation of this operator is slightly subtle, but can be found in standard textbooks [ref], therefore we will skip it for the sake of readability. The resulting algorithm is known as ISTA [ref], which has a convergence rate of [].
+The resulting algorithm is known as \ac{ISTA}~\citep{daubechies2004iterative, bach2012optimization}, which has a linear convergence rate of $\mathcal{O}(1/T)$ for $T$ iterations.
 
-A faster rate of convergence can be achieved using Nesterov accelerations [ref], which adds a momentum term to the update. When the condition number of the function is high, this can be really
-
- Intuitively speaking, one can think of 
-
-the most optimal method when we have access to only gradients and function evaluations.
-
-The full algorithm is summarized in
+Gradient descent has slow convergence due to oscillations if the condition number of $A$ is high as it leads to pathological curvature. A faster rate of convergence can be achieved using Nesterov accelerations~\citep{nesterov1983method}, which adds a momentum term to the update. This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a quadratic rate of convergence $\mathcal{O}(1/T^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
 
     \begin{algorithm}[H]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
       \REQUIRE Regularization: $\lambda \in \real_+$, Design matrix A, b
       \STATE $x^1=0=z^1, \beta^1=1$
-        \FOR{$t=1$ to $I$}
+        \FOR{$t=1$ to $T$}
           
-          \STATE $x^{t+1} = \mathrm{prox}_{\lambda R/L}(z^t - \frac{1}{L}L(z^t))$
-          \STATE $\beta^{t+1} = \frac{1 + \sqrt{1 + 4(\beta^t)^2}}{2}$
-          \STATE $x^{t + 1} = x^{t + 1} + \frac{\beta^t - 1}{\beta^{t + 1}}(x^{t + 1} - x^t)$
+          \STATE $x^{t+1} = \mathcal{S}_{\lambda/L}(z^t - \frac{1}{L}g(z^t))$ \textit{\color{blue} /* Proximal step */}
+          \STATE $\beta^{t+1} = (1 + \sqrt{1 + 4(\beta^t)^2})/2$
+          \STATE $z^{t + 1} = x^{t + 1} + \frac{\beta^t - 1}{\beta^{t + 1}}(x^{t + 1} - x^t)$ \textit{\color{blue} /* Momentum update */}
         \ENDFOR
         \RETURN $x^{T + 1}$
         \end{algorithmic}
         \caption{Fast iterative soft thresholding algorithm}
         \label{alg:fista}
     \end{algorithm}
-
-Here we will describe FISTA [ref] and LBFGS-B, 
 
 \paragraph{Duality}
 
@@ -246,7 +256,10 @@ Block
 \subsection{Dictionary learning}
 \label{sec:background_dict_learning}
 
-\paragraph{Sparse Coding:} A \emph{dictionary} is a set of \emph{atoms} (also known as filters sometimes) which can be combined with certain \emph{coefficients} to approximate the data. The atoms could be fixed (for example wavelets or Gabor), or they could be learned directly from the data itself. As such, there is no requirement of orthogonality on the atoms. To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse, \emph{i.e.}, they have very few non-zero values. The learning algorithm is therefore called \emph{sparse coding} and the coefficients learned are known as the \emph{sparse code}.
+\paragraph{Sparse Coding:} A \emph{dictionary} is a set of \emph{atoms} (also known as filters sometimes) which can be combined with certain \emph{coefficients} (or activations) to approximate the data. 
+The atoms could be fixed (for example wavelets or Gabor), or they could be learned directly from the data itself. As such, there is no requirement of orthogonality on the atoms. 
+To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse, \emph{i.e.}, they have very few non-zero values. 
+The learning algorithm is therefore called \emph{sparse coding} and the coefficients learned are known as the \emph{sparse code}.
 
 Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. Note that the $\ell_0$ ``norm'' simply counts the number of elements in the vector (c.f., Definition~\ref{def:norm}) , therefore adding it as a regularizer will favour solutions that have fewer non-zero elements. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients (keeping the atoms fixed). This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
 
@@ -273,8 +286,6 @@ In the discrete case where $f$ and $g$ are vectors with finite support $[0..M]$ 
 so that $f * g$ has a support of $[0..(N - M + 1)]$ if the edges are truncated. As we can see, if either $f$ or $g$ is zero padded, the other function can be shifted along these zeros yielding the same result.
 
 In practice, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. This is the same formulation which is still being used to code shift invariance even if the learning algorithms are more sophisticated now. More recent work by \cite{grosse2012shift} have made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
-
-Even so, most work so far in this space has proposed new methods, and not much thought has been given to the evaluation of these algorithms -- both computationally as well as qualitatively. For example, it is not even clear if using the Fourier transform has any computational advantage over using a simple Toeplitz matrix. Evaluating the computational complexity of these models is not so straightforward for a number of reasons. First, the problem is non-convex, and as a result, the convergence depends on the initialization. Second, the overall speed depends on the convergence rate, but also on the complexity of each iteration. Finally, the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. It is because of this that in our work~\citep{jas2017learning}, we focus more on the experimental evaluation of speed, rather than a theoretical comparison of complexity. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data. 
 
 \clearpage
 \section{Contributions}
