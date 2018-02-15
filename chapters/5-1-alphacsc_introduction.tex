@@ -33,13 +33,12 @@ Remarkably, there has been so far very little cross-pollination of ideas between
 Our work is an attempt to bridge this gap. 
 We propose a model which builds upon existing shift-invariant sparse coding models to be able to handle heavy-tailed noise and artifacts. It assumes positivity of the coefficients to account for the fact that an atom does not change polarity over time. 
 
-Our model is a novel probabilistic convolutional
-sparse coding (CSC) model for learning shift-invariant atoms from raw neural signals containing
+Our model is a novel probabilistic \ac{CSC} model for learning shift-invariant atoms from raw neural signals containing
 potentially severe artifacts.
 In the core of our model, which we call $\alpha$CSC, lies a family of heavy-tailed
 distributions called $\alpha$-stable distributions. We develop a novel, computationally efficient Monte Carlo
 expectation-maximization algorithm for inference. The maximization step boils down to a weighted
-CSC problem, for which we develop a computationally efficient optimization algorithm.
+\ac{CSC} problem, for which we develop a computationally efficient optimization algorithm.
 Our work is unique as we rigorously evaluate the computational efficiency of our algorithm against the competing benchmarks. As the \ac{CSC} problem is non-convex, the convergence depends on the initialization. A theoretical analysis of computational complexity is not sufficient as the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data.
 
 Our results
