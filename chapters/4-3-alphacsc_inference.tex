@@ -54,7 +54,7 @@ Note that during the alternating minimization, thanks to convexity we can warm s
 % \mjtodo{We don't talk about warm starting the iterations of EM anywhere. Maybe not very important ...}
 
 
-\section{Details of the E-Step}
+\subsection{Details of the E-Step}
 \label{sec:e-step}
 %\umut{I will put more derivations here.}
 
@@ -86,9 +86,9 @@ The acceptance probability requires the prior distribution of $\phi$ to be evalu
 \end{align}
 Thanks to the simplification, this probability is tractable and can be easily computed. 
 
-\section{Details of the M-Step}
+\subsection{Details of the M-Step}
 \label{sec:m-step}
-\subsection{Solving for the activations}
+\paragraph{Solving for the activations: }
 In the M-step, we optimize~\eqref{eq:problem_definition_z} to find the activations $z_n^{(i)}$ of each trial $n$ independently. To keep the notation simple, we will drop the index for the iteration number $i$ of the EM algorithm.
 
 First, this equation can be rewritten by concatenating the Toeplitz matrices for the $K$ atoms into a big matrix $D = [D^1, D^2, ..., D^K] \in \bbR^{T \times KT}$ and the activations for different atoms into a single vector $\bar{z}_n = [(\bar{z}_n^1)^\top, (\bar{z}_n^2)^\top, ..., (\bar{z}_n^K)^\top]^\top \in \bbR^{KT}_+$ where $(\cdot)^\top$ denotes the transposition operation. Recall that $\bar{z}_n^k$ is a zero-padded version of $z_n^k$. This leads to a simpler formulation and the objective function $\mathcal{L}(d, z)$:
@@ -109,7 +109,7 @@ In practice, this big matrix $D$ is never assembled and all operations are carri
 
 For each trial, one iteration costs $\mathcal{O}(LKT)$.
 
-\subsection{Solving for the atoms}
+\paragraph{Solving for the atoms: }
 
 In the M-step, we optimize \eqref{eq:problem_definition_d} to find the atoms $d^k$.
 As when solving for the activations $z_n$, we can remove the summation over the atoms by concatenating the delayed matrices into $Z_{n}=[Z_{n}^1, Z_{n}^2, \dots, Z_{n}^K] \in \bbR^{T \times KL}$ and $d=[(d^1)^\top, (d^2)^\top, ..., (d^K)^\top]^\top \in \bbR^{KL}$. This leads to the simpler formulation:
@@ -201,57 +201,6 @@ Solving atoms $d$ (sequential) & $LKTN + qL^2K$ \\
 \label{table:complexity_m}
 \end{center}
 \end{table}
-
-\section{Additional Experiments: M-step speed benchmark}
-\label{sec:additional_experiments}
-
-\subsection{Comparison with state of the art}
-
-\begin{figure}[htb]
-    \centering
-     \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.31\linewidth]{figures/relative_2_32.pdf}}
-     \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.31\textwidth]{figures/relative_2_128.pdf}}
-     \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.31\textwidth]{figures/relative_10_32.pdf}}
-    \caption[Convergence speed of the relative objective function.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
-    \label{fig:convergence_setups}
-\end{figure}
-
-Here, we compare convergence plots of our algorithm against a number of state-of-art methods. The details of the experimental setup are described in Section~\ref{sec:experiments}. Fig.~\ref{fig:convergence_setups} demonstrates on a variety of setups the computational
-advantage of our quasi-Newton approach to solve the M-step.
-Note that Fig.~\ref{fig:convergence}b is in fact a summary of Fig.~\ref{fig:convergence_setups}. 
-Indeed, we can verify that ADMM methods converge quickly to a modest accuracy, but take much longer to converge to a high accuracy.\citep{boyd2011distributed}
-
-Next, in Fig.~\ref{fig:convergence_traditional}, we show more traditional convergence plots. In contrast to Fig.~\ref{fig:convergence} or \ref{fig:convergence_setups} where the relative objective function is shown, here we plot the absolute value of the objective function. We can now verify that each of the methods have indeed converged to their respective local minimum. Of course, owing to the non-convex nature of the problem, they do not necessarily converge to the same local minimum.
-\begin{figure}[htb]
-    \centering
-     \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.31\linewidth]{figures/plateau_2_32.pdf}}
-     \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.31\textwidth]{figures/plateau_2_128.pdf}}
-     \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.31\textwidth]{figures/plateau_10_32.pdf}}
-    \caption[Convergence of the objective function as a function of time.]{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
-    \label{fig:convergence_traditional}
-\end{figure}
-
-\subsection{Comparison of solver for the activations subproblem}
-
-Finally, we compare convergence plots of our algorithm using different solvers for the $z$-update: ISTA, FISTA, and L-BFGS-B. The rationale for choosing a quasi-Newton solver for the $z$-update becomes clear in  Fig.~\ref{fig:convergence_z_update} as the L-BFGS-B solver turns out to be computationally advantageous on a variety of setups.
-
-\begin{figure}[h]
-    \centering
-     \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.31\linewidth]{figures/fista_2_32.pdf}}
-     \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.31\textwidth]{figures/fista_2_128.pdf}}
-     \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.31\textwidth]{figures/fista_10_32.pdf}}
-    \caption[Comparison of solvers for the activations subproblem.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
-    \label{fig:convergence_z_update}
-\end{figure}
 
 
 

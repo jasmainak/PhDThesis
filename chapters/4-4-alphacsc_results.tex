@@ -34,7 +34,7 @@ In our synthetic data experiments, we simulate $N$ trials of length $T$ by first
 
 
 % \paragraph{M-step performance:}
-\textbf{M-step performance:} 
+\subsection{M-step performance} 
 In our first set of synthetic experiments, we illustrate the benefits of our M-step optimization approach over state-of-the-art CSC solvers. 
 %
 %Besides existing CSC solvers cannot be directly applied to the M-step of our algorithm for $\alpha < 2$, even in the case where $\alpha=2$ they turn out to be not as efficient when applied to neural signals, since they solve the problem in the Fourier domain which introduces additional projection operations. 
@@ -58,8 +58,8 @@ During our experiments we have observed that the ADMM-based methods do not guara
 
 In Fig.~\ref{fig:convergence}, we illustrate the convergence behaviors of the different methods.
 %Note that the y-axis is the relative precision with respect to the best obtainable objective function value upon convergence for the local minima that the algorithm converges to. % nice one !
-Note that the y-axis is the precision relative to the objective value obtained upon convergence. In other words, each curve is relative to its own local minimum (see supplementary document for details).
-In the right subplot, we show how long it takes for the algorithms to reach a relative precision of $0.01$ for different settings (\textit{cf.} supplementary material for more benchmarks). Our method consistently performs better and the difference is even more striking for more challenging setups. This speed improvement on the M-step is crucial for us as this step will be repeatedly executed. % in the EM algorithm. 
+Note that the y-axis is the precision relative to the objective value obtained upon convergence. In other words, each curve is relative to its own local minimum (see next paragraph for details).
+In the right subplot, we show how long it takes for the algorithms to reach a relative precision of $0.01$ for different settings (\textit{cf.} next paragraph for more benchmarks). Our method consistently performs better and the difference is even more striking for more challenging setups. This speed improvement on the M-step is crucial for us as this step will be repeatedly executed. % in the EM algorithm. 
 %This sets the stage for us to apply $\alpha$CSC on datasets of realistic dimensions.
 %
 \newcommand{\tmpsize}{0.15}
@@ -109,8 +109,55 @@ In the right subplot, we show how long it takes for the algorithms to reach a re
 % \paragraph{Robustness against corrupted data:}
 %
 
+\paragraph{Detailed comparison:}
 
-\textbf{Robustness to corrupted data:} 
+\begin{figure}[htb]
+    \centering
+     \subfigure[$K=2$, $L=32$.]{
+     \includegraphics[width=0.31\linewidth]{figures/relative_2_32.pdf}}
+     \subfigure[$K=2$, $L=128$.]{
+     \includegraphics[width=0.31\textwidth]{figures/relative_2_128.pdf}}
+     \subfigure[$K=10$, $L=32$.]{
+     \includegraphics[width=0.31\textwidth]{figures/relative_10_32.pdf}}
+    \caption[Convergence speed of the relative objective function.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
+    \label{fig:convergence_setups}
+\end{figure}
+
+Here, we compare convergence plots of our algorithm against a number of state-of-art methods. Fig.~\ref{fig:convergence_setups} demonstrates on a variety of setups the computational
+advantage of our quasi-Newton approach to solve the M-step.
+Note that Fig.~\ref{fig:convergence}b is in fact a summary of Fig.~\ref{fig:convergence_setups}. 
+Indeed, we can verify that ADMM methods converge quickly to a modest accuracy, but take much longer to converge to a high accuracy.\citep{boyd2011distributed}
+
+Next, in Fig.~\ref{fig:convergence_traditional}, we show more traditional convergence plots. In contrast to Fig.~\ref{fig:convergence} or \ref{fig:convergence_setups} where the relative objective function is shown, here we plot the absolute value of the objective function. We can now verify that each of the methods have indeed converged to their respective local minimum. Of course, owing to the non-convex nature of the problem, they do not necessarily converge to the same local minimum.
+\begin{figure}[htb]
+    \centering
+     \subfigure[$K=2$, $L=32$.]{
+     \includegraphics[width=0.31\linewidth]{figures/plateau_2_32.pdf}}
+     \subfigure[$K=2$, $L=128$.]{
+     \includegraphics[width=0.31\textwidth]{figures/plateau_2_128.pdf}}
+     \subfigure[$K=10$, $L=32$.]{
+     \includegraphics[width=0.31\textwidth]{figures/plateau_10_32.pdf}}
+    \caption[Convergence of the objective function as a function of time.]{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
+    \label{fig:convergence_traditional}
+\end{figure}
+
+\paragraph{Comparison of solver for the activations subproblem:}
+
+Finally, we compare convergence plots of our algorithm using different solvers for the $z$-update: ISTA, FISTA, and L-BFGS-B. The rationale for choosing a quasi-Newton solver for the $z$-update becomes clear in  Fig.~\ref{fig:convergence_z_update} as the L-BFGS-B solver turns out to be computationally advantageous on a variety of setups.
+
+\begin{figure}[h]
+    \centering
+     \subfigure[$K=2$, $L=32$.]{
+     \includegraphics[width=0.31\linewidth]{figures/fista_2_32.pdf}}
+     \subfigure[$K=2$, $L=128$.]{
+     \includegraphics[width=0.31\textwidth]{figures/fista_2_128.pdf}}
+     \subfigure[$K=10$, $L=32$.]{
+     \includegraphics[width=0.31\textwidth]{figures/fista_10_32.pdf}}
+    \caption[Comparison of solvers for the activations subproblem.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
+    \label{fig:convergence_z_update}
+\end{figure}
+
+\subsection{Robustness to corrupted data} 
 In our second synthetic data experiment, we illustrate the robustness of $\alpha$CSC in the presence of corrupted observations.
 %
 In order to simulate the likely presence of high amplitude artifacts, one way would be to directly simulate the generative model in \eqref{eqn:acsc_org}. However, this would give us an unfair advantage, since $\alpha$CSC is specifically designed for such data. Here, we take an alternative approach, where we corrupt a randomly chosen fraction of the trials ($10\%$ or $20\%$) with strong Gaussian noise of standard deviation $0.1$, \textit{i.e.} one order of magnitude higher than in a regular trial. We used a regularization parameter of $\lambda = 0.1$.
@@ -151,7 +198,7 @@ In the artifact-free scenario, all algorithms perform equally well, except for M
 
 % $\alpha$CSC learned good atoms even on corrupted data.
 
-\textbf{Results on LFP data}
+\subsection{Results on LFP data}
 In our last set of experiments, we consider real neural data from two different datasets. 
 %
 We first applied $\alpha$CSC on an LFP dataset previously used in~\cite{hitziger2017adaptive} and containing epileptiform spikes as shown in Fig.~\ref{fig:spikedata}. The data was recorded in the rat cortex, and  is free of artifact. Therefore, we used the standard CSC with our optimization scheme, (i.e.\ $\alpha$CSC with $\alpha=2$).
