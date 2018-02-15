@@ -151,7 +151,7 @@ The Frobenius norm is a matrix norm that is simply the $\ell_2$ vector norm of t
 
 \subsection{Cross validation}
 
-Cross validation is a statistical technique to estimate how well a predictive model will \emph{generalize} to unseen data. This is normally done by partitioning the data into two and learning the model from one part (typically the larger one) and validating it on the other. These two parts are known as the \emph{training} and the \emph{validation} sets respectively. In order to get reliable estimates of the model performance, this procedure is repeated multiple times and the results are averaged.
+Cross validation is a statistical technique to estimate how well a predictive model will \emph{generalize} to unseen data. We will be using cross validation in our \emph{autoreject} work presented in Chapter~\ref{chapter:autoreject}. Cross validation is normally performed by partitioning the data into two and learning the model from one part (typically the larger one) while validating it on the other. These two parts are known as the \emph{training} and the \emph{validation} sets respectively. In order to get reliable estimates of the model performance, this procedure is repeated multiple times and the results are averaged.
 
 Depending on the data, different types of partitioning schemes are preferred. In \emph{K-fold} cross validation, the data is divided into $K$ equal parts (with or without shuffling the samples), where $K - 1$ parts are used for training and the $K$th part is used for validation. In a \emph{stratified} cross-validation scheme, the partitions are done such that each partition has roughly equal number of samples from each class.
 
@@ -196,6 +196,7 @@ We will be solving unconstrained minimization problems of the form:
 \begin{equation}
 x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
 \end{equation}
+\label{eq:linreg_minimize}
 %
 where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. A penalty or regularization term $\Omega(x)$ is added to prevent solutions that overfit. 
 If there was no regularization term $\Omega(x)$, we could solve this in closed form and get $x^{\star} = {(A^{\top}A)}^{-1}A^{\top}b$. However, this can be computationally prohibitive as inverting $A^{\top}A$ is $\mathcal{O}(p^3)$, and iterative methods based on gradient descent are more efficient as they require only a matrix-vector dot product. These are what we shall refer to as \emph{solvers}. More importantly, these gradient based methods can work for arbitrary functions as long as we have access to the gradient (or even its approximation).
@@ -225,19 +226,21 @@ v + \lambda \quad \text{if } v < -\lambda
 
 The resulting algorithm is known as \ac{ISTA}~\citep{daubechies2004iterative, bach2012optimization}, which has a linear convergence rate of $\mathcal{O}(1/T)$ for $T$ iterations.
 
-Gradient descent has slow convergence due to oscillations if the condition number of $A$ is high as it leads to pathological curvature. A faster rate of convergence can be achieved using Nesterov accelerations~\citep{nesterov1983method}, which adds a momentum term to the update in Equation~\ref{eq:update_term}. This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a quadratic rate of convergence $\mathcal{O}(1/T^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
+Gradient descent has slow convergence due to oscillations if the condition number of $A$ is high as it leads to pathological curvature. A faster rate of convergence can be achieved using Nesterov accelerations~\citep{nesterov1983method}, which adds a momentum term to the update in Equation~\ref{eq:update_term}.
+The momentum term takes into account the update vector from the past iterations so as to dampen the oscillatory behaviour observed in classical gradient descent and \ac{ISTA}. 
+This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a quadratic rate of convergence $\mathcal{O}(1/T^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
 
     \begin{algorithm}[H]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
       \REQUIRE Regularization: $\lambda \in \real_+$, Design matrix A, b
-      \STATE $x^1=0=z^1, \beta^1=1$
-        \FOR{$t=1$ to $T$}
+      \STATE $x_1=0=z_1, \beta_1=1$
+        \FOR{$k=1$ to $K$}
           
-          \STATE $x^{t+1} = \mathcal{S}_{\lambda/L}(z^t - \frac{1}{L}g(z^t))$ \textit{\color{blue} /* Proximal step */}
-          \STATE $\beta^{t+1} = (1 + \sqrt{1 + 4(\beta^t)^2})/2$
-          \STATE $z^{t + 1} = x^{t + 1} + \frac{\beta^t - 1}{\beta^{t + 1}}(x^{t + 1} - x^t)$ \textit{\color{blue} /* Momentum update */}
+          \STATE $x_{k+1} = \mathcal{S}_{\lambda/L}(z_k - \frac{1}{L}g(z_k))$ \textit{\color{blue} /* Proximal step */}
+          \STATE $\beta_{k+1} = (1 + \sqrt{1 + 4(\beta_k)^2})/2$
+          \STATE $z_{k + 1} = x_{k + 1} + \frac{\beta_k - 1}{\beta_{k + 1}}(x_{k + 1} - x_k)$ \textit{\color{blue} /* Momentum update */}
         \ENDFOR
-        \RETURN $x^{T + 1}$
+        \RETURN $x_{K + 1}$
         \end{algorithmic}
         \caption{Fast iterative soft thresholding algorithm}
         \label{alg:fista}
@@ -250,11 +253,18 @@ If in the updates of Equation~\ref{eq:update_term}, instead of using the negativ
 
 In the limited memory version of BFGS, the entire Hessian matrix is not stored but only a few vectors that are used for the approximation.
 
-\paragraph{Coordinate descent}
+\paragraph{Coordinate descent:}
+In coordinate descent, we would simply minimize one coordinate at a time. The idea behind coordinate descent is rather simple, yet it performs surprisingly well in practice. Thus  Equation~\ref{eq:update_term} would be coordinatewise, \textit{i.e.,} for each iteration, we would choose a coordinate $i_k$ and perform an update:
 
-how does ISTA and FISTA scale but LBFGS-B does not. And a primer of what we are going to see later.
+\begin{equation}
+\begin{cases}
+x^{(i)}_{k+1} = x^{(i)}_{k} - \rho^{(i)}_k g^{(i)}(x_k) \quad \text{if } i=i_{k+1}\\
+x^{(i)}_{k+1} = x^{(i)}_{k} \hspace{80pt} \text{if } i \neq i_{k+1}
+\end{cases}
+\end{equation}
 
-Block
+Of course, we could have also solved each coordinate in closed form instead of doing gradient descent. However, in this formulation, if the non-smooth part of the objective (typically the regularizer) is \emph{separable} (\textit{i.e.,} $f(x) = \sum_i f^{(i)}(x_i)$), then it can even be extended to proximal coordinate descent. 
+While coordinate descent requires $p$ times as many iterations than gradient descent, the per iteration cost is in fact much lower. Note that we do not need to necessarily solve the gradient descent completely at each iteration if the function we are trying to minimize is convex. The coordinates can be chosen either cyclically or at random. In \emph{block} coordinate descent, groups of coordinates are selected for updating rather than one coordinate at a time. It is what we will use for updating the atoms and activations in \emph{alphacsc} (Chapter~\ref{chapter:alphacsc}).
 
 % \subsection{Interpolation schemes}
 
