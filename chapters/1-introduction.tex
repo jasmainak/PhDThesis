@@ -7,14 +7,14 @@
 
 Understanding the human brain is one of the most significant challenges of the 21st century. The human brain is arguably one of the most complex  organs of the human body, which performs a wide range of cognitive functions: from visual recognition to language understanding, speech, social interaction, and executive control. Pathologies of the brain are perhaps on of the biggest challenges for western medicine today. Medical interventions and drugs for major infectious diseases are available today, and individuals can expect to live up to the mid 80s and even into their 90s. Yet, we still do not have a good grasp over most mental pathologies: Parkinson's, Alzheimer's, dementia, epilepsy to name a few. This is despite the fact that someone today who lives into their mid 80s has a 50\% chance of contracting Alzheimer's~\citep{alzheimer20162016}.
 
-Our current understanding of the brain is a result of decades of concerted efforts across multiple disciplines ranging from molecular biology, genetics, physiology, cognitive and behavioral neuroscience, to statistics, computer science, and data science. A relatively new subfield here is brain imaging, also known as neuroimaging. Brain imaging refer to a set of technologies where a snapshot of the brain is taken to measure either the anatomy or various aspects of function. The grand vision of is to be deploy them in hospitals to help diagnosis, in surgeries, in \acp{BCI}, or in research for neuroscientists to better understand the brain. In this thesis, we will focus our attention on measuring the electric and/or corresponding magnetic field from the brain, using electroencephalography, magnetoencephalography, and local field potentials. These methods have the property of possessing a high temporal resolution, which is particularly useful for extracting the temporal dynamics of brain signals.
+Our current understanding of the brain is a result of decades of concerted efforts across multiple disciplines ranging from molecular biology, genetics, physiology, cognitive and behavioral neuroscience, to statistics, computer science, and data science. A relatively new subfield here is brain imaging, also known as neuroimaging. Brain imaging refer to a set of technologies where a snapshot of the brain is taken to measure either the anatomy or various aspects of function. The grand vision of is to be deploy them in hospitals to help diagnosis, in surgeries, in \acp{BCI}, or in research for neuroscientists to better understand the brain. 
+In this thesis, we will focus our attention on measuring the electric currents and/or corresponding magnetic field from the brain, using electroencephalography, magnetoencephalography, and local field potentials. 
+These methods have the property of possessing a high temporal resolution, which is particularly useful for extracting the temporal dynamics of brain signals.
 
-In the following sections, I will describe the context surrounding the thesis. After a brief introduction to the field of electrophysiology, I will delve into how the field has been shaped in recent years by the reproducibility crisis, and how data sharing is going to help alleviate this problem to a large extent. However, the rise of data sharing and large sample sizes makes it difficult to still rely on manual data analysis which does not scale and is not reproducible. To cope with this challenge, we must start relying on automated and data-driven methods for discovering new effects.
+In the following sections, I will describe the context surrounding the thesis. After a brief introduction to the field of electrophysiology, I will delve into how the field has been shaped in recent years by the reproducibility crisis, and how data sharing is going to help alleviate this problem to a large extent. However, the rise of data sharing and large sample sizes makes it difficult to still rely on manual data analysis which does not scale and is not reproducible. To cope with this challenge, we must start relying on automated and data-driven methods for discovering new effects. To this effect, I will introduce two new algorithms \emph{autoreject} and \emph{alphacsc}. This is followed by a refresher on background material that might be useful to refer to when reading the thesis. The chapter ends with the contributions of this thesis and the list of papers published during the PhD.
  
 %\section{Modern brain imaging}
 %Brain imaging tools today can be placed along three axes: their temporal resolution, their spatial resolution, and the level to which they are invasive.
-
-\clearpage
 
 \section{Electrophysiology}
 
@@ -33,10 +33,11 @@ There are a number of modalities to measure the electrical potentials, the most 
 
 \paragraph{Electroencephalography: } \Ac{EEG} is a portable and non-invasive measurement modality that is frequently used in the context of \acp{BCI}. In electroencephalography, an array of electrodes on an \ac{EEG} cap are placed on the scalp to measure the voltages with respect to a reference electrode. The voltage it measure is not the result of a single neuron but instead a summed potential of populations of thousands of neurons. It has a high temporal resolution (in the order of \emph{ms}), however the spatial resolution is not so high as the skull smears the signal.
 
-\paragraph{Magnetoencephalography: } Any electric current is associated with magnetic fields as a consequence of Maxwell's theory. Therefore, the brain generates tiny magnetic fields which are wrap around the currents according to Maxwell's right hand thumb rule. The flux is tiny ($\sim10^{-12}T$) compared to the earth's magnetic field ($10^{-4}T$), and to measure this one would need very sensitive electronics and heavy noise cancellation. The measurement itself is done done in a shielded magnetic room made of three layers of metals. The sensors are superconducting coils which capture the magnetic flux. They are immersed in liquid helium cooled to very low temperatures, so as to lower any loss in signal due to resistance. A typical device contains two types of sensors: gradiometers and magnetometers. While the magnetometer measures the absolute magnitude of magnetic field, the gradiometer measures derivative of the field. It is therefore less sensitive to external noise [\mainak{check}]. \ac{MEG} has the advantage that the skull does not deteriorate the signal quality.
+\paragraph{Magnetoencephalography: } Any electric current is associated with magnetic fields as a consequence of Maxwell's theory. 
+Therefore, the brain generates tiny magnetic fields which  wrap around the currents according to Maxwell's right hand thumb rule. The flux is tiny ($\sim10^{-12}T$) compared to the earth's magnetic field ($\sim10^{-4}T$), and to measure this one would need very sensitive electronics and heavy noise cancellation. The measurement itself is done done in a shielded magnetic room made of three layers of metals. The sensors are superconducting coils which capture the magnetic flux. They are immersed in liquid helium cooled to very low temperatures, so as to lower any loss in signal due to resistance. A typical device contains two types of sensors: gradiometers and magnetometers. While the magnetometer measures the absolute magnitude of magnetic field, the gradiometer measures derivative of the field. It is therefore less sensitive to external noise [\mainak{check}]. \Ac{MEG} has the advantage that the skull does not deteriorate the signal quality as in \ac{EEG}.
 
-\paragraph{Local Field Potential (LFP)}
-The Local Field Potential is an invasive method that measures the electrical potential in the extracellular space of the brain tissue. In contrast to \ac{EEG}, LFP are recorded in depth, from within the cortical tissue and can therefore measure more localized populations of neurons.
+\paragraph{\Ac{LFP}}
+The Local Field Potential is an invasive method that measures the electrical potential in the extracellular space of the brain tissue. In contrast to \ac{EEG}, \ac{LFP} are recorded in depth, from within the cortical tissue and can therefore measure more localized populations of neurons.
 
 \section{The reproducibility crisis}
 
@@ -84,7 +85,7 @@ In neuroimaging, there are in fact several avenues for automation:
 \item \textbf{Quality control:} Currently, quality control is performed manually by inspecting the data to spot outliers. While data inspection cannot be overlooked, it can be performed more efficiently through automated documentation of data analysis and log reports such as the Jupyter notebook and the MNE web report. At the same time, advanced statistical trend analyses as in the Automated Statistician project~\citep{duvenaud2013structure} can be used for creating summaries.
 \end{itemize}
 
-There have been some steps taken in this direction, most notably the Neurosynth platform~\citep{yarkoni2011large} which facilitates large-scale meta analysis to integrate activations maps across studies using machine learning. On the software side, the Freesurfer software package~\citep{dale-fischl-etal:99, fischl-serena-etal:99} provides a \code{recon-all} command that performs cortical segmentation automatically without any human intervention. In MNE, this philosophy is now being adopted~\citep{engemann2015automated_new} starting with automated covariance estimation.
+There have been some steps taken in this direction, most notably the Neurosynth platform~\citep{yarkoni2011large} which facilitates large-scale meta analysis to integrate activations maps across studies using machine learning. On the software side, the Freesurfer software package~\citep{dale-fischl-etal:99, fischl-serena-etal:99} provides a \code{recon-all} command that performs cortical segmentation automatically without any human intervention. In MNE, this philosophy is now being adopted starting with automated covariance estimation~\citep{engemann2015automated_new}.
 
 In this thesis, we will consider an algorithm that automatically annotates artifacts in the data~\citep{jas2016automated, jas2017autoreject}. This is a first step that any \ac{MEG}/\ac{EEG} processing pipeline has to go through but it is often done manually. A reason for this is that existing algorithms are not designed to be \emph{transparent}. Since for most scientists, the key to new insights is an artifact-free dataset, they would rather spend extra effort in doing this manually rather than depend on a generic algorithm which is difficult to interpret. %However, this is problematic as it can lead to a selection bias: they might end up rejecting data segments which helps them confirm their hypothesis. 
 Merely based on anecdotal reports, this process can take up to a week even for a moderately sized study of 10--20 subjects.
@@ -204,6 +205,7 @@ In gradient based methods, we make updates of the  form:
 \begin{equation}
 x_{k + 1} = x_{k} + \rho_k d_k,
 \end{equation}
+\label{eq:update_term}
 %
 where $\rho_k$ is the step size and $d_k$ is the search direction.
 
@@ -223,7 +225,7 @@ v + \lambda \quad \text{if } v < -\lambda
 
 The resulting algorithm is known as \ac{ISTA}~\citep{daubechies2004iterative, bach2012optimization}, which has a linear convergence rate of $\mathcal{O}(1/T)$ for $T$ iterations.
 
-Gradient descent has slow convergence due to oscillations if the condition number of $A$ is high as it leads to pathological curvature. A faster rate of convergence can be achieved using Nesterov accelerations~\citep{nesterov1983method}, which adds a momentum term to the update. This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a quadratic rate of convergence $\mathcal{O}(1/T^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
+Gradient descent has slow convergence due to oscillations if the condition number of $A$ is high as it leads to pathological curvature. A faster rate of convergence can be achieved using Nesterov accelerations~\citep{nesterov1983method}, which adds a momentum term to the update in Equation~\ref{eq:update_term}. This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a quadratic rate of convergence $\mathcal{O}(1/T^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
 
     \begin{algorithm}[H]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
@@ -244,6 +246,9 @@ Gradient descent has slow convergence due to oscillations if the condition numbe
 \paragraph{Duality}
 
 \paragraph{LBFGS-B}
+If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $-d_k = H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. The Newton's method has a locally quadratic convergence, but it may diverge if the Hessian is not positive definite. Of course, the Hessian is costly to compute and to invert, therefore quasi-Newton methods approximate it using a matrix $B(x_k)$. Starting with $B(x_k) = I$, we can update this matrix at each step using a cheap rank 1 or rank 2 correction. A rank 1 correction amounts to computing a vector-vector outer product.
+
+In the limited memory version of BFGS, the entire Hessian matrix is not stored but only a few vectors that are used for the approximation.
 
 \paragraph{Coordinate descent}
 
