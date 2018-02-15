@@ -47,7 +47,7 @@ The average response plotted in a single graph, better known as ``butterfly plot
 \subsection{Quantification of performance and comparison with state-of-the-art}
 \label{sec:benchmark_sensors}
 
-We now compare these algorithms to \emph{autoreject (local)} using the data quality metric defined in Equation~\eqref{eq:infnorm} (See Appendix~\ref{chapter:appendix} for explanation as to why $l_\infty$ norm is better than $l_2$ norm). 
+We now compare these algorithms to \emph{autoreject (local)} using the data quality metric defined in Equation~\eqref{eq:infnorm} (See Section~\ref{sec:l2_vs_linf} for explanation as to why $l_\infty$ norm is a better choice than $l_2$ norm). 
 We are interested not only in how the algorithms perform on average but at the level of individual subjects. To detail single subject performance, we present the data quality as scatter plots where each axis corresponds to the performance of a method. Figure~\ref{fig:hcp_scatter}, contains results on the HCP MEG data. We can observe from the top-left subplot of the figure that \emph{autoreject (local)} does indeed improve the data quality in comparison to the \emph{no rejection} approach. In Figure~\ref{fig:hcp_scatter}B, \emph{autoreject (local)} is compared against SNS. The SNS algorithm focuses on removing noise isolated on single sensors. Its results can be affected by the presence of multiple bad sensors and globally bad trials. This explains why \emph{autoreject (local)} outperforms SNS is this setting. In Figure~\ref{fig:hcp_scatter}C, we compare against FASTER. Even though \emph{autoreject (local)} is slightly worse than FASTER for a few subjects, FASTER is clearly much worse than \emph{autoreject (local)} for at least 3 subjects, and \emph{autoreject (local)} yields therefore less errors on average. Finally, Figure~\ref{fig:hcp_scatter}D shows comparison to RANSAC. In the PREP implementation, this algorithm is not fully data-driven in the classic sense of RANSAC. This is due to the fact that the inlier model is not learned but rather derived from the physics of the interpolation. It is therefore an algorithm which is conceptually close to \emph{autoreject}. However, a critical difference is that the parameters of this method still need to be tuned. This can be a problem as these parameters can be suboptimal on some datasets. Some experiments showed that it is for example the case for the EEG faces data, where it is possible to obtain better results by manually tuning the RANSAC parameters, rather than using the values proposed by the original authors.
 
 Figure~\ref{fig:dgw_scatter} presents scatter plots for the EEG faces data.
@@ -62,6 +62,18 @@ Here, we restrict our comparison to RANSAC as it is conceptually the closest to 
     \label{fig:diagnostic_plot}
 \end{sidewaysfigure}
 \clearpage
+
+\subsection{$\ell_{2}$ vs $\ell_{\infty}$ norm} 
+\label{sec:l2_vs_linf}
+
+Why not use $\ell_{2}$ norm instead of $\ell_{\infty}$ norm to report the quantitative results in Figure~\ref{fig:hcp_scatter} or Figure~\ref{fig:dgw_scatter}? The reason is that the $\ell_{2}$ norm will average across the sensors. If one sensor is badly corrupted, then this would not be obvious with the $\ell_{2}$ norm because the average in the $\ell_{2}$ norm computation conceals the isolated problematic sensors with large artifacts. However, as the $\ell_\infty$ norm captures the worst sensor, it can be used to visualize pathological cases where even one sensor is corrupted. In Figure~\ref{fig:l2_norm}, we reproduce Figure~\ref{fig:hcp_scatter} using the $\ell_2$ norm instead of $\ell_{\infty}$. We can observe that, although the pattern remains the same, it is much less clear where one method outperforms the other. Even where \emph{autoreject} isn't performing as well, it is not  visible due to the averaging % effect.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/figure4_supp.pdf}
+    \caption[Scatter plots for the results with the HCP data with $l2$ norm instead of $l_\infty$ norm]{Scatter plots for the results with the HCP data. This figure uses the same data as in Figure~\ref{fig:hcp_scatter} from the main text, but with  $\|\cdot\|_2$ norm instead of the $\|\cdot\|_\infty$ norm for computing the difference between the HCP ground truth and the method. As before, each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
+    \label{fig:l2_norm}
+\end{figure}
 
 %
 %
