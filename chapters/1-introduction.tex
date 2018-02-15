@@ -29,7 +29,7 @@ In the following sections, I will describe the context surrounding the thesis. A
 The study of electrical properties of the biological cells and tissues is known as electrophysiology. Biological tissues have electrical properties due to the presence of ions. Just as we can measure voltages in electrical appliances, it is possible also to measure these voltages on living tissues. These modalities have the advantage of directly measuring the brain activity, as opposed to an indirect measure, which is for example the case in \ac{fMRI}.
 Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution. In the case of \ac{fMRI}, as it measures the blood flow which is a response to neural activity and slowly changing, its temporal resolution cannot be high. 
 
-There are a number of modalities to measure the electrical potentials, the most well-known being perhaps \ac{ECG} which is used to measure the heart beats. However, in our work, we will focus on only three which are relevant for studying the brain.
+There are a number of modalities to measure the electrical potentials, the most well-known being perhaps \ac{ECG} which is used to measure the heart beats. However, in our work, we will focus on only three which are relevant for studying the brain. Each of these methods produces a multivariate time series.
 
 \paragraph{Electroencephalography: } \Ac{EEG} is a portable and non-invasive measurement modality that is frequently used in the context of \acp{BCI}. In electroencephalography, an array of electrodes on an \ac{EEG} cap are placed on the scalp to measure the voltages with respect to a reference electrode. The voltage it measure is not the result of a single neuron but instead a summed potential of populations of thousands of neurons. It has a high temporal resolution (in the order of \emph{ms}), however the spatial resolution is not so high as the skull smears the signal.
 
@@ -296,12 +296,12 @@ In practice, an overcomplete dictionary in the shape of a Toeplitz matrix is con
 \section{Contributions}
 In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an international collaboration to create an \ac{MEG} standard for  \ac{BIDS}~\citep{galan2017meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. This led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data~\citep{jas2017learning}. 
 
-The thesis is organized by chapters to highlight these four main  contributions: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. Each chapter contains the text from the original paper (which has been minimally edited in some parts) preceded by a section on necessary background and context surrounding the work.
+The thesis is organized by chapters to highlight these four main  contributions: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. Each chapter contains the text from the original paper (which has been minimally edited in some parts) prefaced by a 1-2 page description of the context surrounding the work.
 
 \subsection*{Journal publications}
 \bibentry{jas2017autoreject}\ \\ \\
-\bibentry{jas2017mne}\ \\ \\
-\bibentry{galan2017meg}
+\bibentry{jas2017mne}\ \\ (Pending revision at \emph{Frontiers in Neuroscience, Brain Imaging Methods})\ \\ \\
+\bibentry{galan2017meg} (Pending revision at \emph{Scientific Data, Nature})
 
 \subsection*{Conference publications}
 \bibentry{jas2016automated}\ \\ \\
@@ -311,7 +311,7 @@ The thesis is organized by chapters to highlight these four main  contributions:
 
 \url{http://autoreject.github.io/} \\
 \url{http://alphacsc.github.io/} \\
-\url{http://mne-tools.github.io/mne-biomag-group-demo/} \\
+\url{http://mne-tools.github.io/mne-biomag-group-demo/}\\
 \url{https://jasmainak.github.io/bids-validator/}
 
 \subsection*{Datasets}
