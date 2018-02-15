@@ -116,7 +116,7 @@ In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional 
 \clearpage
 \section{Background}
 
-Here, we will introduce some basic linear algebra, optimization, and machine learning concepts that will be useful particularly in Chapters~\ref{chapter:autoreject} and \ref{chapter:alphacsc}.
+Here, we will introduce some basic linear algebra, optimization, and machine learning concepts that will be useful particularly in Chapters~\ref{chapter:autoreject} and \ref{chapter:alphacsc} on \emph{autoreject} and \emph{alphacsc}.
 
 \subsection{Norms}
 Informally speaking, a norm is used to measure the length or size of a vector. It must also satisfy some properties, but it will not be of concern for us in this thesis. It is sufficient to know the mathematical expression, how it behaves, and the physical property that it captures.
@@ -181,7 +181,7 @@ In order solve this dilemma, an \emph{acquisition function} is typically used. W
 
 \subsection{Iterative solvers for convex problems}
 
-In this thesis, we will be using a number of convex optimization methods. Let us first recall what is a convex function before diving into the details of these methods.
+In our \emph{alphacsc} work presented in Chapter~\ref{chapter:alphacsc}, we will be using a number of convex optimization methods. Let us first recall what is a convex function before diving into the details of these methods.
 \vspace{\parskip}
 \begin{definition}{(Convex function)}
 A function $f$ is convex if it satisfies
@@ -210,11 +210,11 @@ x_{k + 1} = x_{k} + \rho_k d_k,
 %
 where $\rho_k$ is the step size and $d_k$ is the search direction.
 
-In the case of gradient descent, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size $\rho_k=1/L$ where $L$ is the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. 
+\paragraph{Gradient descent: } In the case of gradient descent, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size $\rho_k=1/L$ where $L$ is the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. The intuition behind this method is that if we follow the negative gradient direction, we will progressively reach a point where the gradient is 0 and this corresponds to the minimum.
 
 However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative at all points. In these cases, we must resort to proximal gradient methods.
 
-\paragraph{\Ac{FISTA}: } A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate to induce sparsity. The proximal operator can be thought of as a generalized projection operator~\citep{parikh2014proximal} and for the $\ell_1$ norm, it is the soft thresholding function $\mathcal{S}_\lambda(\cdot)$ given by:
+\paragraph{Proximal algorithms: } A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate to induce sparsity. The proximal operator can be thought of as a generalized projection operator~\citep{parikh2014proximal} and for the $\ell_1$ norm, it is the soft thresholding function $\mathcal{S}_\lambda(\cdot)$ given by:
 
 \begin{equation}
 \mathcal{S}_{\lambda}(v) = \begin{cases}
