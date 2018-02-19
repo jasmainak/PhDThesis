@@ -134,7 +134,7 @@ x_{k + 1} = x_{k} + \rho_k d_k,
 \end{equation}
 \label{eq:update_term}
 %
-where $\rho_k$ is the step size and $d_k$ is the search direction.
+where $\rho_k$ is the step size and $d_k \in \mathbb{R}^p$ is the search direction.
 
 \paragraph{Gradient descent: } In the case of gradient descent, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size $\rho_k=1/L$ where $L$ is the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. The intuition behind this method is that if we follow the negative gradient direction, we will progressively reach a point where the gradient is 0 and this corresponds to the minimum.
 
