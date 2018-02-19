@@ -50,7 +50,7 @@ Depending on the data, different types of partitioning schemes are preferred. In
 
 \paragraph{Random search: } Sometimes grid search is too slow, and it is better to try parameters sampled randomly without a considerable loss in performance. This is known as random search.
 
-\paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is the reason a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
+\paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is done to avoid a circularity bias as noted in \cite{varoquaux2017assessing}. Therefore a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
 
 \subsection{Bayesian optimization}
 
