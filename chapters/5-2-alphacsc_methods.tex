@@ -207,7 +207,7 @@ where $=^+$ denotes equality up to additive constants, $\odot$ denotes the Hadam
 
     \begin{algorithm}[H]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
-      \REQUIRE Regularization: $\lambda \in \real_+$, Num. atoms: $K$, Atom length: $L$, Num. iterations: $I$ , $J$, $M$
+      \REQUIRE Regularization: $\lambda \in \real_+$, Num. atoms: $K$, Atom length: $L$, \\ Num. iterations: $I$ , $J$, $M$
         %\STATE $\hat{d \in \real^{K \times L}} \leftarrow 0$, $\hat{z} \in \real^{K \times N \times T} \leftarrow 0$
         \FOR{$i=1$ to $I$}
           \STATE \textit{\color{blue} /* E-step: */} %Estimate $w^{(i)}$ as follows:

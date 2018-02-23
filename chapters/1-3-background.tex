@@ -140,7 +140,7 @@ where $\rho_k$ is the step size and $d_k \in \mathbb{R}^p$ is the search directi
 
 However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative at all points. In these cases, we must resort to proximal gradient methods.
 
-\paragraph{Proximal algorithms: } A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator on the resulting iterate. 
+\paragraph{Proximal algorithms: } A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator (which depends on the non-smooth part) on the resulting iterate. 
 
 \vspace{\parskip}
 \begin{definition}{(Proximal operator)}
@@ -160,7 +160,7 @@ v + \lambda \quad \text{if } v < -\lambda
 \end{cases}
 \end{equation}
 
-The resulting algorithm is known as \ac{ISTA}~\citep{daubechies2004iterative, bach2012optimization}, which has a convergence rate of $\mathcal{O}(1/T)$ for $T$ iterations. Proximal algorithms are also helpful when dealing with constraints. For example, in Equation~\ref{eq:linreg_minimize}, if we had a norm-1 constraint $\|x\|_2^2 \leq 1$, this could be recast using an indicator function $i(\cdot)$:
+The resulting algorithm is known as \ac{ISTA}~\citep{daubechies2004iterative, bach2012optimization}, which has a convergence rate of $\mathcal{O}(1/k)$ for $k$ iterations. Proximal algorithms are also helpful when dealing with constraints. For example, in Equation~\ref{eq:linreg_minimize}, if we had a norm-1 constraint $\|x\|_2^2 \leq 1$, this could be recast using an indicator function $i(\cdot)$:
 
 \begin{equation}
 i(x) = \begin{cases}
@@ -179,7 +179,7 @@ This is what is known as \textit{projected gradient descent}. We will encounter 
 
 \paragraph{Acceleration:} Gradient descent has slow convergence due to oscillations if the condition number of $A$ is high as it leads to pathological curvature. A faster rate of convergence can be achieved using Nesterov accelerations~\citep{nesterov1983method}, which adds a momentum term to the update in Equation~\ref{eq:update_term}.
 The momentum term takes into account the update vector from the past iterations so as to dampen the oscillatory behaviour observed in classical gradient descent and \ac{ISTA}. 
-This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a $\mathcal{O}(1/T^2)$ rate of convergence. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
+This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a faster convergence rate of $\mathcal{O}(1/k^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
 
     \begin{algorithm}[H]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
@@ -197,8 +197,10 @@ This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has 
         \label{alg:fista}
     \end{algorithm}
 
-\paragraph{LBFGS-B}
-If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $-d_k = H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. The Newton's method has a locally quadratic convergence, and therefore it may diverge when the current iterate is far from the optimum. Even if this is not the case, a Hessian that is not positive definite can also cause diverging behaviour. Therefore, the step size $\rho_k$ must be chosen carefully, for example using a line search strategy.
+% \paragraph{ADMM:} Convergence rate of $\mathcal{O}(1/k)$
+
+\paragraph{Quasi-Newton methods:}
+If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $-d_k = H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. As opposed to first order methods which use only gradient information, Newton-based methods also make use of the curvature. The Newton's method has a locally quadratic convergence, but it may diverge when the current iterate is far from the optimum. Even if this is not the case, a Hessian that is not positive definite can also cause diverging behaviour. Therefore, the step size $\rho_k$ must be chosen carefully, for example using a line search strategy. As opposed to first order methods, the convergence rate of Newton method is quadratic, \textit{i.e.,} $f(x_{k+1}) - f(x^\star) \leq M{\lvert x_k - x^\star \rvert} ^ 2$
 
 Of course, the Hessian is costly to compute and to invert, therefore quasi-Newton methods can be used which approximate it using a matrix $B_k$. Starting with $B_k = I$, we can update this matrix at each step using a cheap rank 1 or rank 2 correction. For instance, in the Broyden formula, we would do:
 \begin{equation}

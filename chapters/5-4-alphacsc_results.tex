@@ -63,6 +63,64 @@ Note that the y-axis is the precision relative to the objective value obtained u
 In the right subplot, we show how long it takes for the algorithms to reach a relative precision of $0.01$ for different settings (\textit{cf.} next paragraph for more benchmarks). Our method consistently performs better and the difference is even more striking for more challenging setups. This speed improvement on the M-step is crucial for us as this step will be repeatedly executed. % in the EM algorithm. 
 %This sets the stage for us to apply $\alpha$CSC on datasets of realistic dimensions.
 %
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \paragraph{Robustness against corrupted data:}
+%
+
+\paragraph{Convergence plots:}
+
+\begin{figure}[htb]
+    \centering
+     \subfigure[$K=2$, $L=32$.]{
+     \includegraphics[width=0.31\linewidth]{figures/relative_2_32.pdf}}
+     \subfigure[$K=2$, $L=128$.]{
+     \includegraphics[width=0.31\textwidth]{figures/relative_2_128.pdf}}
+     \subfigure[$K=10$, $L=32$.]{
+     \includegraphics[width=0.31\textwidth]{figures/relative_10_32.pdf}}
+    \caption[Convergence speed of the relative objective function.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
+    \label{fig:convergence_setups}
+\end{figure}
+
+Here, we compare convergence plots of our algorithm against a number of state-of-art methods. Fig.~\ref{fig:convergence_setups} demonstrates on a variety of setups the computational
+advantage of our quasi-Newton approach to solve the M-step.
+Note that Fig.~\ref{fig:convergence}b is in fact a summary of Fig.~\ref{fig:convergence_setups}. 
+Indeed, we can verify that ADMM methods converge quickly to a modest accuracy, but take much longer to converge to a high accuracy~\citep{boyd2011distributed}.
+
+Next, in Fig.~\ref{fig:convergence_traditional}, we show more traditional convergence plots. In contrast to Fig.~\ref{fig:convergence} or \ref{fig:convergence_setups} where the relative objective function is shown, here we plot the absolute value of the objective function. We can now verify that each of the methods have indeed converged to their respective local minimum. Of course, owing to the non-convex nature of the problem, they do not necessarily converge to the same local minimum.
+\begin{figure}[htb]
+    \centering
+     \subfigure[$K=2$, $L=32$.]{
+     \includegraphics[width=0.31\linewidth]{figures/plateau_2_32.pdf}}
+     \subfigure[$K=2$, $L=128$.]{
+     \includegraphics[width=0.31\textwidth]{figures/plateau_2_128.pdf}}
+     \subfigure[$K=10$, $L=32$.]{
+     \includegraphics[width=0.31\textwidth]{figures/plateau_10_32.pdf}}
+    \caption[Convergence of the objective function as a function of time.]{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
+    \label{fig:convergence_traditional}
+\end{figure}
+
+\paragraph{Comparison of solver for the activations subproblem:}
+
+Finally, we compare convergence plots of our algorithm using different solvers for the $z$-update: ISTA, FISTA, and L-BFGS-B. The rationale for choosing a quasi-Newton solver for the $z$-update becomes clear in  Fig.~\ref{fig:convergence_z_update} as the L-BFGS-B solver turns out to be computationally advantageous on a variety of setups.
+
+\begin{figure}[h]
+    \centering
+     \subfigure[$K=2$, $L=32$.]{
+     \includegraphics[width=0.31\linewidth]{figures/fista_2_32.pdf}}
+     \subfigure[$K=2$, $L=128$.]{
+     \includegraphics[width=0.31\textwidth]{figures/fista_2_128.pdf}}
+     \subfigure[$K=10$, $L=32$.]{
+     \includegraphics[width=0.31\textwidth]{figures/fista_10_32.pdf}}
+    \caption[Comparison of solvers for the activations subproblem.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
+    \label{fig:convergence_z_update}
+\end{figure}
+
+\subsection{Robustness to corrupted data} 
+
 \newcommand{\tmpsize}{0.15}
 \begin{figure}[t]
 %\vskip 0.2in
@@ -102,63 +160,7 @@ In the right subplot, we show how long it takes for the algorithms to reach a re
 \caption[Simulation to compare state-of-the-art methods against $\alpha$CSC.]{Simulation to compare state-of-the-art methods against $\alpha$CSC.}
 \label{fig:mcem_simulated}
 \end{figure}
-%
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% \paragraph{Robustness against corrupted data:}
-%
 
-\paragraph{Detailed comparison:}
-
-\begin{figure}[htb]
-    \centering
-     \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.31\linewidth]{figures/relative_2_32.pdf}}
-     \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.31\textwidth]{figures/relative_2_128.pdf}}
-     \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.31\textwidth]{figures/relative_10_32.pdf}}
-    \caption[Convergence speed of the relative objective function.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
-    \label{fig:convergence_setups}
-\end{figure}
-
-Here, we compare convergence plots of our algorithm against a number of state-of-art methods. Fig.~\ref{fig:convergence_setups} demonstrates on a variety of setups the computational
-advantage of our quasi-Newton approach to solve the M-step.
-Note that Fig.~\ref{fig:convergence}b is in fact a summary of Fig.~\ref{fig:convergence_setups}. 
-Indeed, we can verify that ADMM methods converge quickly to a modest accuracy, but take much longer to converge to a high accuracy.\citep{boyd2011distributed}
-
-Next, in Fig.~\ref{fig:convergence_traditional}, we show more traditional convergence plots. In contrast to Fig.~\ref{fig:convergence} or \ref{fig:convergence_setups} where the relative objective function is shown, here we plot the absolute value of the objective function. We can now verify that each of the methods have indeed converged to their respective local minimum. Of course, owing to the non-convex nature of the problem, they do not necessarily converge to the same local minimum.
-\begin{figure}[htb]
-    \centering
-     \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.31\linewidth]{figures/plateau_2_32.pdf}}
-     \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.31\textwidth]{figures/plateau_2_128.pdf}}
-     \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.31\textwidth]{figures/plateau_10_32.pdf}}
-    \caption[Convergence of the objective function as a function of time.]{Convergence of the objective function as a function of time. The y-axis shows the absolute objective function $f(x)$. Each curve is the mean over 24 different random initializations.}
-    \label{fig:convergence_traditional}
-\end{figure}
-
-\paragraph{Comparison of solver for the activations subproblem:}
-
-Finally, we compare convergence plots of our algorithm using different solvers for the $z$-update: ISTA, FISTA, and L-BFGS-B. The rationale for choosing a quasi-Newton solver for the $z$-update becomes clear in  Fig.~\ref{fig:convergence_z_update} as the L-BFGS-B solver turns out to be computationally advantageous on a variety of setups.
-
-\begin{figure}[h]
-    \centering
-     \subfigure[$K=2$, $L=32$.]{
-     \includegraphics[width=0.31\linewidth]{figures/fista_2_32.pdf}}
-     \subfigure[$K=2$, $L=128$.]{
-     \includegraphics[width=0.31\textwidth]{figures/fista_2_128.pdf}}
-     \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.31\textwidth]{figures/fista_10_32.pdf}}
-    \caption[Comparison of solvers for the activations subproblem.]{Convergence speed of the relative objective function. The y-axis shows the objective function relative to the obtained minimum for each run: $(f(x) - f(x^*))/f(x^*)$. Each curve is the geometrical mean over 24 different random initializations.}
-    \label{fig:convergence_z_update}
-\end{figure}
-
-\subsection{Robustness to corrupted data} 
 In our second synthetic data experiment, we illustrate the robustness of $\alpha$CSC in the presence of corrupted observations.
 %
 In order to simulate the likely presence of high amplitude artifacts, one way would be to directly simulate the generative model in \eqref{eqn:acsc_org}. However, this would give us an unfair advantage, since $\alpha$CSC is specifically designed for such data. Here, we take an alternative approach, where we corrupt a randomly chosen fraction of the trials ($10\%$ or $20\%$) with strong Gaussian noise of standard deviation $0.1$, \textit{i.e.} one order of magnitude higher than in a regular trial. We used a regularization parameter of $\lambda = 0.1$.
