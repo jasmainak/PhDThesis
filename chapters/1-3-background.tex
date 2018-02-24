@@ -112,13 +112,22 @@ In our \emph{alphacsc} work presented in Chapter~\ref{chapter:alphacsc}, we will
 Therefore, let us first recall what is a convex function before diving into the details of these methods.
 \vspace{\parskip}
 \begin{definition}{(Convex function)}
+\label{def:convexity}
 A function $f$ is convex if it satisfies
 \begin{equation}
 \forall x_1, x_2 \in X, \forall t \in [0, 1]: f(tx_1 + (1 - t)x_2) \leq tf(x_1) + (1 - t)f(x_2).
 \end{equation}
 \end{definition}
 
-In other words, for any two points on the function, the line joining those two points lies above the graph of the function. A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minima is not only the global minima, but also it is unique.
+\begin{figure}[htb]
+\begin{center}
+   \includegraphics[width=0.5\linewidth]{figures/convex_functions.pdf}
+\end{center}
+   \caption[Graphical illustration of convexity]{A graphical illustration of Definition~\ref{def:convexity} for convex functions.}
+   \label{fig:convexity}
+\end{figure}
+
+In other words, for any two points on the function, the line joining those two points lies above the graph of the function (as illustrated in Figure~\ref{fig:convexity}). A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minima is not only the global minima, but also it is unique.
 
 We will be solving unconstrained minimization problems of the form
 \begin{equation}
