@@ -13,7 +13,7 @@ Informally speaking, a norm is used to measure the length or size of a vector. I
 \begin{definition}{($\ell_p$ norm.)}
 For $1 \leq p < \infty$, the $\ell_p$ norm of a vector $x$ is defined by:
 \begin{equation}
-\|x\|_p = \Big(\sum_n \ \lvert x_n \rvert^p \Big)^{1/p}
+\|x\|_p = \Big(\sum_n \ \lvert x_n \rvert^p \Big)^{1/p}.
 \end{equation}
 \end{definition}
 %
@@ -22,7 +22,7 @@ For $1 \leq p < \infty$, the $\ell_p$ norm of a vector $x$ is defined by:
 \begin{definition}{($\ell_\infty$ norm.)}
 The $\ell_\infty$ norm of a vector $x$ is defined by:
 \begin{equation}
-\|x\|_{\infty} = \sup_n \ \lvert x_n \rvert
+\|x\|_{\infty} = \sup_n \ \lvert x_n \rvert.
 \end{equation}
 \label{def:norm}
 \end{definition}
@@ -33,7 +33,7 @@ As we are taking the supremum, this norm is sensitive to large values in the vec
 \begin{definition}{(Frobenius norm.)}
 The Frobenius norm of a real-valued matrix $A$ is defined by:
 \begin{equation}
-\|A\|_{\mathrm{Fro}} = \| \mathrm{vec}(A) \|_2 = \sqrt{\mathrm{trace}(AA^\top)}
+\|A\|_{\mathrm{Fro}} = \| \mathrm{vec}(A) \|_2 = \sqrt{\mathrm{trace}(AA^\top)}.
 \end{equation}
 %
 The Frobenius norm is a matrix norm that is simply the $\ell_2$ vector norm of the vectorized matrix $\mathrm{vec}(A)$.
@@ -95,34 +95,37 @@ A convolution of two functions $f$ and $g$ is written $f * g$ and computed as:
 \end{equation}
 \end{definition}
 
-In the discrete case where $f$ and $g$ are vectors with finite support $[0..M]$ and $[0..N]$ and $N > M$, this can be rewritten as:
+In the discrete case where $f$ and $g$ are vectors with finite support $[0,..,M]$ and $[0,..,N]$ and $N > M$, this can be rewritten as
 %
 \begin{equation}
-(f * g)[n] = \sum_{m=0}^{M-1} f[m]g[n-m]
+(f * g)[n] = \sum_{m=0}^{M-1} f[m]g[n-m],
 \end{equation}
 %
-so that $f * g$ has a support of $[0..(N - M + 1)]$ if the edges are truncated. As we can see, if either $f$ or $g$ is zero padded, the other function can be shifted along these zeros yielding the same result.
+so that $f * g$ has a support of $[0,..,(N - M + 1)]$ if the edges are truncated. As we can see, if either $f$ or $g$ is zero padded, the other function can be shifted along these zeros yielding the same result.
 
 As a result of the convolutional approach, the atoms learned are not redundant and the location of the atom is encoded in the activations. This type of approach is refered to as \ac{CSC} or shift-invariant dictionary learning in the literature. In practice, an overcomplete dictionary in the shape of a Toeplitz matrix is constructed by shifting the atoms across time. This is the same formulation which is still being used to code shift invariance even if the learning algorithms are more sophisticated now. More recent work by \cite{grosse2012shift} have made use of the Fourier transform to solve the problem in Frequency domain and compute an inverse transform of the learned dictionary in the end. Another approach that has proved to be quite efficient is the so-called predictive sparse coding which uses neural networks~\citep{kavukcuoglu2010learning}. It is hard to summarize all the work in this area, but it suffices to say that shift-invariant dictionary learning has been gaining popularity in audio signals, images, music, and now for neural data (See Section~\ref{sec:alphacsc_intro} for a more comprehensive list of references).
 
 \subsection{Iterative solvers for convex problems}
 
-In our \emph{alphacsc} work presented in Chapter~\ref{chapter:alphacsc}, we will be using a number of convex optimization methods. Let us first recall what is a convex function before diving into the details of these methods.
+In our \emph{alphacsc} work presented in Chapter~\ref{chapter:alphacsc}, we will be using a number of convex optimization methods. CSC being a biconvex problem (\textit{i.e.,}  convex if either the atoms or the activations are fixed), is amenable to such methods.
+
+Therefore, let us first recall what is a convex function before diving into the details of these methods.
 \vspace{\parskip}
 \begin{definition}{(Convex function)}
 A function $f$ is convex if it satisfies
 \begin{equation}
-\forall x_1, x_2 \in X, \forall t \in [0, 1]: f(tx_1 + (1 - t)x_2) \leq tf(x_1) + (1 - t)f(x_2)
+\forall x_1, x_2 \in X, \forall t \in [0, 1]: f(tx_1 + (1 - t)x_2) \leq tf(x_1) + (1 - t)f(x_2).
 \end{equation}
 \end{definition}
 
 In other words, for any two points on the function, the line joining those two points lies above the graph of the function. A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minima is not only the global minima, but also it is unique.
 
-We will be solving unconstrained minimization problems of the form:
+We will be solving unconstrained minimization problems of the form
 \begin{equation}
-x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x)
-\end{equation}
+x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x),
 \label{eq:linreg_minimize}
+\end{equation}
+
 %
 where typically $A \in \mathbb{R}^{n \times p}$ is the design matrix with $n$ rows (samples) and $p$ columns (features), $x \in \mathbb{R}^p$, and $b \in \mathbb{R}^n$. A penalty or regularization term $\Omega(x)$ is added to prevent solutions that overfit. 
 If there was no regularization term $\Omega(x)$, we could solve this in closed form and get $x^{\star} = {(A^{\top}A)}^{-1}A^{\top}b$. However, this can be computationally prohibitive as inverting $A^{\top}A$ is $\mathcal{O}(p^3)$, and iterative methods based on gradient descent are more efficient as they require only a matrix-vector dot product. These are what we shall refer to as \emph{solvers}. More importantly, these gradient based methods can work for arbitrary functions as long as we have access to the gradient (or even its approximation).
@@ -131,32 +134,32 @@ In gradient based methods, we make updates of the  form:
 %
 \begin{equation}
 x_{k + 1} = x_{k} + \rho_k d_k,
-\end{equation}
 \label{eq:update_term}
+\end{equation}
 %
-where $\rho_k$ is the step size and $d_k \in \mathbb{R}^p$ is the search direction.
+where $\rho_k$ is a scalar which defines the step size and $d_k \in \mathbb{R}^p$ is the search direction.
 
-\paragraph{Gradient descent: } In the case of gradient descent, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the optimal step size $\rho_k=1/L$ where $L$ is the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. The intuition behind this method is that if we follow the negative gradient direction, we will progressively reach a point where the gradient is 0 and this corresponds to the minimum.
+\paragraph{Gradient descent: } In the case of gradient descent, the search direction $d_k$ is the negative gradient $-g(x_k)$ and the typical step size $\rho_k=1/L$ where $L$ is the Lipschitz constant of the gradient, which upper bounds the rate at which it changes. The intuition behind this method is that if we follow the negative gradient direction, we will progressively reach a point where the gradient is 0 and this corresponds to the minimum for convex functions.
 
 However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative at all points. In these cases, we must resort to proximal gradient methods.
 
-\paragraph{Proximal algorithms: } A common example of a non-smooth regularizer, which is encountered in practice, and will also be used in our work, is the Lasso~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator (which depends on the non-smooth part) on the resulting iterate. 
+\paragraph{Proximal algorithms: } An example of a non-smooth regularizer which is encountered in practice, and will also be used in our work, is the $\ell_1$ norm~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator (which depends on the non-smooth part) on the resulting iterate. 
 
 \vspace{\parskip}
 \begin{definition}{(Proximal operator)}
-A proximal operator associated with a convex function $f$ is defined as:
+A proximal operator associated with a convex function $f$ is defined as
 \begin{equation}
-\mathrm{prox}_f(v) = \argmin_x \bigg( f(x) + \frac{1}{2}\|x - v\|_2^2 \bigg)
+\mathrm{prox}_f(v) = \argmin_x \bigg( f(x) + \frac{1}{2}\|x - v\|_2^2 \bigg).
 \end{equation}
 \end{definition}
 
-The proximal operator can be thought of as a generalized projection operator~\citep{parikh2014proximal}. For the $\ell_1$ norm with $f(x)=\|x\|_1$, it is the soft thresholding function $\mathcal{S}_\lambda(\cdot)$ which induces sparsity, and is given by:
+The proximal operator can be thought of as a generalized projection operator~\citep{parikh2014proximal}. For the $\ell_1$ norm with $f(x)=\|x\|_1$, it is the soft thresholding function $\mathcal{S}_\lambda(\cdot)$ which induces sparsity, and is given by
 
 \begin{equation}
 \mathcal{S}_{\lambda}(v) = \begin{cases}
-v - \lambda \quad \text{if }  v > \lambda \\
-0 \quad \hspace{22pt} \text{if } -\lambda \leq v < \lambda\\
-v + \lambda \quad \text{if } v < -\lambda
+v - \lambda \quad \text{if }  v > \lambda, \\
+0 \quad \hspace{22pt} \text{if } -\lambda \leq v < \lambda,\\
+v + \lambda \quad \text{if } v < -\lambda.
 \end{cases}
 \end{equation}
 
@@ -169,10 +172,10 @@ i(x) = \begin{cases}
 \end{cases}
 \end{equation}
 
-In this case, the proximal operator can be shown to be the projection $\pi(x)$ on to the unit ball which expressed as:
+In this case, the proximal operator can be shown to be the projection $\pi(x)$ on to the unit ball which is expressed as
 
 \begin{equation}
-\pi(x) = \frac{x}{\mathrm{max}(1, \|x\|_2)}
+\pi(x) = \frac{x}{\mathrm{max}(1, \|x\|_2)}.
 \end{equation} 
 
 This is what is known as \textit{projected gradient descent}. We will encounter such constraints in our dictionary learning problem in Section~\ref{sec:m-step}. It will be used to handle the scale ambiguity between the atoms and activations when performing optimization.
@@ -200,16 +203,16 @@ This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has 
 % \paragraph{ADMM:} Convergence rate of $\mathcal{O}(1/k)$
 
 \paragraph{Quasi-Newton methods:}
-If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $-d_k = H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. As opposed to first order methods which use only gradient information, Newton-based methods also make use of the curvature. The Newton's method has a locally quadratic convergence, but it may diverge when the current iterate is far from the optimum. Even if this is not the case, a Hessian that is not positive definite can also cause diverging behaviour. Therefore, the step size $\rho_k$ must be chosen carefully, for example using a line search strategy. As opposed to first order methods, the convergence rate of Newton method is quadratic, \textit{i.e.,} $f(x_{k+1}) - f(x^\star) \leq M{\lvert x_k - x^\star \rvert} ^ 2$
+If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $d_k = -H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. As opposed to first order methods which use only gradient information, Newton-based methods also make use of the curvature. The Newton's method has a locally quadratic convergence, but it may diverge when the current iterate is far from the optimum. Even if this is not the case, a Hessian that is not positive definite can also cause diverging behaviour. Therefore, the step size $\rho_k$ must be chosen carefully, for example using a line search strategy.
 
-Of course, the Hessian is costly to compute and to invert, therefore quasi-Newton methods can be used which approximate it using a matrix $B_k$. Starting with $B_k = I$, we can update this matrix at each step using a cheap rank 1 or rank 2 correction. For instance, in the Broyden formula, we would do:
+Of course, the Hessian is costly to compute and to invert, therefore quasi-Newton methods can be used which approximate it using a matrix $B_k$. Starting with $B_k = I$, we can update this matrix at each step using a cheap rank 1 or rank 2 correction. For instance, in the Broyden formula, we would do
 \begin{equation}
-B_{k+1} = B_k + v.v^\top
+B_{k+1} = B_k + vv^\top.
 \end{equation}
-The vector-vector outer product $v.v^\top$ is the rank-1 correction in the above formula. The more advanced David-Fletcher-Powell formula uses a rank-2 correction and so does the \ac{BFGS} algorithm. When the entire Hessian matrix cannot be stored in memory, a limited memory version of BFGS~\citep{wright1999numerical} can be used where only a few vectors $v$ from the last few iterations are stored for the approximation.
+The vector-vector outer product $vv^\top$ is the rank-1 correction in the above formula. The more advanced David-Fletcher-Powell formula uses a rank-2 correction and so does the \ac{BFGS} algorithm. When the entire Hessian matrix cannot be stored in memory, a limited memory version of BFGS~\citep{wright1999numerical} can be used where only a few vectors $v$ from the last few iterations are stored for the approximation.
 
 \paragraph{Coordinate descent:}
-In coordinate descent, we would simply minimize one coordinate at a time. The idea behind coordinate descent is rather simple, yet it performs surprisingly well in practice. Thus  Equation~\ref{eq:update_term} would be coordinatewise, \textit{i.e.,} for each iteration, we would choose a coordinate $i_k$ and perform an update:
+In coordinate descent, we minimize one coordinate at a time. The idea behind coordinate descent is rather simple, yet it performs surprisingly well in practice. Thus  Equation~\ref{eq:update_term} would be coordinatewise, \textit{i.e.,} for each iteration, we would choose a coordinate $i_k$ and perform an update:
 
 \begin{equation}
 \begin{cases}
@@ -218,7 +221,6 @@ x^{(i)}_{k+1} = x^{(i)}_{k} \hspace{80pt} \text{if } i \neq i_{k+1}
 \end{cases}
 \end{equation}
 
-Of course, we could have also solved each coordinate in closed form instead of doing gradient descent. However, in this formulation, if the non-smooth part of the objective (typically the regularizer) is \emph{separable} (\textit{i.e.,} $f(x) = \sum_i f^{(i)}(x_i)$), then it can even be extended to proximal coordinate descent. 
-While coordinate descent requires $p$ times as many iterations than gradient descent, the per iteration cost is in fact much lower. Note that we do not need to necessarily solve the gradient descent completely at each iteration if the function we are trying to minimize is convex. The coordinates can be chosen either cyclically or at random. In \emph{block} coordinate descent, groups of coordinates are selected for updating rather than one coordinate at a time. It is what we will use for updating the atoms and activations in \emph{alphacsc} (Chapter~\ref{chapter:alphacsc}).
+Of course, we could have also solved each coordinate in closed form instead of using gradients per coordinate. However, in this formulation, if the non-smooth part of the objective (typically the regularizer) is \emph{separable} (\textit{i.e.,} $f(x) = \sum_i f^{(i)}(x_i)$), it allows us to even extend it to proximal coordinate descent. While in coordinate descent, we iterate over the $p$ coordinates, each coordinate update is computationally less demanding than a full gradient update. The coordinates can be chosen either cyclically or at random. In \emph{block} coordinate descent, groups of coordinates are selected for updating rather than one coordinate at a time. It is what we will use for updating the atoms and activations in \emph{alphacsc} (Chapter~\ref{chapter:alphacsc}).
 
 % \subsection{Interpolation schemes}
