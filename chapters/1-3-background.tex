@@ -69,11 +69,12 @@ Since these method must work for any kind of function which is unknown and may n
 
 In order solve this dilemma, an \emph{acquisition function} is typically used. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}~\citep{rasmussen2004gaussian}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
 
-
 \subsection{Dictionary learning}
 \label{sec:background_dict_learning}
 
-\paragraph{Sparse Coding:} A \emph{dictionary} is a set of \emph{atoms} (also known as filters sometimes) which can be combined with certain \emph{coefficients} (or activations) to approximate the data. 
+As we described in Section~\ref{sec:representation_learning}, we will be using the framework of dictionary learning to automatically mine prototypical waveforms from neural time series. Our work will build upon existing work in shift-invariant sparse coding and data decomposition methods. In this section, I introduce some concepts, which are well known in the dictionary learning community, but might be useful for anyone not so familiar with the area.
+
+\paragraph{Dictionaries and sparsity:} A \emph{dictionary} is a set of \emph{atoms} (also known as filters sometimes) which can be combined with certain \emph{coefficients} (or activations) to approximate the data. 
 The atoms could be fixed (for example wavelets or Gabor), or they could be learned directly from the data itself. As such, there is no requirement of orthogonality on the atoms. 
 To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse, \emph{i.e.}, they have very few non-zero values. 
 The learning algorithm is therefore called \emph{sparse coding} and the coefficients learned are known as the \emph{sparse code}.
@@ -107,7 +108,7 @@ As a result of the convolutional approach, the atoms learned are not redundant a
 
 \subsection{Iterative solvers for convex problems}
 
-In our \emph{alphacsc} work presented in Chapter~\ref{chapter:alphacsc}, we will be using a number of convex optimization methods. CSC being a biconvex problem (\textit{i.e.,}  convex if either the atoms or the activations are fixed), is amenable to such methods.
+Much of the dictionary learning techniques in literature leverage convex optimization methods, which are iterative techniques to solve minimization problems involving convex functions. In our \emph{alphacsc} work presented in Chapter~\ref{chapter:alphacsc}, we will also be using such methods. \ac{CSC} being a biconvex problem (\textit{i.e.,}  convex if either the atoms or the activations are fixed), is amenable to such methods.
 
 Therefore, let us first recall what is a convex function before diving into the details of these methods.
 \vspace{\parskip}
@@ -129,7 +130,7 @@ A function $f$ is convex if it satisfies
 
 In other words, for any two points on the function, the line joining those two points lies above the graph of the function (as illustrated in Figure~\ref{fig:convexity}). A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minima is not only the global minima, but also it is unique.
 
-We will be solving unconstrained minimization problems of the form
+Throughout the thesis, we will be solving unconstrained minimization problems of the form
 \begin{equation}
 x^{\star} = \argmin_x \|Ax - b\|_{2}^2 + \Omega(x),
 \label{eq:linreg_minimize}
@@ -193,7 +194,7 @@ This is what is known as \textit{projected gradient descent}. We will encounter 
 The momentum term takes into account the update vector from the past iterations so as to dampen the oscillatory behaviour observed in classical gradient descent and \ac{ISTA}. 
 This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has a faster convergence rate of $\mathcal{O}(1/k^2)$. It has been proved theoretically that this is the fastest rate possible if we had access to only the gradient and function evaluations. The full algorithm is summarized in Algorithm~\ref{alg:fista}.
 
-    \begin{algorithm}[H]
+    \begin{algorithm}[htb]
       \begin{algorithmic}[1] %(regularization parameter), (number of EM iterations), (number of MCMC iterations)
       \REQUIRE Regularization: $\lambda \in \real_+$, Design matrix A, b
       \STATE $x_1=0=z_1, \beta_1=1$
