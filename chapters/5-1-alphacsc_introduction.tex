@@ -39,7 +39,9 @@ In the core of our model, which we call $\alpha$CSC, lies a family of heavy-tail
 distributions called $\alpha$-stable distributions. We develop a novel, computationally efficient Monte Carlo
 expectation-maximization algorithm for inference. The maximization step boils down to a weighted
 \ac{CSC} problem, for which we develop a computationally efficient optimization algorithm.
-Our work is unique as we rigorously evaluate the computational efficiency of our algorithm against the competing benchmarks. As the \ac{CSC} problem is non-convex, the convergence depends on the initialization. A theoretical analysis of computational complexity is not sufficient as the optimization procedure is nested. At each step of the alternate minimization, the solver for the activations or the atoms are solved only for a few iterations rather than up to machine precision. Even our qualitative analysis goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data.
+
+Our work is unique as we rigorously evaluate the computational efficiency of our algorithm against the competing benchmarks. Because the \ac{CSC} problem is non-convex, the optimization procedure involves nested loops and theoretical analysis often falls short in dealing with the complexity of non-convex functions. 
+The optimization procedure is nested as the problem is convex when one of the variables is fixed: the atoms or the activations. The outer loop alternates between these two variables while the inner loop learns them when the other is fixed. An experimental approach, while tricky, is not completely out of reach. The final result depends on the initialization, and therefore algorithms can be compared only if they are tested for many different random seeds and their results averaged. Our qualitative analysis also goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data.
 
 Our results
 show that the proposed algorithm achieves state-of-the-art convergence speeds. Besides, $\alpha$CSC is
