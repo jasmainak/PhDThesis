@@ -16,10 +16,10 @@
    width="637.47577"
    height="570.37262"
    xml:space="preserve"
-   sodipodi:docname="bayes_opt.pdf"><metadata
+   sodipodi:docname="bayes_opt.svg"><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
      id="defs6"><clipPath
        clipPathUnits="userSpaceOnUse"
        id="clipPath16"><path
@@ -73,7 +73,7 @@
      fit-margin-left="10"
      fit-margin-right="10"
      fit-margin-bottom="10"
-     inkscape:zoom="0.66444444"
+     inkscape:zoom="0.93966634"
      inkscape:cx="566.48672"
      inkscape:cy="251.45615"
      inkscape:window-x="0"
@@ -184,16 +184,16 @@
        inkscape:connector-curvature="0" /><text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="319.26224"
-       y="-45.973759"
+       x="285.66211"
+       y="-47.573757"
        id="text3071"
        sodipodi:linespacing="125%"
        transform="scale(1,-1)"><tspan
          sodipodi:role="line"
          id="tspan3073"
-         x="319.26224"
-         y="-45.973759"
-         style="font-size:19.20000076px">Parameter value</tspan></text>
+         x="285.66211"
+         y="-47.573757"
+         style="font-size:19.20000076px">Hyperparameter value</tspan></text>
 <text
        xml:space="preserve"
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"

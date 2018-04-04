@@ -46,11 +46,12 @@ Cross validation is a statistical technique to estimate how well a predictive mo
 
 Depending on the data, different types of partitioning schemes are preferred. In \emph{K-fold} cross validation, the data is divided into $K$ equal parts (with or without shuffling the samples), where $K - 1$ parts are used for training and the $K$th part is used for validation. In a \emph{stratified} cross-validation scheme, the partitions are done such that each partition has roughly equal number of samples from each class.
 
-\paragraph{Grid search: } When cross validation is used for selecting the best model by exhaustively searching over all possible parameters that the model can admit, it is known as grid search.
+\paragraph{Grid search: } Quite often, a machine learning model contains hyperparameters (\textit{e.g.} regularization constant or the width of a Gaussian) which need to be tuned to get optimal performance on the data. This tuning to select the best model can be done automatically using cross validation. The idea is to exhaustively search over the parameter space by trying an equally spaced grid of hyperparameters that the model can admit and selecting the one which performs the best.
 
 \paragraph{Random search: } Sometimes grid search is too slow, and it is better to try parameters sampled randomly without a considerable loss in performance. This is known as random search.
 
-\paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is done to avoid a circularity bias as noted in \cite{varoquaux2017assessing}. Therefore a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
+\paragraph{Nested cross validation: } When cross validation has been used for finding the best model, a separate unseen partition, known as the \emph{test} set, is needed to assess the generalization power of the best model. The test set must be different from all the data that was seen so far, including \emph{both} the training and the validation sets. This is done to avoid a circularity bias as noted in \citet{varoquaux2017assessing, cawley2010over,friedman2001elements}.
+Therefore a nested cross-validation scheme is necessary where in each outer loop, the best model is found, and its performance is computed.
 
 \subsection{Bayesian optimization}
 
@@ -59,15 +60,15 @@ Depending on the data, different types of partitioning schemes are preferred. In
 \begin{center}
    \includegraphics[width=0.7\linewidth]{figures/bayes_opt.pdf}
 \end{center}
-   \caption[Bayesian optimization for parameter tuning]{An illustration of how Bayesian optimization works by combining (A) Gaussian process to estimate uncertainties on the objective function for the parameter space, and (B) Acquisition function to balance the ``exploration'' \emph{vs} ``exploitation'' dilemma.}
+   \caption[Bayesian optimization for parameter tuning]{An illustration of how Bayesian optimization is used to sequentially select new points (A) Gaussian process to estimate uncertainties on the objective function for the parameter space, and (B) Acquisition function to balance the ``exploration'' \emph{vs} ``exploitation'' dilemma.}
    \label{fig:bayes_opt}
 \end{figure}
 
-Sometimes grid search is too slow and random search is not as accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization~\citep{snoek2012practical} is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
+Sometimes grid search is too slow and random search is not sufficiently accurate for tuning hyperparameters. In such cases, one may have to rely on more efficient black box optimization techniques. Bayesian optimization~\citep{snoek2012practical} is one such method which is a sequential method, and iteratively improves the objective function that we are optimizing.
 
-Since these methods must work for any kind of function and may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the parameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well-known in computer science.
+Since these methods must work for any kind of function which may not be necessarily convex, we cannot rely on classical gradient based methods. The central idea in these types of methods is to search as much of the hyperparameter space as possible, while keeping a record of the objective values evaluated so far. A very natural strategy is therefore to either search around points which have high objective values, or in those areas where it is unknown. This is indeed a case for the classic  ``exploration'' \emph{vs.} ``exploitation'' dilemma that is well known in computer science.
 
-In order solve this dilemma, an \emph{acquisition function} is typically used. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}~\citep{rasmussen2004gaussian}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
+In order solve this dilemma, an \emph{acquisition function} is typically used, as shown in Figure~\ref{fig:bayes_opt}. While the ``exploitation'' component of this function is easy to compute from the objective values, in order to compute the ``exploration'' component, we can fall back upon \acp{GP}~\citep{rasmussen2004gaussian}. Given the points evaluated until now, a \ac{GP} can be used to estimate the uncertainty in the rest of the search space. 
 
 \subsection{Dictionary learning}
 \label{sec:background_dict_learning}
