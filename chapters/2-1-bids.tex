@@ -19,7 +19,7 @@ Contents}}}
 
 \clearpage
 
-From the perspective of reproducibility, data sharing is of paramount importance. Sharing code by itself does not enable reproducibility if the accompanying data is not available and expensive to acquire. Reanalysis of a dataset is however useful not just from the perspective of reproducibility but also for discovering new effects that were previously overlooked. At the same time, the more data is shared, the larger our sample sizes will be and this will enable us to conduct studies with higher statistical power. Low statistical power, as we discussed in Chapter~\ref{chapter:intro} is one of the main reasons for the reproducibility crisis.
+From the perspective of reproducibility, data sharing is of paramount importance. Sharing code by itself does not enable reproducibility if the accompanying data is not available, and expensive to acquire. Reanalysis of a dataset is however useful not just from the perspective of reproducibility but also for discovering new effects that were previously overlooked. At the same time, the more data is shared, the larger our sample sizes will be and this will enable us to conduct studies with higher statistical power. Low statistical power, as we discussed in Chapter~\ref{chapter:intro} is one of the main reasons for the reproducibility crisis.
 
 While data sharing in neuroscience is on the rise, the amount of data reuse is still limited. For example, since the release of the Human Connectome Project (HCP)~\citep{larson2013adding} MEG data in 2013, there have been very few instances of reusing this data. At the time of writing this thesis, we had only one or two documented cases~\citep{jas2017autoreject} of reusing the HCP data. Even in these cases, the effort has mostly been limited to reproducing results rather than testing new hypotheses. This clearly represents a gap between the ideal and the practice of data sharing. 
 
@@ -27,18 +27,8 @@ While data sharing in neuroscience is on the rise, the amount of data reuse is s
 
 Neuroimaging experiments are often complicated involving different  cognitive tasks (auditory, visual, somatosensory \emph{etc.}), different acquisition parameters (sampling frequency, number of sensors and their location, measurement device \emph{etc.}), and population parameters (subject's gender, age \emph{etc.}). All of this metadata is necessary information to successfully reanalyze the data. Unfortunately, historically there has been a lack of consensus amongst different labs and industrial manufacturers as to what constitutes useful metadata. This points to the need for establishing standards. While on a first glance, this may appear to be unnecessary bureaucratic red tape, in fact standards exist in almost all facets of our life. 
 
-A simple example to consider is the wall clocks that we are all familiar with, and is depicted in Figure~\ref{fig:clock_standards}. The wall clock is recognized as an everyday object that is perhaps far simpler than most complex neuroimaging experiments. Even then, it is striking how it is not so easy to read Figures~\ref{fig:clock_standards}B and C. This is because there are two degrees of freedom even for this simple device: the direction of motion of the hands, and the anchor point for the 12 o' clock. As modern clock manufacturers have realized, it is far more convenient to establish a standard. The upfront cost in conforming to the standard is more than made up by the efficiencies achieved as a result of it.
-
 Apart from the meta information that is stored with the data, the data itself is stored amongst one of 10--20 different file formats and at different stages of processing. While there have been some efforts previously to standardize data structures~\citep{gibson2009minimum, grewe2011bottom, stoewer2013singlefile, teeters2015neurodata, bigdely2016preparing}, it has not gained wide acceptability. Designing a new standard is tricky as it requires gaining a community consensus. At the same time it must strike the right balance between rigidity for efficiency and flexibility for adapting to future technologies. 
 
-\begin{figure}[t]
-\begin{center}
-   \includegraphics[width=0.7\linewidth]{figures/clock.pdf}
-\end{center}
-   \caption[Standards in clock design.]{Standards in clock design. The time is 07:11 (A) Modern standard, read clockwise and 12 o' clock is at North (B) Anticlockwise and 9 o' clock at North (C) Read clockwise but 5 o' clock is at North. Adapted from \cite{norman2013design}.}
-   \label{fig:clock_standards}
-\end{figure}
- 
 The \ac{BIDS} format~\citep{gorgolewski2016brain} is indeed designed with these considerations in mind. 
 The standard involves a hierarchy of folders to describe the imaging technology used, the name of the subject, and the date of the experiment. 
 At each level of hierarchy, files are accompanied by sidecar \code{json} files describing the metadata. 
@@ -64,9 +54,21 @@ In the present work, we present a significant extension of \ac{BIDS} to support 
 The Brain Imaging Data Structure (BIDS) is an emerging standard for the organization of neuroimaging data~\citep{gorgolewski2016brain}. The significance of BIDS is timely: there is increasing availability of open neuroimaging data resources, and strong interest in aggregating large, heterogeneous datasets to harness machine learning techniques and address a new range of scientific questions, with greater statistical power. A single neuroimaging study by itself can represent a large and intricate volume of data, with multiple protocols and modalities, and several categories of participants possibly enrolled in repeated sessions. These aspects pose challenges to data organization, harmonization and sharing. The situation is aggravated by the lack of a unique neuroscience standard for digital data across, and sometimes within, modalities such as electrophysiology. Consequently, present data management practices are often based on solutions that do not generalize between labs, or even between persons within the same group. This leads to suboptimal usage of human (time lost retrieving data), infrastructure (data storage space) and financial (limited longevity and value of disorganized data after first publication) resources. Poor or lacking data management strategies also negatively affects the reproducibility of results, even within the lab where the data were collected. 
 BIDS is a standard to describe the organization of \ac{MRI} data. It is based on a simple, hierarchical folder structure, with key study parameters documented in text-based metadata files. One benefit is the handling of multiple MRI data sequences, with minimal curation overheads, which reduces the possibility of data-handling errors. An important secondary outcome is the facilitation of interoperability between tools for data analytics, provided that software and pipelines adopt BIDS for data inputs. 
 
-We describe here a key extension of BIDS to electrophysiology data. The technical sophistication of MEG makes it the most challenging electrophysiology data type for standardization~\citep{baillet2017magnetoencephalography}. For this reason, BIDS-MEG can readily be generalized to electroencephalography, multiunit recordings, and local field potentials. Further to strengthening and rationalizing data management in MEG labs, BIDS-MEG provides a common structure to present and future large MEG open-data repositories~\citep{larson2013adding, taylor2015cambridge, niso2016omega}. The absence of unique data file format in MEG is compensated by BIDS-MEG’s standard data organization: the sharing and processing of large and complex data hierarchies is simplified, and made compatible and reproducible across tools for data analytics. 
+We describe here a key extension of BIDS to electrophysiology data. The technical sophistication of MEG makes it the most challenging electrophysiology data type for standardization~\citep{baillet2017magnetoencephalography}. For this reason, BIDS-MEG can readily be generalized to electroencephalography, multiunit recordings, and local field potentials. Further to strengthening and rationalizing data management in MEG labs, BIDS-MEG provides a common structure to present and future large MEG open-data repositories~\citep{larson2013adding, taylor2015cambridge, niso2016omega}. The absence of unique data file format in MEG is compensated by BIDS-MEG’s standard data organization: the sharing and processing of large and complex data hierarchies are simplified, and made compatible and reproducible across tools for data analytics. 
 
 To derive the BIDS-MEG specifications, we have combined perspectives from investigators, technical support staff and data managers. We also involved the expertise of leading academic software developers for MEG science~\citep{baillet2011academic}, including Brainstorm~\citep{tadel2011brainstorm}, FieldTrip~\citep{oostenveld2010fieldtrip}, MNE~\citep{mne}, and SPM~\citep{litvak2011eeg}. The proposed BIDS-MEG specifications are presently compatible with these software applications and toolboxes.
+
+\clearpage
+
+\begin{sidewaysfigure}[ht!]
+\begin{center}
+   \includegraphics[width=\linewidth]{figures/MEG-BIDS_poll_results_figure.pdf}
+\end{center}
+   \caption[Results from the BIDS-MEG poll.]{Results from the BIDS-MEG poll}
+   \label{fig:BIDS-MEG-poll}
+\end{sidewaysfigure}
+
+\clearpage
 
 \section{Technical specification}
 \label{sec:BIDS-MEG}
@@ -75,10 +77,16 @@ To derive the BIDS-MEG specifications, we have combined perspectives from invest
 \begin{center}
    \includegraphics[width=\linewidth]{figures/bids_organization.png}
 \end{center}
-   \caption[BIDS-MEG data organization scheme.]{BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folder are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all level the data hierarchy, and document conveniently the metadata contents.}
+   \caption[BIDS-MEG data organization scheme.]{BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folders are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all levels of the data hierarchy, and document conveniently the metadata contents.}
    \label{fig:BIDS-MEG-organization}
 \end{figure}
 
+The BIDS-MEG fields and data organization were defined, bearing in mind best-practice guidelines for conducting MEG research~\citep{gross2013good}. The initiative fostered contributions from multiple MEG experts, with a face-to-face discussion at the 2016 International Conference on Biomagnetism, where the first incarnation of BIDS-MEG was introduced~\citep{niso2016megbids}. The first set of feedback comments and the minutes from further group discussions are publicly available
+(\url{https://groups.google.com/d/msg/bids-discussion/xTHBsGhu0hk/MN25xbxRBwAJ}).
+
+A first version of the present manuscript was shared via the preprint server bioRxiv, from where more comments stemming from the community were collected and considered for improvement of BIDS-MEG. A poll survey to probe the interest of the concerned community was also conducted (see Figure~\ref{fig:BIDS-MEG-poll}).
+
+\clearpage
 
 \begin{sidewaysfigure}[htb!]
 \begin{center}
@@ -88,18 +96,7 @@ To derive the BIDS-MEG specifications, we have combined perspectives from invest
    \label{fig:BIDS-MEG-overview}
 \end{sidewaysfigure}
 
-\begin{sidewaysfigure}[htb!]
-\begin{center}
-   \includegraphics[width=\linewidth]{figures/MEG-BIDS_poll_results_figure.pdf}
-\end{center}
-   \caption[Results from the BIDS-MEG poll.]{Results from the BIDS-MEG poll}
-   \label{fig:BIDS-MEG-poll}
-\end{sidewaysfigure}
-
-The BIDS-MEG fields and data organization were defined, bearing in mind best-practice guidelines for conducting MEG research~\citep{gross2013good}. The initiative fostered contributions from multiple MEG experts, with a face-to-face discussion at the 2016 International Conference on Biomagnetism, where the first incarnation of BIDS-MEG was introduced~\citep{niso2016megbids}. The first set of feedback comments and the minutes from further group discussions are publicly available
-(\url{https://groups.google.com/d/msg/bids-discussion/xTHBsGhu0hk/MN25xbxRBwAJ}).
-
-A first version of the present manuscript was shared via the preprint server bioRxiv, from where more comments stemming from the community were collected and considered for improvement of BIDS-MEG. A poll survey to probe the interest of the concerned community was also conducted (see Figure~\ref{fig:BIDS-MEG-poll}).
+\clearpage
 
 BIDS-MEG builds on the BIDS hierarchical data structure (see Figure~\ref{fig:BIDS-MEG-organization} and \ref{fig:BIDS-MEG-overview}). For instance data descriptors such as subject, session, technique, run are BIDS notions that were re-used in BIDS-MEG. Similarly, the simple although extensively used human and machine readable file formats (\ac{JSON}, and \ac{TSV} text files) that contributed to the versatility and practicality of documenting metadata elements in BIDS, were expanded with BIDS-MEG. BIDS-MEG employs a straightforward terminology, cautiously defined in line with the general BIDS specifications, although adapted to the unique requirements of MEG.  For further reference, the BIDS-MEG specifications are detailed in an open-access online document:
 \url{https://docs.google.com/document/d/1FWex_kSPWVh_f4rKgd5rxJmxlboAPtQlmBc1gyZlRZM)}
@@ -112,7 +109,8 @@ There is no common, open or standard file format in MEG, equivalent to DICOM or 
 
 For a given investigator or research group, BIDS-MEG describes a hierarchical structure that descends from a ‘Study’ folder. Multiple ‘Subject’ subfolders contain the data from the participants enrolled. They are arranged by ‘Session’, each session subfolder containing ‘Run’ folders and eventually, data and metadata files. 
 
-The ‘Run’ folder includes a variety of files: MEG recording files in native format, a sidecar JSON document (\code{*\_meg.json}), a channel description table (\code{*\_channel.tsv}), and other general BIDS files, such as task events tables (\code{*\_events.tsv}) that are likely to be specific of each run. ‘Session’ specific files include the coordinates of anatomical landmarks and head-localization coils stored in a JSON document (\code{*\_fid.json}), optional photographs of the anatomical landmarks and/or head localization coils  (\code{*\_photo.jpg}), fiducials information (\code{*\_fidinfo.txt}), 3-D scalp digitalization files (\code{*\_headshape.<manufacturer\_specific\_format>}) and acquisition times (\code{scans.tsv}). The ‘Subject’ and ‘Study’ specific files are inherited directly from the general BIDS specifications (e.g., participants.tsv). Note that in case of conflict between fields of different runs/sessions, it the inheritance principle should be applied: the description file closer to the data prevails (see Section ‘3.5 The Inheritance Principle’ of the BIDS specifications~\citep{gorgolewski2016brain}.
+The ‘Run’ folder includes a variety of files: MEG recording files in native format, a sidecar JSON document (\code{*\_meg.json}), a channel description table (\code{*\_channel.tsv}), and other general BIDS files, such as task events tables (\code{*\_events.tsv}) that are likely to be specific of each run. ‘Session’ specific files include the coordinates of anatomical landmarks and head-localization coils stored in a JSON document (\code{*\_fid.json}), optional photographs of the anatomical landmarks and/or head localization coils  (\code{*\_photo.jpg}), fiducials information (\code{*\_fidinfo.txt}), 3-D scalp digitalization files (\code{*\_headshape.<manufacturer\_specific\_format>}) and acquisition times (\code{scans.tsv}). The ‘Subject’ and ‘Study’ specific files are inherited directly from the general BIDS specifications (e.g., participants.tsv). 
+Note that in case of conflict between fields of different runs/sessions, the inheritance principle should be applied: the description file closer to the data prevails (see Section ‘3.5 The Inheritance Principle’ of the BIDS specifications~\citep{gorgolewski2016brain}).
 
 One issue that required special attention was the multiplicity of coordinate systems and units between MEG systems. To impose a unique coordinate system for BIDS based on the subjects’ brain anatomy (e.g., MNI coordinates or equivalent) was an appealing solution, which however would lack generalizability in the MEG practice. MEG data can be collected without anatomical information, such as empty-room noise recordings, which are important to optimal source modeling~\citep{gross-etal:13}. BIDS-MEG therefore associates all recordings with a coordinate file defined according to the MEG system used. Again, BIDS-MEG compatible software can read and interpret this information properly.
 
@@ -123,7 +121,7 @@ We provide four different publically-available datasets in BIDS-MEG format ($\si
 
 The BIDS-MEG sample data release includes: 
 
-\paragraph{OMEGA Resting-State samples:} Five minutes of eyes-open, resting-state MEG data is available for 5 subjects from The Open MEG Archive (OMEGA)~\citep{niso2016omega}. The data are available from the Brainstorm Tutorial: MEG resting state \& OMEGA database. The first release of data in BIDS-MEG format ($\sim$10.5GB) available here: 
+\paragraph{OMEGA Resting-State samples:} Five minutes of eyes-open, resting-state MEG data is available for 5 subjects from The Open MEG Archive (OMEGA)~\citep{niso2016omega}. The data are available from the Brainstorm Tutorial: MEG resting state \& OMEGA database. The first release of data in BIDS-MEG format ($\sim$10.5GB) is available here: 
 \url{https://box.bic.mni.mcgill.ca/s/omega?path=\%2FContributions
 \%20(in\%20BIDS\%20format)\%2Fsample_BIDS_omega} (access to these datasets require registration to OMEGA, \url{https://www.mcgill.ca/bic/omega-registration}).
 
@@ -145,7 +143,7 @@ Widely used MEG software packages have already added functionality to support BI
 
 \paragraph{FieldTrip}\citep{oostenveld2010fieldtrip}: FieldTrip is an open-source MATLAB toolbox for the analysis of MEG, EEG, and other electrophysiological data. Like most other tools listed herewith, FieldTrip can  implement full analysis pipelines, starting from coregistration, preprocessing, time- and spectral analysis, source reconstruction, connectivity and statistics. Among others, FieldTrip has been used for the MEG part of the Human Connectome Project. Since a FieldTrip analysis pipeline is represented as a MATLAB script, its application on BIDS structured data implies that the BIDS details are represented in the analysis scripts that users write. 
 
-\paragraph{MNE}\citep{gramfort2013meg, mne}: MNE (\url{http://martinos.org/mne}), whose name stems from its capability to compute cortically-constrained minimum-norm current estimates from M/EEG data. It is a software package that provides comprehensive analysis tools and workflows including preprocessing (Maxwell filtering, ICA, signal space projectors), source estimation (eg. using MNE, beamformers or mixed-norm sparse solvers), time-frequency analysis, statistical analysis including multivariate decoding, and several methods to estimate functional connectivity between distributed brain regions. The core of MNE is written in Python and is distributed under the permissive BSD Licence. MNE will use the BIDS data structure to distribute all its tutorial datasets and the documented analysis scripts. MNE provides Python code to read and write files in BIDS compatible format, as well as summary reports automatically generated via the MNE report command. A preliminary version is available at \url{https://github.com/mne-tools/mne-bids}. 
+\paragraph{MNE}\citep{gramfort2013meg, mne}: MNE (\url{http://martinos.org/mne}) is a software package, whose name stems from its capability to compute cortically-constrained minimum-norm current estimates from M/EEG data. It provides comprehensive analysis tools and workflows including preprocessing (Maxwell filtering, ICA, signal space projectors), source estimation (eg. using MNE, beamformers or mixed-norm sparse solvers), time-frequency analysis, statistical analysis including multivariate decoding, and several methods to estimate functional connectivity between distributed brain regions. The core of MNE is written in Python and is distributed under the permissive BSD Licence. MNE will use the BIDS data structure to distribute all its tutorial datasets and the documented analysis scripts. MNE provides Python code to read and write files in BIDS compatible format, as well as summary reports automatically generated via the MNE report command. A preliminary version is available at \url{https://github.com/mne-tools/mne-bids}. 
 
 \paragraph{SPM}\citep{litvak2011eeg}: SPM (\url{http://www.fil.ion.ucl.ac.uk/spm}) is a free and open source software written in MATLAB where many widely used methods for the analysis of PET, fMRI and for computational neuroanatomy have been originally developed and implemented. More recently SPM has been extended to perform M/EEG analyses, including topological inference for neurophysiological data, empirical Bayesian framework for source reconstruction and Dynamic Causal Modeling (DCM), an approach combining neural modeling with data analysis. SPM~\citep{litvak2011eeg} includes a library, spm\_BIDS.m, to parse and query BIDS-formatted datasets, as well as low-level functions to read/write JSON and TSV metadata files. A complete pipeline for the analysis of a group MEG dataset in BIDS format is presented in preparation.
 
@@ -157,7 +155,8 @@ For a more detailed description of the BIDS-MEG specification, example datasets,
 
 \section{Discussion}
 \label{sec:bids_discussion}
-Although BIDS-MEG is a proposal to establish a standard framework for the organization of electrophysiology data, it does not impose the standardization of the data file format per se. Some initiatives are aiming towards the definition of a new common binary file format for electrophysiology (MNE python group). Akin to DICOM in MRI, one single file format would beneficial, when considering the diversity of native raw file formats in electrophysiology. Yet, MEG data volumes are typically very large (several GBs), hence their duplication into a standard format may be impractical. Our position is rather to promote BIDS-MEG and ascertain that tools for data analysis continue to be equipped with the necessary readers for all existing vendor formats. We believe the capacity of BIDS-MEG to organise data without requiring a common data format is actually a strength: the standard is flexible in the sense that any data parameters can be extracted and stored as metadata in sidecar json files at the time of creating a new data entry, regardless of the file format for the raw data. Therefore, any new data format for electrophysiology, including emerging standards, is by construction compatible with BIDS-MEG.
+Although BIDS-MEG is a proposal to establish a standard framework for the organization of electrophysiology data, it does not impose the standardization of the data file format per se. Some initiatives are aiming towards the definition of a new common binary file format for electrophysiology (MNE python group). Akin to DICOM in MRI, one single file format would be beneficial, when considering the diversity of native raw file formats in electrophysiology. 
+Yet, MEG data volumes are typically very large (several GBs), hence their duplication into a standard format may be impractical. Our position is rather to promote BIDS-MEG and ascertain that tools for data analysis continue to be equipped with the necessary readers for all existing vendor formats. We believe the capacity of BIDS-MEG to organise data without requiring a common data format is actually a strength: the standard is flexible in the sense that any data parameters can be extracted and stored as metadata in sidecar json files at the time of creating a new data entry, regardless of the file format for the raw data. Therefore, any new data format for electrophysiology, including emerging standards, is by construction compatible with BIDS-MEG.
 
 Along the same lines, special attention was given to the handling of the various  coordinate systems used by the different MEG vendors and toolboxes. BIDS-MEG is also flexible in that respect, as long as the conventions used are characterized and documented in the \code{*\_fid.json} file. The coordinate systems presently handled by BIDS-MEG are detailed in the Specification document. The coordinate systems used for MEG and EEG sensors, MRI volumes, locations of fiducials, anatomical landmarks and digitized head points, need to be described following this principle, as some are likely to be different.
 
