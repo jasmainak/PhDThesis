@@ -15,6 +15,16 @@ For $1 \leq p < \infty$, the $\ell_p$ norm of a vector $x$ is defined by:
 \begin{equation}
 \|x\|_p = \Big(\sum_n \ \lvert x_n \rvert^p \Big)^{1/p}.
 \end{equation}
+\label{def:lp_norm}
+\end{definition}
+%
+%
+\begin{definition}{($\ell_0$ ``norm''.)}
+The $\ell_0$ ``norm'' of a vector $x$ is defined by:
+\begin{equation}
+\|x\|_0 = \sum_n \ \lvert x_n \rvert^0.
+\end{equation}
+\label{def:l0_norm}
 \end{definition}
 %
 %
@@ -24,7 +34,6 @@ The $\ell_\infty$ norm of a vector $x$ is defined by:
 \begin{equation}
 \|x\|_{\infty} = \sup_n \ \lvert x_n \rvert.
 \end{equation}
-\label{def:norm}
 \end{definition}
 As we are taking the supremum, this norm is sensitive to large values in the vector, which is needed for measuring artifacts.
 %
@@ -46,7 +55,9 @@ Cross validation is a statistical technique to estimate how well a predictive mo
 
 Depending on the data, different types of partitioning schemes are preferred. In \emph{K-fold} cross validation, the data is divided into $K$ equal parts (with or without shuffling the samples), where $K - 1$ parts are used for training and the $K$th part is used for validation. In a \emph{stratified} cross-validation scheme, the partitions are done such that each partition has roughly equal number of samples from each class.
 
-\paragraph{Grid search: } Quite often, a machine learning model contains hyperparameters (\textit{e.g.} regularization constant or the width of a Gaussian) which need to be tuned to get optimal performance on the data. This tuning to select the best model can be done automatically using cross validation. The idea is to exhaustively search over the parameter space by trying an equally spaced grid of hyperparameters that the model can admit and selecting the one which performs the best.
+\paragraph{Underfitting and overfitting: } When a statistical model explains the data too closely, it results in overfitting. An overfitted model is often unable to make accurate predictions of unseen data. The converse is also true. When the model is unable to explain much structure in the data, it is known as underfitting. As we will see in Chapter~\ref{chapter:autoreject}, these concepts are closely related to model selection. The goal is typically to find a model with hyperparameters (\textit{e.g.} regularization constant or the width of a Gaussian) that neither underfit nor overfit. We will next discuss some strategies to tune these hyperparameters.
+
+\paragraph{Grid search: } Quite often, a machine learning model contains hyperparameters which need to be tuned to get optimal performance on the data. This tuning to select the best model can be done automatically using cross validation. The idea is to exhaustively search over the parameter space by trying an equally spaced grid of hyperparameters that the model can admit and selecting the one which performs the best.
 
 \paragraph{Random search: } Sometimes grid search is too slow, and it is better to try parameters sampled randomly without a considerable loss in performance. This is known as random search.
 
@@ -80,9 +91,10 @@ The atoms could be fixed (for example wavelets or Gabor), or they could be learn
 To learn a representation of the data boils down to estimating the coefficients used in the approximation, which are often assumed to be sparse, \emph{i.e.}, they have very few non-zero values. 
 The learning algorithm is therefore called \emph{sparse coding} and the coefficients learned are known as the \emph{sparse code}.
 
-Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. Note that the $\ell_0$ ``norm'' simply counts the number of elements in the vector (c.f., Definition~\ref{def:norm}) , therefore adding it as a regularizer will favour solutions that have fewer non-zero elements. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients (keeping the atoms fixed). This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
+Sparsity can be promoted by using an $\ell_0$ or $\ell_1$ penalty, which helps maintain a compact representation. Note that the $\ell_0$ ``norm'' simply counts the number of elements in the vector (c.f., Definition~\ref{def:l0_norm}) , therefore adding it as a regularizer will favour solutions that have fewer non-zero elements. In the traditional approach, it is quite common to start off with an \emph{overcomplete} dictionary, \emph{i.e.,} to have more atoms than would be needed, and only estimate the coefficients (keeping the atoms fixed). This can be done, for example, using matching pursuit~\citep{mallat1993matching}, which is a greedy algorithm for sparse approximations.
 
-\paragraph{Learning atoms:} It is easy to see that the overcomplete approach is memory intensive as it has more atoms that necessary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. Nowadays, it is more common to learn the atoms in addition to the sparse code, which is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method (or matrix factorization) technique (like \ac{PCA} or \ac{ICA}), but with a sparse regularization. Typically, the convex relaxation of the $\ell_0$ penalty, the $\ell_1$ penalty is used in these situations. The problem is biconvex after the relaxation, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising~\citep{elad2006image}, inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
+\paragraph{Learning atoms:} It is easy to see that the overcomplete approach is memory intensive as it has more atoms that necessary, but also this approach requires making assumptions about the shape of the atoms in the dictionary. Nowadays, it is more common to learn the atoms in addition to the sparse code, which is known as \emph{dictionary learning}. Dictionary learning can be thought of as a data decomposition method (or matrix factorization) technique (like \ac{PCA} or \ac{ICA}), but with a sparse regularization. As for obtaining sparse solutions, the goal is to have as few non-zero coefficients as possible, an $\ell_0$ penalty is typically used. However, this leads to a non-convex formulation of the problem. One strategy to deal with this is using a convex relaxation by replacing the non-convex $\ell_0$ penalty using the $\ell_1$ penalty which is convex. 
+This is often a reasonable approximation which makes the problem biconvex, and can therefore be solved by alternate minimization. Dictionary learning is now being used for denoising~\citep{elad2006image}, inpainting~\citep{mairal2009online}, and classification~\citep{mairal2009supervised}. 
 
 \paragraph{Coding for shift invariance:}
 In traditional dictionary learning, the signal or the image is divided into patches and these patches are used as samples for the learning. The main disadvantage of this method is that it results in redundant atoms that are shifted versions of each other. This is the reason a shift-invariant version of dictionary learning is needed. One of the earliest paper in this regard can be credited to \cite{lewicki1999coding}. In their work, the dictionary was fixed and the shift-invariance was encoded using convolutions. 
@@ -129,7 +141,7 @@ A function $f$ is convex if it satisfies
    \label{fig:convexity}
 \end{figure}
 
-In other words, for any two points on the function, the line joining those two points lies above the graph of the function (as illustrated in Figure~\ref{fig:convexity}). A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minima is not only the global minima, but also it is unique.
+In other words, for any two points on the function, the line joining those two points lies above the graph of the function (as illustrated in Figure~\ref{fig:convexity}). A convex function lends itself to the property that the global minimum is also necessarily the local minimum. This concept can also be extended to define strong convexity which guarantees that the local minimum is not only the global minimum, but also it is unique.
 
 Throughout the thesis, we will be solving unconstrained minimization problems of the form
 \begin{equation}
@@ -154,7 +166,7 @@ where $\rho_k$ is a scalar which defines the step size and $d_k \in \mathbb{R}^p
 
 However, often the regularization term $\Omega(x)$ is not smooth, and therefore it does not have a unique derivative at all points. In these cases, we must resort to proximal gradient methods.
 
-\paragraph{Proximal algorithms: } An example of a non-smooth regularizer which is encountered in practice, and will also be used in our work, is the $\ell_1$ norm~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. Higher the $\lambda$, the more sparse is the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator (which depends on the non-smooth part) on the resulting iterate. 
+\paragraph{Proximal algorithms: } An example of a non-smooth regularizer which is encountered in practice, and will also be used in our work, is the $\ell_1$ norm~\citep{tibshirani1996regression}. It induces sparsity using $\Omega(x) = \lambda \|x\|_1$, where $\lambda$ controls the sparsity level. The higher the $\lambda$, sparser the solution. In such situations, we can use what are known as proximal methods. The idea behind proximal methods is to take a gradient step using only the smooth part of the function, and then apply a proximal operator (which depends on the non-smooth part) on the resulting iterate. 
 
 \vspace{\parskip}
 \begin{definition}{(Proximal operator)}
@@ -214,7 +226,7 @@ This results in an algorithm known as \ac{FISTA}~\citep{beck2009fast} which has 
 % \paragraph{ADMM:} Convergence rate of $\mathcal{O}(1/k)$
 
 \paragraph{Quasi-Newton methods:}
-If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $d_k = -H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. As opposed to first order methods which use only gradient information, Newton-based methods also make use of the curvature. The Newton's method has a locally quadratic convergence, but it may diverge when the current iterate is far from the optimum. Even if this is not the case, a Hessian that is not positive definite can also cause diverging behaviour. Therefore, the step size $\rho_k$ must be chosen carefully, for example using a line search strategy.
+If in the updates of Equation~\ref{eq:update_term}, instead of using the negative gradient for the search direction, we used $d_k = -H^{-1}(x_k)g(x_k)$, with $H(x_k)$ being the Hessian, it would be known as Newton's method. As opposed to first order methods which use only gradient information, Newton-based methods also make use of the curvature. Newton's method has a locally quadratic convergence, but it may diverge when the current iterate is far from the optimum. Even if this is not the case, a Hessian that is not positive definite can also cause diverging behaviour. Therefore, the step size $\rho_k$ must be chosen carefully, for example using a line search strategy.
 
 Of course, the Hessian is costly to compute and to invert, therefore quasi-Newton methods can be used which approximate it using a matrix $B_k$. Starting with $B_k = I$, we can update this matrix at each step using a cheap rank 1 or rank 2 correction. For instance, in the Broyden formula, we would do
 \begin{equation}
