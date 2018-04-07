@@ -40,13 +40,6 @@ In order to assess the practical significance of the algorithm, we conducted ext
 \section{Introduction}
 \label{sec:introduction}
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=0.65\linewidth]{figures/figure1.pdf}
-    \caption[Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset.]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
-    \label{fig:cross_val}
-\end{figure}
-
 Magneto-/electroencephalography (M/EEG) offer the unique ability to explore
 and study, non-invasively, the temporal dynamics of the brain and its cognitive processes. The M/EEG community has only recently begun to appreciate the importance of large-scale studies, in an effort to improve replicability and statistical power of experiments. This has given rise to the practice of sharing and publishing data in open archives~\citep{gorgolewski2016practical}. Examples of such large electrophysiological datasets include the Human Connectome Project (HCP)~\citep{van2012human, larson2013adding}, the Physiobank~\citep{goldberger2000physiobank}, the OMEGA archive~\citep{niso2016omega} and Cam-CAN~\citep{taylor2015cambridge}. A tendency towards ever-growing massive datasets as well as a shift towards common standards for accessing these databases~\citep{gorgolewski2016brain,bigdely2013hierarchical} is clearly visible. The UK Biobank project~\citep{ollier2005uk} which currently hosts data from more than 50,000 subjects is yet another example of this trend.
 
@@ -78,6 +71,13 @@ Robust regression~\citep{diedrichsen2005detecting} also deals with bad trials us
 
 We therefore face the same problem in automated methods as in the case of semi-automated methods such as peak-to-peak rejection thresholds, namely the tuning of model parameters. In fact, setting the model parameters is even more challenging in some of the methods when they do not directly translate into human-interpretable physical units.
 % \fede{Current automatic methods not only need manually tuned parameters, but in order to tune those parameters, deep knowledge of the underlying process. There's nothing with no paremeters like autoreject}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.65\linewidth]{figures/figure1.pdf}
+    \caption[Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset.]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
+    \label{fig:cross_val}
+\end{figure}
 
 This led us to adopt a pragmatic approach in terms of algorithm design, as it focuses on the tuning of the parameters that M/EEG users presently choose manually. The goal is, not only to obtain high quality data but also to develop a method which is transparent and not too disruptive for the majority of M/EEG users. A first question we address below is: can we improve peak-to-peak based rejection methods by automating the process of trial and error? In the following section, we explain how the widely-known statistical method of cross-validation (see Figure~\ref{fig:cross_val} for a preview) in combination with Bayesian optimization~\citep{snoek2012practical, bergstra2011algorithms} can be employed to tackle the problem at hand. We then explain how this strategy can be extended to set thresholds separately for each sensor and mark trials as bad when a large majority of the sensors have high-amplitude artifacts. This process closely mimics how a human expert would mark a trial as bad during visual inspection. 
 

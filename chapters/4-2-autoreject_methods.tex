@@ -8,24 +8,24 @@ We denote the data matrix by $X \in \real^{N \times P}$ with $N$ trials and $P$ 
 \begin{equation}
 \mathcal{A}_{ij} = \max_{(j-1)T+1 \leq t \leq jT} (X_{it}) - \min_{(j-1)T+1 \leq t \leq jT} (X_{it}) \enspace .
 \end{equation}
-The good trials $\mathcal{G}_k$ where the peak-to-peak amplitude $\mathcal{A}_{ij}$ for any sensor does not exceed the candidate threshold $\tau$ are computed as
+The set of indices of good trials $\mathcal{G}_k$ in which the peak-to-peak amplitude $\mathcal{A}_{ij}$ for any sensor does not exceed the candidate threshold $\tau$ are generated as
 \begin{equation}
 \mathcal{G}_k = \{i \in \mathcal{T}_{k} \suchthat \max_{1 \leq j \leq Q} \mathcal{A}_{ij} \leq \tau\}.
 \end{equation}
-By comparing the peak-to-peak threshold with the maximum of the peak-to-peak amplitudes, we ensure that none of the sensors exceed the given threshold. Once we have applied the threshold on the training set, it is necessary to evaluate how the threshold performs by looking at new data. For this purpose, we consider the validation set. Concretely speaking, we propose to compare the mean $\overbar{X_{\mathcal{G}_k}}$ of good trials in the training set against the median $\widetilde{X_{\mathcal{V}_k}}$ of all trials in the validation set. Using root mean squared error (RMSE) the mismatch $e_{k}(\tau)$ reads as:
+By comparing the peak-to-peak threshold with the maximum of the peak-to-peak amplitudes, we ensure that none of the sensors exceed the given threshold. Once we have applied the threshold on the training set, it is necessary to evaluate how the threshold performs by looking at new data. For this purpose, we consider the validation set. We propose to compare the mean $\overbar{X_{\mathcal{G}_k}}(\tau)$ of good trials in the training set against the median $\widetilde{X_{\mathcal{V}_k}}$ of all trials in the validation set. Using root mean squared error (RMSE) the mismatch $e_{k}(\tau)$ reads as:
 \begin{equation}
- e_{k}(\tau) = \fro{\overbar{X_{\mathcal{G}_k}} - \widetilde{X_{\mathcal{V}_k}}}.
+ e_{k}(\tau) = \fro{\overbar{X_{\mathcal{G}_k}}(\tau) - \widetilde{X_{\mathcal{V}_k}}}.
 \label{eq:err} 
 \end{equation}
-Here, $\fro{\cdot}$ is the Frobenius norm. The rationale for using the median in the validation set is that it is robust to outliers. Indeed, it is far less affected by high-amplitude artifacts than a classical mean. The threshold with the best data quality (lowest mismatch $e_{k}(\tau)$) on average across the $K$ folds is selected as the optimal threshold. In practice $\tau$ is taken in a bounded interval $[\tau_{\min}, \tau_{\max}]$:
+Here, $\fro{\cdot}$ is the Frobenius norm. The rationale for using the median in the validation set is that it is robust to outliers. Indeed, it is far less affected by high-amplitude artifacts than the mean. The threshold with the best data quality (lowest mismatch $e_{k}(\tau)$) on average across the $K$ folds is selected as the optimal threshold. In practice $\tau$ is taken in a bounded interval $[\tau_{\min}, \tau_{\max}]$:
 %
 \begin{equation}
 \tau_{\star} = \underset{\tau \in [\tau_{\min}, \tau_{\max}]} \argmin \frac{1}{K} \sum_{k=1}^{K}  e_{k}(\tau)
 \label{eq:best_th}
 \end{equation}
-Note, that $\widetilde{X_{\mathcal{V}_k}}$ does not depend on $\tau$. Indeed, it would not be wise to restrict the validation set to good trials according to the value of $\tau$. As $\tau$ varies, it would lead to a variable number of validation trials, which would affect the comparison of RMSE across threshold values. The idea of using the median in the context of cross-validation has been previously proposed in the statistics literature in order to deal also with outliers~\citep{leung2005cross,de2003robust}.
+Note, that $\widetilde{X_{\mathcal{V}_k}}$ does not depend on $\tau$. Indeed, it would not be wise to restrict the validation set to good trials according to the value of $\tau$. As $\tau$ varies, it would lead to a variable number of validation trials, which would affect the comparison of RMSE across threshold values. The idea of using the median in the context of cross-validation has been previously proposed in the statistics literature in order to deal also with outliers~\citep{zheng1998cross, leung2005cross,de2003robust}.
 
-Figure~\ref{fig:cross_val} shows how the average RMSE changes as the threshold varies for the MNE sample dataset~\citep{gramfort2013meg,mne}. At low thresholds, our model underfits as it drops most of the trials in the data resulting in a noisy average. On the other hand, at high thresholds, the model overfits retaining all the trials in the data including the high-amplitude artifacts. Here the candidate values of $\tau$ were taken on a grid. More details on how to solve \eqref{eq:best_th} will be given in Section~\ref{sec:bayesian_opt}.
+Figure~\ref{fig:cross_val} (on page~\pageref{fig:cross_val}) shows how the average RMSE changes as the threshold varies for the MNE sample dataset~\citep{gramfort2013meg,mne}. At low thresholds, our model underfits as it drops most of the trials in the data resulting in a noisy average. On the other hand, at high thresholds, the model overfits retaining all the trials in the data including the high-amplitude artifacts. Here the candidate values of $\tau$ were taken on a grid. More details on how to solve \eqref{eq:best_th} will be given in Section~\ref{sec:bayesian_opt}.
 
 \subsection{Autoreject (local)}
 \label{sec:auto_local}
@@ -33,7 +33,7 @@ Figure~\ref{fig:cross_val} shows how the average RMSE changes as the threshold v
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.65\linewidth]{figures/figure3.pdf}
-    \caption[A schematic diagram explaining how \emph{autoreject (local)} works.]{A schematic diagram explaining how \emph{autoreject (local)} works. (A) Each cell here is an element of the indicator matrix $C_{ij}$ described in Section~\ref{sec:auto_local}. Sensor-level thresholds are found and bad segments are marked for each sensor. Bad segments shown in red are where $C_{ij}=1$ (B) Trials are rejected if the number of bad sensors is greater than $\kappa$ and otherwise, the worst $\rho$ sensors are interpolated.}
+    \caption[A schematic diagram explaining how \emph{autoreject (local)} works.]{A schematic diagram explaining how \emph{autoreject (local)} works. (A) Each cell here is an element of the transposed indicator matrix $C_{ij}^\top$ described in Section~\ref{sec:auto_local}. Sensor-level thresholds are found and bad segments are marked for each sensor. Bad segments shown in red are where $C_{ij}^\top=1$ (B) Trials are rejected if the number of bad sensors is greater than $\kappa$ and otherwise, the worst $\rho$ sensors (see Equation~\ref{eq:score}) are interpolated.}
     \label{fig:schematic}
 \end{figure}
 
@@ -64,7 +64,7 @@ s_{ij} = \begin{cases}
 \label{eq:score}
 \end{equation}
 
-Higher the score $s_{ij}$, the worse is the sensor. The $-\infty$ score is for ignoring the good sensors in the subsequent step. The following strategy is used for interpolation.
+The higher the score $s_{ij}$, the worse the sensor. The $-\infty$ score is for ignoring the good sensors in the subsequent step. The following strategy is used for interpolation.
 %
 %
 If the number of bad sensors $\sum_{j'=1}^{Q} C_{ij'}$ is less than $\rho$ we will interpolate all of them. Otherwise, we will interpolate the $\rho$ sensors with the highest scores.
@@ -96,15 +96,15 @@ Finally, the best parameters $\rho_{*}$ and $\kappa_{*}$ are estimated using gri
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8\linewidth]{figures/figure2.pdf}
-    \caption[Sequential Bayesian optimization cross-validation curves]{(A) and (B) The cross-validation curve obtained with sequential Bayesian optimization (see Section~\ref{sec:bayesian_opt} for an explanation) for a regular (MEG 2523) and a globally bad sensor (MEG 2443) from the MNE sample dataset. The mean \ac{RMSE} is shown in red circles with error bounds in red shades. The red shaded region shows the lower and upper bounds between which the optimization is carried out. Vertical dashed line marks the estimated threshold. (C) and (D) Histogram of peak-to-peak amplitudes of trials in the sensor. The histograms are computed separately for the real data (red) and the data interpolated from other sensors (blue). The estimated threshold correctly marks all the trials as bad for the globally bad sensor.}
+    \caption[Sequential Bayesian optimization cross-validation curves]{(A) and (B) The cross-validation curve obtained with sequential Bayesian optimization (see Section~\ref{sec:bayesian_opt} for an explanation) for a regular (MEG 2523) and a globally bad sensor (MEG 2443) from the MNE sample dataset. The mean \ac{RMSE} is shown in red circles with the standard deviation in red shades. Vertical dashed line marks the estimated threshold. (C) and (D) Histogram of peak-to-peak amplitudes of trials in the sensor. The histograms are computed separately for the real data (red) and the data interpolated from other sensors (blue). The estimated optimal threshold correctly marks all the trials as bad for the globally bad sensor.}
     \label{fig:cross_val_hist}
 \end{figure}
 
-In practice, cross-validation does not work for a globally bad sensor since all the trials are corrupted. In this scenario, the optimal threshold for this bad sensor should be lower than the lowest peak-to-peak amplitude so that all the trials for that sensor are marked as bad. However, even the median of the validation set has been corrupted. The algorithm therefore attempts to keep as many trials as necessary for the average to be close to the corrupted median. Thus, the estimated threshold ends up being higher than what would have been optimal. Recall from Figure~\ref{fig:cross_val} that this is the classic case of an overfitting model. A common strategy in machine learning to reduce overfitting is data augmentation~\citep{krizhevsky2012imagenet}. It basically boils down to using the properties of the data, such as the physics of the system, to generate more plausible data.
+In practice, cross-validation does not work for a globally bad sensor since all the trials are corrupted. In this scenario, the optimal threshold for this bad sensor should be lower than the lowest peak-to-peak amplitude so that all the trials for that sensor are marked as bad. However, even the median of the validation set has been corrupted. The algorithm therefore attempts to keep as many trials as necessary for the average to be close to the corrupted median. Thus, the estimated threshold ends up being higher than what would have been optimal. Recall from Figure~\ref{fig:cross_val} that this is the classic case of an overfitting model. A common strategy in machine learning to reduce overfitting is data augmentation~\citep{krizhevsky2012imagenet}. It basically boils down to using the properties of the data (in our case, this being the physics of the system) to generate additional plausible data.
 
-To implement data augmentation in our model, we interpolate each sensor from all the other $Q-1$ sensors and by doing so, we double the number of trials in the data. In the augmented data, half of the trials contain sensor data which are the output of a leave-one-sensor-out cross-validation. The augmented data matrix is $X^{\textrm{aug}} \in \real^{2N \times P}$. With the augmented data, the median is now closer to the uncorrupted median of the data in that sensor. During cross-validation the folds were stratified so that the number of interpolated trials and original trials in each fold were roughly equal.
+To implement data augmentation in our model, we interpolate each sensor from all the other $Q-1$ sensors and by doing so, we double the number of trials in the data. In the augmented data, half of the trials contain sensor data. The augmented data matrix is $X^{\textrm{aug}} \in \real^{2N \times P}$. With the augmented data, the median is now closer to the uncorrupted median of the data in that sensor. During cross-validation the folds were stratified so that the number of interpolated trials and original trials in each fold were roughly equal.
 
-\subsection{Candidate thresholds using Bayesian optimization}
+\subsection{Search for optimal thresholds using Bayesian optimization}
 \label{sec:bayesian_opt}
 Now that we have formalized the problem and our approach, we must estimate the threshold $\tau_{\star}$ which minimizes the error defined in Equation~\eqref{eq:err}. A na\"ive strategy is to define a set of equally spaced points over a range of thresholds $[\tau_{\min}, \tau_{\max}]$. The estimated threshold would be the one which obtains the lowest error among these candidate threshold. This is the approach taken in Figure~\ref{fig:cross_val}. The range of thresholds is easy to set as it can be determined from the minimum and maximum peak-to-peak amplitude for the sensor in the augmented data matrix $X^{\textrm{aug}}$. However, it is not obvious how to set the spacing between the candidate thresholds, and experiments showed that varying this spacing could impact the results. If the candidate thresholds are far apart, one might end up missing the optimal threshold. On the other hand, if the thresholds are very dense, it is computationally more demanding.
 
