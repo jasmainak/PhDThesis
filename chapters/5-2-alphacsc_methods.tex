@@ -24,11 +24,11 @@ The CSC problem formulation adopted in this work follows the Shift Invariant Spa
 \label{eq:problem_definition} \enspace ,
 \end{align}
 %
-where $x_{n} \in \bbR^{T}$ denotes one of the $N$ observed segments of signals, also referred to as a \emph{trials} in this paper. We denote by $T$ as the length of a trial, and $K$ the number of atoms. The aim in this model is to approximate the signals $x_n$ by the convolution of certain \emph{atoms} and their respective \emph{activations}, which are sparse. Here, $d^{k} \in \bbR^{L}$ denotes the $k$th atom of the \emph{dictionary} $d \equiv \{d^k\}_{k}$, and $z_{n}^{k} \in \bbR_+^{T-L+1}$ denotes the activation of the $k$th atom in the $n$th trial. We denote by $z \equiv \{z_n^k\}_{n,k}$.
+where $x_{n} \in \bbR^{T}$ denotes one of the $N$ observed segments of signals, also referred to as \emph{trials} in this paper. We denote by $T$ the length of a trial, and $K$ the number of atoms. The aim in this model is to approximate the signals $x_n$ by the convolution of certain \emph{atoms} and their respective \emph{activations}, which are sparse. Here, $d^{k} \in \bbR^{L}$ denotes the $k$th atom of the \emph{dictionary} $d \equiv \{d^k\}_{k}$, and $z_{n}^{k} \in \bbR_+^{T-L+1}$ denotes the activation of the $k$th atom in the $n$th trial. We denote by $z \equiv \{z_n^k\}_{n,k}$.
 %the collection of all the activations.
 
 The objective function \eqref{eq:problem_definition} has two terms, an $\ell_2$ data fitting term that corresponds to assuming an additive Gaussian noise model, and a regularization term that promotes sparsity with an $\ell_1$ norm.
-The regularization parameter is called $\lambda > 0$. Two constraints are also imposed. First, we ensure that $d^{k}$ lies within the unit sphere, which prevents the scale ambiguity between $d$ and $z$. Second, a positivity constraint on $z$ is imposed to be able to obtain physically meaningful activations and to avoid sign ambiguities between $d$ and $z$. This positivity constraint is not present in the original SISC model~\citep{Grosse-etal:2007}.
+The regularization parameter is called $\lambda > 0$. Two constraints are also imposed. First, we ensure that $d^{k}$ lies within the unit sphere, which prevents the scale ambiguity between $d$ and $z$. In other words, if one were to scale up $d$ by a certain amount and scale down $z$ by the same amount, it would not change $d * z$, and hence the objective function. Second, a positivity constraint on $z$ is imposed to be able to obtain physically meaningful activations and to avoid sign ambiguities between $d$ and $z$. This positivity constraint is not present in the original SISC model~\citep{lewicki1999coding, Grosse-etal:2007}.
 
 \begin{figure}[t]
     \centering
@@ -66,18 +66,18 @@ The regularization parameter is called $\lambda > 0$. Two constraints are also i
 
 
 \textbf{$\alpha$-Stable distributions:} 
-The $\alpha$-stable distributions have become increasingly popular in modeling signals that might incur large variations \citep{kuruoglu1999signal, mandelbrot2013fractals,simsekli2015alpha,wang2016delving,leglaive:hal-01416366} and have a particular importance in statistics since they appear as the limiting distributions in the generalized central limit theorem \citep{samorodnitsky1994stable}. They are characterized by four parameters: $\alpha$, $\beta$, $\sigma$, and $\mu$:
+The $\alpha$-stable distributions have become increasingly popular in modeling signals that might incur large variations \citep{kuruoglu1999signal, mandelbrot2013fractals,simsekli2015alpha,wang2016delving,leglaive:hal-01416366} and have a particular importance in statistics since they appear as the limiting distributions in the generalized central limit theorem \citep{samorodnitsky1994stable}. A distribution is said to be stable if a linear combination of two independent random variables with the distribution also has the same distribution upto a location and scale parameter. They are characterized by four parameters: $\alpha$, $\beta$, $\sigma$, and $\mu$:
 %
-(i) $\alpha \in (0,2]$ is the \emph{characteristic exponent} and determines the tail thickness of the distribution: the distribution will be heavier-tailed as $\alpha$ gets smaller. 
+(i) $\alpha \in (0,2]$ is the \emph{characteristic exponent} or the \emph{stability} parameter and determines the tail thickness of the distribution: the distribution will be heavier-tailed as $\alpha$ gets smaller. 
 (ii) $\beta \in [-1 ,1]$ is the \emph{skewness} parameter.
 %and determines whether the distribution is right- or left-skewed
 If $\beta = 0$, the distribution is symmetric.
 (iii) $\sigma \in (0,\infty)$ is the \emph{scale} parameter and measures the spread of the random variable around its mode (similar to the standard deviation of a Gaussian distribution). Finally, (iv) $\mu \in (-\infty, \infty)$ is the location parameter (for $\alpha > 1$, it is simply the mean). 
 
 The probability density function of an $\alpha$-stable distribution cannot be written in closed-form except for certain special cases; however, the characteristic function  can be written as follows:
-%\begin{align*}
-%x \sim {\cal S}(\alpha,\beta,\sigma,\mu) \iff \mathds{E}[\exp( i \omega x)]  = \exp(-|\sigma \omega|^\alpha \left[1+ i \sign(\omega)\beta \psi_\alpha(\omega)  \right] + i \mu \omega ) \enspace ,
-%\end{align*}
+\begin{align*}
+x \sim {\cal S}(\alpha,\beta,\sigma,\mu) \iff \mathds{E}[\exp( i \omega x)]  = \exp(-|\sigma \omega|^\alpha \left[1+ i \sign(\omega)\beta \psi_\alpha(\omega)  \right] + i \mu \omega ) \enspace ,
+\end{align*}
 where $\psi_\alpha(\omega) = \log |\omega| $ for $\alpha =1$, $\psi_\alpha(\omega) = \tan(\pi \alpha/2)$ for $\alpha \neq 1$, and $i = \sqrt{-1}$. 
 %
 As an important special case of the $\alpha$-stable distributions, we obtain the Gaussian distribution when $\alpha = 2$ and $\beta =0$, \textit{i.e.}\ ${\cal S}(2,0,\sigma,\mu) = {\cal N}(\mu,2 \sigma^2)$. 
@@ -85,7 +85,7 @@ As an important special case of the $\alpha$-stable distributions, we obtain the
 In Fig.~\ref{fig:stable_pdf}, we illustrate the (approximately computed) \acp{PDF} of the $\alpha$-stable distribution for different values of $\alpha$ and $\beta$. The distribution becomes heavier-tailed as we decrease $\alpha$, whereas the tails vanish quickly when $\alpha=2$. 
 
 
-The moments of the $\alpha$-stable distributions can only be defined up to the order $\alpha$, i.e. $\mathds{E}[|x|^p] < \infty $ if and only if $p <\alpha$, which implies the distribution has infinite variance when $\alpha<2$. Furthermore, despite the fact that the \acp{PDF} of $\alpha$-stable distributions do not admit an analytical form, it is straightforward to draw random samples from them~\citep{chambers1976method}.
+The moments of the $\alpha$-stable distributions can only be defined up to the order $\alpha$, i.e. $\mathds{E}[|x|^p] < \infty $ if and only if $p <\alpha$, which implies the distribution has infinite variance when $\alpha<2$. Furthermore, despite the fact that the \acp{PDF} of $\alpha$-stable distributions admit no general analytical form, it is straightforward to draw random samples from them~\citep{chambers1976method}.
 
 
 
@@ -163,7 +163,7 @@ It is also worth noting that when $\alpha = 2$, $\phi_{n,t}$ becomes determinist
 
 % One of the main advantages of the augmented model \eqref{eqn:sas_condgauss} is its conditional Gaussianity
 
-The conditionally Gaussian structure of the augmented model has a crucial practical implication: if the impulse variable $\phi$ were to be known, then the \ac{MAP} estimation problem over $d$ and $z$ in this model would turn into a `weighted' \ac{CSC} problem, which is a much easier task compared to the original problem. In order to be able to exploit this property, we propose an \ac{EM} algorithm, which iteratively maximizes a lower bound of the log-posterior $\log p(d,z|x)$, and algorithmically boils down to computing the following steps in an iterative manner:
+The conditionally Gaussian structure has a crucial practical implication: if the impulse variable $\phi$ were to be known, then the \ac{MAP} estimation problem over $d$ and $z$ in this model would turn into a `weighted' \ac{CSC} problem, which is a much easier task compared to the original problem. In order to be able to exploit this property, we propose an \ac{EM} algorithm, which iteratively maximizes a lower bound of the log-posterior $\log p(d,z|x)$, and algorithmically boils down to computing the following steps in an iterative manner:
 \begin{align}
 &\text{E-Step:} \hspace{20pt} {\cal B}^{(i)}(d,z) = \mathds{E}\left[\log p(x,\phi,z|d)\right]_{p(\phi|x,z^{(i)},d^{(i)})}, \\
 &\text{M-Step:} \hspace{20pt} (d^{(i+1)}, z^{(i+1)}) = \argmax\nolimits_{d,z} {\cal B}^{(i)}(d,z). \label{eq:mstep}
