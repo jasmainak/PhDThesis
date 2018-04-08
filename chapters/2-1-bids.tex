@@ -127,7 +127,8 @@ One issue that required special attention was the multiplicity of coordinate sys
 Akin to MRI, we anticipate that the systematic data organization enabled by BIDS-MEG will be supported by an increasing number of neuroimaging tools, and that more shared data repositories will be organized accordingly. The straightforward design of BIDS-MEG makes it an interoperable common exchange format for transferring data between investigators and community repositories e.g., OMEGA~\citep{niso2016omega} and OpenfMRI~\citep{poldrack2017openfmri}. It also facilitates multimodal integration (between MRI, fMRI, MEG, etc), as the data from multiple modalities follow the same organization scheme.
 
 \section{Open BIDS-MEG datasets}
-We provide four different publically-available datasets in BIDS-MEG format ($\sim$200GB). They are freely available for download from the International Neuroinformatics Coordinating Facility (INCF)’s  GitHub: \url{https://github.com/INCF/BIDS-examples/tree/bep008_meg}
+We provide four different publically-available datasets in BIDS-MEG format ($\sim$200GB). They are freely available for download in the public domain. Note that for educational and demonstration purposes, the International Neuroinformatics Coordinating Facility’s GitHub also hosts a lighter version (data structure only, no actual MEG data provided) of the MEG-BIDS dataset examples
+(\url{https://github.com/INCF/BIDS-examples})
 
 The BIDS-MEG sample data release includes: 
 
@@ -157,9 +158,11 @@ Widely used MEG software packages have already added functionality to support BI
 
 \paragraph{SPM}\citep{litvak2011eeg}: SPM (\url{http://www.fil.ion.ucl.ac.uk/spm}) is a free and open source software written in MATLAB where many widely used methods for the analysis of PET, fMRI and for computational neuroanatomy have been originally developed and implemented. More recently SPM has been extended to perform M/EEG analyses, including topological inference for neurophysiological data, empirical Bayesian framework for source reconstruction and Dynamic Causal Modeling (DCM), an approach combining neural modeling with data analysis. SPM~\citep{litvak2011eeg} includes a library, spm\_BIDS.m, to parse and query BIDS-formatted datasets, as well as low-level functions to read/write JSON and TSV metadata files. A complete pipeline for the analysis of a group MEG dataset in BIDS format is presented in preparation.
 
-\paragraph{Other BIDS-MEG tools:}
+\paragraph{MEG-BIDS JSON file generator:}
+Python scripts to produce the JSON sidecar files and reduce the overhead of adopting MEG-BIDS: publically available (\url{https://github.com/INCF/pybids}).
 
-Another set of tools have been developed to generate sidecar BIDS-MEG JSON files, and assist researchers in their evaluation  and adoption of the standard. These Python scripts are publicly available:  \url{https://github.com/INCF/pybids}.
+\paragraph{MEG-BIDS validator:}
+Developed in javascript using nodejs, it can be packaged to work in the browser (Google Chrome). A command line version is also provided so that it can be used in scripted analysis. The validator performs several sanity checks on datasets to ensure they are compatible to BIDS. This includes the use of regular expressions to check filenames, and JSON schemas to ensure that the metadata files are standardized by data types.
 
 For a more detailed description of the BIDS-MEG specification, example datasets, resources and feedback, please visit \url{http://bids.neuroimaging.io}.
 
