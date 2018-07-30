@@ -9,16 +9,39 @@ Our current understanding of the brain is a result of decades of concerted effor
 In this thesis, we will focus our attention on measuring the electric currents and/or corresponding magnetic field from the brain, using electroencephalography, magnetoencephalography, and local field potentials. 
 These methods have the property of possessing a high temporal resolution, which is particularly useful for extracting the temporal dynamics of brain signals.
 
-In this manuscript, I will describe several methodological advances that we achieved in brain imaging using our expertise in machine learning and open source software. In the forthcoming sections, I will first describe the context of the thesis. After a brief introduction to electrophysiology, I will delve into how the field has been shaped in recent years by the reproducibility crisis, and how data sharing is going to help alleviate this problem to a large extent. However, the rise of data sharing and large sample sizes makes it difficult to still rely on manual data analysis which does not scale and is not reproducible. To cope with this challenge, we must start relying on automated and data-driven methods for discovering new effects. To this end, I will introduce two new algorithms \emph{autoreject} and \emph{alphacsc}. This is followed by a refresher on background material that might be useful to refer to when reading the thesis. The chapter ends with the contributions of this thesis and the list of papers published during the PhD.
- 
-%\section{Modern brain imaging}
-%Brain imaging tools today can be placed along three axes: their temporal resolution, their spatial resolution, and the level to which they are invasive.
+In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an international collaboration to create an \ac{MEG} standard for  \ac{BIDS}~\citep{galan2017meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. In the backdrop of the reproducibility and data sharing movement described in Sections~\ref{sec:reproducibility_crisis} and \ref{sec:intro_datasharing}, we started automating our pipelines which led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data~\citep{jas2017learning}. 
+
+The thesis is organized by chapters to highlight these four main  contribution areas: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. Each chapter contains the text from the original paper (which has been minimally edited in some parts) prefaced by a 1-2 page description of the context surrounding the work.
+
+\subsection*{Journal publications}
+\bibentry{jas2017autoreject}\ \\ \\
+\bibentry{jas2017mne}\ \\ (Pending revision at \emph{Frontiers in Neuroscience, Brain Imaging Methods})\ \\ \\
+\bibentry{niso2018meg}
+
+\subsection*{Conference publications}
+\bibentry{jas2016automated}\ \\ \\
+\bibentry{jas2017learning}
+
+\subsection*{Workshop papers}
+\bibentry{dengemann2015conc}\
+
+\subsection*{Open source implementations}
+
+\url{http://autoreject.github.io/} \\
+\url{http://alphacsc.github.io/} \\
+\url{http://mne-tools.github.io/mne-biomag-group-demo/}\\
+\url{https://jasmainak.github.io/bids-validator/}
+
+\subsection*{Datasets}
+
+\url{https://openfmri.org/dataset/ds000248/}
+
 
 \section{Electrophysiology}
 
 \begin{figure}[htb]
 \begin{center}
-   \includegraphics[width=0.5\linewidth]{figures/neuroimaging_methods.pdf}
+   \includegraphics[width=0.6\linewidth]{figures/neuroimaging_methods.pdf}
 \end{center}
    \caption[Various neuroimaging methods differ in terms of the information they measure.]{Various neuroimaging methods differ in terms of the information they measure. MEG=magnetoencephalography, EEG=electroencephalography, NIRS=near-infrared spectroscopy, PET=positron emission tomography, SPECT=single photon emission tomography, and INI=Inverse imaging, a method to speed up acquisition of fMRI images, ECoG=Electrocorticography, LFP=Local Field Potential.}
    \label{fig:neuroimaging_methods}
@@ -112,7 +135,7 @@ Considering the complexity of the human brain, clearly these waveforms represent
 
 \begin{figure}[htb]
 \begin{center}
-   \includegraphics[width=0.7\linewidth]{figures/schema.pdf}
+   \includegraphics[width=0.85\linewidth]{figures/schema.pdf}
 \end{center}
    \caption[Convolutional sparse coding]{An illustration of how Convolutional sparse coding can be used to automatically mine prototypical waveforms}
    \label{fig:csc_schematic}
