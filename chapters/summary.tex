@@ -1,5 +1,5 @@
-\chapter*{Resume (en Francais)}
-\label{chapter:resume}
+\chapter*{Sommaire (en Francais)}
+\label{chapter:sommaire}
 \pagestyle{mainmatter}
 \pagenumbering{arabic}
 
@@ -11,7 +11,7 @@ These methods have the property of possessing a high temporal resolution, which 
 
 In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an international collaboration to create an \ac{MEG} standard for  \ac{BIDS}~\citep{niso2018meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. In the backdrop of the reproducibility and data sharing movement described in Sections~\ref{sec:reproducibility_crisis} and \ref{sec:intro_datasharing}, we started automating our pipelines which led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data~\citep{jas2017learning}. 
 
-The thesis is organized by chapters to highlight these four main  contribution areas: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. Each chapter contains the text from the original paper (which has been minimally edited in some parts) prefaced by a 1-2 page description of the context surrounding the work.
+The thesis is organized by chapters to highlight these four main  contribution areas: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. An important aspect of this thesis is that these contributions led not only to publications in international conferences and journals, but also reproducible open source implementations and reusable datasets. A comprehensive list is given below.
 
 \subsection*{Journal publications}
 \bibentry{jas2017autoreject}\ \\ \\
@@ -36,21 +36,22 @@ The thesis is organized by chapters to highlight these four main  contribution a
 
 \url{https://openfmri.org/dataset/ds000248/}
 
+In the French summary, I will introduce the context of the thesis followed by a brief summary of each of the four main contribution areas.
 
-\section{Electrophysiology}
+\section*{Electrophysiology}
 
 \begin{figure}[htb]
 \begin{center}
    \includegraphics[width=0.6\linewidth]{figures/neuroimaging_methods.pdf}
 \end{center}
    \caption[Various neuroimaging methods differ in terms of the information they measure.]{Various neuroimaging methods differ in terms of the information they measure. MEG=magnetoencephalography, EEG=electroencephalography, NIRS=near-infrared spectroscopy, PET=positron emission tomography, SPECT=single photon emission tomography, and INI=Inverse imaging, a method to speed up acquisition of fMRI images, ECoG=Electrocorticography, LFP=Local Field Potential.}
-   \label{fig:neuroimaging_methods}
+   \label{fig:sommaire:neuroimaging_methods}
 \end{figure}
 
 The study of electrical properties of the biological cells and tissues is known as electrophysiology. 
 Biological tissues have electrical properties due to the presence of ions. Just as we can measure voltages in electrical appliances, it is possible also to measure these voltages in living tissues. 
 Electrophysiological recording have the advantage of directly measuring the brain activity, as opposed to an indirect measure, which is for example the case in \ac{fMRI}.
-Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution. In the case of \ac{fMRI}, as it measures the blood flow which is a slow response to neural activity, its temporal resolution cannot be high. 
+Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:sommaire:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution. In the case of \ac{fMRI}, as it measures the blood flow which is a slow response to neural activity, its temporal resolution cannot be high. 
 
 There are a number of methods to measure the electrical potentials in the human body, the most well-known being perhaps \ac{ECG} which is used to measure the electrical activity of the heart. However, in our work, we will focus on only three which are relevant for studying the brain. Each of these methods produces a multivariate time series.
 
@@ -66,11 +67,11 @@ They are immersed in liquid Helium at very low temperatures (around 4 K), so as 
 \paragraph{\Ac{LFP}}
 The Local Field Potential is the electric potential that is recorded in the extracellular space of the brain tissue. In contrast to \ac{EEG}, \ac{LFP} are recorded in depth, from within the cortical tissue and can therefore measure more localized populations of neurons. Small intracerebral electrodes are typically used to measure these potentials as opposed to large surface electrodes used in \ac{EEG}.
 
-\section{Context of the thesis}
+\section*{Context of the thesis}
 This emerges out of the recent movements in reproducibility and data sharing in neuroimaging. It focuses on simplifying data analysis through better educational tools and automated methods to enable reproducible analysis in the age of big data.
 
-\subsection{The reproducibility crisis}
-\label{sec:reproducibility_crisis}
+\subsection*{The reproducibility crisis}
+\label{sec:sommaire:reproducibility_crisis}
 Even though thousands of papers are published every year about different aspects of the brain, our understanding of this complex organ has not scaled in proportion. A large part of the reason has been attributed to what is known as the reproducibility crisis~\citep{ioannidis2005most, simmons2011false, button2013power}. %Replication is closely related to the concept of reproducibility which refers to the idea that an experiment produces the same result when performed again under the same conditions. Replication is a stronger condition as it requires similar results or identical conclusion even if there are some minor variations in the experimental procedures. 
 Progress in science rests on reproducible experiments. Reproducibility refers to the fact that the findings of an experiment can be regenerated independently if the code, data, and related software was provided. In many fields, however, a large fraction of experiments cannot be reproduced. In psychology, for instance, it was estimated that over half of the papers were not reproducible~\citep{open2015estimating}, and even those which could be reproduced tended to have a weaker effect size compared to the original studies. 
 
@@ -91,8 +92,8 @@ Brain imaging has its own set of issues which can be linked to reproducibility c
 
 In Chapter~\ref{chapter:group_study} of the thesis, we will provide concrete guidelines on how to build processing pipelines for \ac{MEG}/\ac{EEG} data. Our contribution will touch upon the issue of complex pipelines, multiple comparison, and differences in software versions in the context of \ac{MEG}/\ac{EEG}. The issue of power failure can be alleviated through data sharing as I will discuss in the next section.
 
-\subsection{Data sharing}
-\label{sec:intro_datasharing}
+\subsection*{Data sharing}
+\label{sec:sommaire:intro_datasharing}
 Power failure is essentially a consequence of small datasets. In today's collaborative and data-driven scientific environment, data sharing is useful not only from the perspective of reproducibility but also to build datasets with large sample sizes. With large datasets, it would be possible to tease apart even subtle effects~\citep{smith2017statistical} that were not possible with smaller datasets. Data sharing is beneficial not just from the perspective of replication but also from an economic perspective. Rather than collect new data for every new hypothesis, researchers can now reuse known data for testing the validity of their hypotheses.
 
 The benefits of data sharing can be traced back to Newton and his theory of gravitation~\citep{pointofview2013}. Before Newton had developed his theory, another English astronomer, John Flamsteed had been appointed by the king to observe the stars and produce accurate charts for navigation in the seas. Over a period of 40 years, Flamsteed created a detailed catalogue that tripled the number of entries in the previously used sky atlas. When the great comet of 1680 appeared in the sky twice in close succession, Flamsteed used his data to postulate that it was not two comets but in fact the same comet which first went towards the sun and then turned away from it. Newton initially opposed this theory, but later changed his mind as he gained access to Flamsteed's unpublished catalogue. The comet had indeed turned out to be an important benchmark for Newton's theory of gravitation.
@@ -105,8 +106,8 @@ There is not an accepted consensus in the community on the practices of sharing 
 In Chapter~\ref{chapter:group_study}, we will present a new standard known as the \ac{BIDS}, which is intended to address this gap. 
 It is a collaborative effort between software developers and neuroscientists across various laboratories to establish a consensus on the standards and build tools to facilitate adoption of the standard.
 
-\subsection{Automation}
-\label{sec:automation}
+\subsection*{Automation}
+\label{sec:sommaire:automation}
 
 Back in 2014, Nature published a bold article~\citep{hayden2014automated} which described a vision for the future of science: ``solving the problem of bringing McDonald's-like efficiency to scientists''. This would in turn lead to cheaper, more efficient and reliable research. While it goes on to describe many biology labs which are automating experiments, the benefits of automation in the neuroimaging community are yet to be widely recognized. Automation not only saves time but also makes the research more reproducible, as was noted in a recent guide to improve the transparency and reproducibility of neuroimaging research~\citep{gorgolewski2016practical}. The authors point out that manual work may seem easy at first, if the analysis has to be performed only once. However, this is not always the case as ``quite often in the course of a project, parameters are modified, subjects are changed, and processing steps need to be rerun. This is a situation in which having a set of scripts that can perform all of the processing steps automatically instead of relying on manual interventions can really pay off.'' As large datasets become more common in neuroimaging, automation will indeed become a necessity rather than a luxury.
 
@@ -127,8 +128,8 @@ Merely based on anecdotal reports, this process can take up to a week even for a
 
 This is what led us to propose \emph{autoreject}, which we describe in Chapter~\ref{chapter:autoreject}. It is an algorithm which can be used to mark bad segments of the data. The key insight is that, often certain sensors in the device are intermittently corrupted rather than continuously. We validate our algorithm against 3 benchmarks on the \ac{HCP} dataset~\citep{larson2013adding} which is manually annotated with bad segments. In the process, our work also represents one of the first attempts at reanalyzing the MEG component of the HCP dataset.
 
-\subsection{Representation learning for data-driven discovery}
-\label{sec:representation_learning}
+\subsection*{Representation learning for data-driven discovery}
+\label{sec:sommaire:representation_learning}
 Since the invention of \ac{EEG} in the 1920s, scientists have discovered several different brain oscillation patterns such as alpha waves, K-complexes, and mu rhythms. The oscillations and interactions between them have served as biomarkers for different brain functions and pathologies. Alpha waves have been implicated in attention, K-complexes in sleep, and mu rhythm in motor activity. 
 
 Considering the complexity of the human brain, clearly these waveforms represent only a fraction of the cognitive functions that the brain may perform. As a result of the wealth of data now available through the data sharing movement described in Section~\ref{sec:intro_datasharing}, the future neuroscientist will be able to mine such waveforms from large datasets. Imagine if neuroscientists had at their disposal a tool similar to Google Photos\footnote{\url{https://photos.google.com/}}. In the same way that Google Photos can automatically find faces and group photos, such tools will be able to find prototypical oscillations and cluster the data using them. Clicking on any of these waveforms would retrieve the data associated with them.
@@ -138,7 +139,7 @@ Considering the complexity of the human brain, clearly these waveforms represent
    \includegraphics[width=0.85\linewidth]{figures/schema.pdf}
 \end{center}
    \caption[Convolutional sparse coding]{An illustration of how Convolutional sparse coding can be used to automatically mine prototypical waveforms}
-   \label{fig:csc_schematic}
+   \label{fig:sommaire:csc_schematic}
 \end{figure}
 
 However, photos are inherently different from neural data. First, neural data can be buried in noise and corrupted by high amplitude artifacts. Second, images are labelled owing to crowdsourced data as in the case of  Imagenet~\citep{deng2009imagenet}, but neural data is not. 
@@ -150,16 +151,16 @@ Finally, it is spatiotemporal data with different dynamics from the 3D world tha
 In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional \ac{CSC} algorithms for heavy-tailed noise. We reformulate the optimization problem as a \ac{MAP} inference with an alpha-stable distribution to replace the reconstruction loss. Our results show that this kind of algorithm is robust to the presence of artifacts and can be used to uncover temporal structures from neural signals, even those involving nested oscillations.
 
 \clearpage
-\section{Brain Imaging Data Structure (BIDS)}
+\section*{Brain Imaging Data Structure (BIDS)}
 
 \begin{figure}[htb!]
 \begin{center}
    \includegraphics[width=\linewidth]{figures/bids_organization.png}
 \end{center}
    \caption[BIDS-MEG data organization scheme.]{BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folders are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all levels of the data hierarchy, and document conveniently the metadata contents.}
-   \label{fig:BIDS-MEG-organization}
+   \label{fig:sommaire:BIDS-MEG-organization}
 \end{figure}
-From the perspective of reproducibility, data sharing is of paramount importance. Sharing code by itself does not enable reproducibility if the accompanying data is not available, and expensive to acquire. Reanalysis of a dataset is however useful not just from the perspective of reproducibility but also for discovering new effects that were previously overlooked. At the same time, the more data is shared, the larger our sample sizes will be and this will enable us to conduct studies with higher statistical power. Low statistical power, as we discussed in Chapter~\ref{chapter:intro} is one of the main reasons for the reproducibility crisis.
+From the perspective of reproducibility, data sharing is of paramount importance. Sharing code by itself does not enable reproducibility if the accompanying data is not available, and expensive to acquire. Reanalysis of a dataset is however useful not just from the perspective of reproducibility but also for discovering new effects that were previously overlooked. At the same time, the more data is shared, the larger our sample sizes will be and this will enable us to conduct studies with higher statistical power. Indeed, low statistical power is one of the main reasons for the reproducibility crisis.
 
 While data sharing in neuroscience is on the rise, the amount of data reuse is still limited. For example, since the release of the Human Connectome Project (HCP)~\citep{larson2013adding} MEG data in 2013, there have been very few instances of reusing this data. At the time of writing this thesis, we had only one or two documented cases~\citep{jas2017autoreject} of reusing the HCP data. Even in these cases, the effort has mostly been limited to reproducing results rather than testing new hypotheses. This clearly represents a gap between the ideal and the practice of data sharing. 
 
@@ -178,10 +179,10 @@ The main BIDS specification is accompanied by extension specifications which des
 At the same time, the standard does not exist in isolation.
 The \ac{BIDS} consortium is also providing a growing ecosystem of tools to convert datasets into \ac{BIDS} compatible format as well as to validate data to conform to the standard. 
 
-In the present work, we present a significant extension of \ac{BIDS} to support the specific aspects of \ac{MEG} data. \Ac{MEG}, as we know from Chapter~\ref{chapter:intro}, provides direct measurement of brain activity with millisecond temporal resolution and unique source imaging capabilities. So far, \ac{BIDS} has provided a solution to structure the organization of \ac{MRI} data. Despite the lack of standard data format for \ac{MEG}, BIDS-MEG is a principled solution to store, organize and share the typically-large data volumes produced. It builds on \ac{BIDS} for \ac{MRI}, and therefore readily yields a multimodal data organization by construction. This is particularly valuable for the anatomical and functional registration of \ac{MEG} source imaging with \ac{MRI}. With BIDS-MEG and a growing range of software adopting the standard, the \ac{MEG} community has a solution to minimize curation overheads, reduce data handling errors and optimize usage of computational resources for data analysis. The standard also includes well-defined metadata to facilitate future data harmonization and sharing efforts, and extensions to other electrophysiological data modalities.
+In this work, we presented a significant extension of \ac{BIDS} to support the specific aspects of \ac{MEG} data. \Ac{MEG}, as we know, provides direct measurement of brain activity with millisecond temporal resolution and unique source imaging capabilities. So far, \ac{BIDS} has provided a solution to structure the organization of \ac{MRI} data. Despite the lack of standard data format for \ac{MEG}, BIDS-MEG is a principled solution to store, organize and share the typically-large data volumes produced. It builds on \ac{BIDS} for \ac{MRI}, and therefore readily yields a multimodal data organization by construction. This is particularly valuable for the anatomical and functional registration of \ac{MEG} source imaging with \ac{MRI}. With BIDS-MEG and a growing range of software adopting the standard, the \ac{MEG} community has a solution to minimize curation overheads, reduce data handling errors and optimize usage of computational resources for data analysis. The standard also includes well-defined metadata to facilitate future data harmonization and sharing efforts, and extensions to other electrophysiological data modalities.
 
 \clearpage
-\section{A reproducible M/EEG group study}
+\section*{A reproducible M/EEG group study}
 
 \begin{figure}[t]
   \centering
@@ -189,37 +190,47 @@ In the present work, we present a significant extension of \ac{BIDS} to support 
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-1Hz.pdf}
 \caption[Grand averaged evoked response across 16 subjects.]{Grand averaged evoked response across 16 subjects for channel EEG065.
 (A) No highpass filter. (B) Highpass filtered at 1.0 Hz. Note that, similar to (A), the results reported by \cite{wakeman2015multi} (dashed line at 800 ms indicates where their plot stopped) show large drifts, but these return to near-baseline levels toward the end of a sufficiently long interval (here, 2.9 seconds) even without applying a highpass filter.}
-\label{fig:grand_average}
+\label{fig:sommaire:grand_average}
 \end{figure}  
 
-In the previous chapter, we discussed how data sharing can be facilitated using the \ac{BIDS} for \ac{MEG}. This is taking us one step closer to the goal of reproducibility. However, reproducibility is not achieved by merely sharing more data with the hope that this will solve all problems. As noted in \citet{baker20161}, one of the best solutions to foster reproducible science is not a technical one, but an educational one. This is of course true for statistics, where there is an urgent need to clarify and educate researchers about the statistical tools required in neuroscience. But it is now increasingly important also for academic software.
+In the previous section, we discussed how data sharing can be facilitated using the \ac{BIDS} for \ac{MEG}. This is taking us one step closer to the goal of reproducibility. However, reproducibility is not achieved by merely sharing more data with the hope that this will solve all problems. As noted in \citet{baker20161}, one of the best solutions to foster reproducible science is not a technical one, but an educational one. This is of course true for statistics, where there is an urgent need to clarify and educate researchers about the statistical tools required in neuroscience. But it is now increasingly important also for academic software.
 
 In recent years, free academic toolboxes have gained increasing prominence in \ac{MEG} analysis as a means to disseminate cutting edge methods, share best practices between different research groups and pool resources for developing essential tools for the \ac{MEG} community. Teaching events are regularly held around the world where the basics of each toolbox are explained by its  developers and experienced power users. There are however, knowledge gaps that need to be addressed. First, most teaching examples only show analysis of a single ‘typical best’ subject whereas most real MEG studies involve analysis of group data. It is then left to the researchers in the field to figure out for themselves how to make the transition and obtain significant group results. Secondly, we are not familiar with any examples of fully analyzing the same group dataset with different academic toolboxes to assess the degree of agreement in scientific conclusions and compare strengths and weaknesses of various analysis methods and their independent implementations.
 
-To address this very issue, a workshop was organised by the lead developers of six most popular free academic MEG toolboxes at Biomag 2017. This work is a follow up to the workshop, which presents the contribution of the MNE software team, and will be published in \emph{Frontiers in Neuroscience, section Brain Imaging Methods}. This study presents the results obtained by the reanalysis of an open dataset from \citet{wakeman2015multi} using the MNE software package. The analysis covers preprocessing steps, quality assurance, sensor-space analysis of evoked responses, source localization, and statistics in both sensor and source space. Results with possible alternative strategies are presented and discussed at different stages such as the use of high-pass filtering versus baseline correction, tSSS versus \ac{SSS}, the use of a minimum norm inverse versus \ac{LCMV} beamformer, and the use of univariate or multivariate statistics. This aims to provide a comparative study of different stages of \ac{MEG}/\ac{EEG} analysis pipeline on the same dataset, with open access to all of the scripts necessary to reproduce this analysis.
+To address this very issue, a workshop was organised by the lead developers of six most popular free academic MEG toolboxes at Biomag 2017. This work is a follow up to the workshop, which presents the contribution of the MNE software team, and will be published in \emph{Frontiers in Neuroscience, section Brain Imaging Methods}. This study presents the results obtained by the reanalysis of an open dataset from \citet{wakeman2015multi} using the MNE software package. The analysis covers preprocessing steps, quality assurance, sensor-space analysis of evoked responses, source localization, and statistics in both sensor and source space. Results with possible alternative strategies are presented and discussed at different stages such as the use of high-pass filtering versus baseline correction, tSSS versus \ac{SSS}, the use of a minimum norm inverse versus \ac{LCMV} beamformer, and the use of univariate or multivariate statistics. An example of such a reanalysis figure is shown in Figure~\ref{fig:sommaire:grand_average} which shows the evoked response for one EEG sensor.
+
+This aims to provide a comparative study of different stages of \ac{MEG}/\ac{EEG} analysis pipeline on the same dataset, with open access to all of the scripts necessary to reproduce this analysis.
 
 \clearpage
 
-\section{Automated artifact rejection for M/EEG}
+\section*{Automated artifact rejection for M/EEG}
 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/figure1.pdf}
     \caption[Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset.]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
-    \label{fig:cross_val}
+    \label{fig:sommaire:cross_val}
 \end{figure}
 
-In the last chapter, we discussed the reproducibility challenges when performing group studies in \ac{MEG} and \ac{EEG}. One way to improve reproducibility is automation, and we briefly touched upon an algorithm for automating detection of bad data segments, known as \emph{autoreject}.
+In the previous section, we discussed the reproducibility challenges when performing group studies in \ac{MEG} and \ac{EEG}. One way to improve reproducibility is automation. and we briefly touched upon an algorithm for automating detection of bad data segments, known as \emph{autoreject}.
 
 %copy pasted abstract below
-In this chapter, we will present this algorithm which rejects and repairs bad trials in \ac{MEG} and \ac{EEG} signals. Annotating bad segments in the data is perhaps one of the most time consuming aspects of data processing in electrophysiology. Currently, it is either done manually, or using automated black-box algorithms. The manual approach is often subjective with often no clear consensus on what constitutes a corrupted data segment. Therefore, reanalysis is not only manually demanding but can also lead to problems in reproducibility. On the other hand, the automated methods are controlled by parameters that are not straightforward to tune. In the case of failure, it is not always obvious what caused the method to fail and how it can be corrected. As a result, one is left with no choice but to exclude the data from further analysis.
+In this section, we will present this algorithm which rejects and repairs bad trials in \ac{MEG} and \ac{EEG} signals. Annotating bad segments in the data is perhaps one of the most time consuming aspects of data processing in electrophysiology. Currently, it is either done manually, or using automated black-box algorithms. The manual approach is often subjective with often no clear consensus on what constitutes a corrupted data segment. Therefore, reanalysis is not only manually demanding but can also lead to problems in reproducibility. On the other hand, the automated methods are controlled by parameters that are not straightforward to tune. In the case of failure, it is not always obvious what caused the method to fail and how it can be corrected. As a result, one is left with no choice but to exclude the data from further analysis.
 
-This led us to develop a method based on design choices motivated by ease of interpretation and diagnosis. The method we propose capitalizes on cross-validation in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold--a quantity commonly used for identifying bad trials in \ac{MEG}/\ac{EEG}. This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. For efficiency reasons, we use Bayesian optimization which is a well-known technique for hyperparameter optimization. All steps of the algorithm are fully automated thus lending itself to the name \emph{autoreject}. Crucially, the algorithm is even able to deal with sensors that are locally corrupted, which is quite often the case for \ac{EEG} data.
+This led us to develop a method based on design choices motivated by ease of interpretation and diagnosis. The method we propose capitalizes on cross-validation (Figure~\ref{fig:sommaire:cross_val}) in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold--a quantity commonly used for identifying bad trials in \ac{MEG}/\ac{EEG}. This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. For efficiency reasons, we use Bayesian optimization which is a well-known technique for hyperparameter optimization. All steps of the algorithm are fully automated thus lending itself to the name \emph{autoreject}. Crucially, the algorithm is even able to deal with sensors that are locally corrupted, which is quite often the case for \ac{EEG} data.
 
-In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing \ac{MEG} and \ac{EEG} recordings from more than 200 subjects. The comparisons include purely qualitative efforts as well as quantitatively benchmarking against human supervised and semi-automated preprocessing pipelines. The algorithm allowed us to automate the preprocessing of \ac{MEG} data from the \ac{HCP} going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
+In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing \ac{MEG} and \ac{EEG} recordings from more than 200 subjects. The comparisons include purely qualitative efforts as well as quantitatively benchmarking against human supervised (Figure~\ref{fig:sommaire:hcp_scatter}) and semi-automated preprocessing pipelines. The algorithm allowed us to automate the preprocessing of \ac{MEG} data from the \ac{HCP} going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
+
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/figure4.pdf}
+    \caption[Scatter plots for the results with the HCP data.]{Scatter plots for the results with the HCP data. For each method, the $\infnorm{\cdot}$ norm of the difference between the HCP ground truth and the method is taken. Each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
+    \label{fig:sommaire:hcp_scatter}
+\end{figure}
 
 \clearpage
-\section{Temporal representation learning}
+\section*{Temporal representation learning}
 
 So far, we studied automation in neuroimaging with the objective of enabling scalable data analysis and reproducibility. While  reproducibility and large-scale data analysis allow us to consolidate upon existing studies, \emph{per se} they are not tools to uncover new and interesting phenomena. In this chapter, we will explore this dimension of automation using what is known as \emph{representation learning}.
 
@@ -259,20 +270,23 @@ when applied to noisy neural time series.
      \subfigure[Time to reach a relative precision of 0.01.]{
      \includegraphics[width=\textwidth]{figures/bar_plot.pdf}}
     \caption[Comparison of state-of-the-art methods with our approach.]{Comparison of state-of-the-art methods with our approach. (a)~Convergence plot with the objective function relative to the obtained minimum, as a function of computational time. (b)~Time taken to reach a relative precision of $10^{-2}$, for different settings of $K$ and $L$.  }
-    \label{fig:convergence}
+    \label{fig:sommaire:convergence}
 \end{figure}
 
 \begin{figure}[b]
     \centering
              \subfigure[LFP spike data from \cite{hitziger2017adaptive}]{
-             \includegraphics[height=3cm]{figures/spike_atomsa.pdf}
-             \label{fig:spikedata}}
+             \includegraphics[height=4cm]{figures/spike_atomsa.pdf}
+             \label{fig:sommaire:spikedata}} \\
              \subfigure[Estimated atoms]{
-             \includegraphics[height=2.9cm]{figures/spike_atomsb.pdf}
-             \label{fig:spikeatoms}}
+             \includegraphics[height=4cm]{figures/spike_atomsb.pdf}
+             \label{fig:sommaire:spikeatoms}}
 
             \caption[Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.]{Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.}
 \end{figure}
+
+
+\section*{Conclusion}
 
 Methods research in neuroimaging is a marriage between computer science and neuroscience. It is a collaboration between two complementary disciplines -- the aim is to bring to the table computation tools which can help scientists make new discoveries. Certain aspects of this interdisciplinary subfield is of course to incrementally develop existing tools: for example, those that can help achieve a better prediction score, or a better localization accuracy in estimating neural sources. However, an orthogonal but equally important aspect of methods research is to develop tools which allow fundamentally new ways to interact with the data. This thesis is an attempt to advance this goal by developing tools for automated analysis in electrophysiology.
 
