@@ -44,7 +44,7 @@ In the French summary, I will introduce the context of the thesis followed by a 
 \begin{center}
    \includegraphics[width=0.6\linewidth]{figures/neuroimaging_methods.pdf}
 \end{center}
-   \caption[Various neuroimaging methods differ in terms of the information they measure.]{Various neuroimaging methods differ in terms of the information they measure. MEG=magnetoencephalography, EEG=electroencephalography, NIRS=near-infrared spectroscopy, PET=positron emission tomography, SPECT=single photon emission tomography, and INI=Inverse imaging, a method to speed up acquisition of fMRI images, ECoG=Electrocorticography, LFP=Local Field Potential.}
+   \caption[]{Various neuroimaging methods differ in terms of the information they measure. MEG=magnetoencephalography, EEG=electroencephalography, NIRS=near-infrared spectroscopy, PET=positron emission tomography, SPECT=single photon emission tomography, and INI=Inverse imaging, a method to speed up acquisition of fMRI images, ECoG=Electrocorticography, LFP=Local Field Potential.}
    \label{fig:sommaire:neuroimaging_methods}
 \end{figure}
 
@@ -138,7 +138,7 @@ Considering the complexity of the human brain, clearly these waveforms represent
 \begin{center}
    \includegraphics[width=0.85\linewidth]{figures/schema.pdf}
 \end{center}
-   \caption[Convolutional sparse coding]{An illustration of how Convolutional sparse coding can be used to automatically mine prototypical waveforms}
+   \caption[]{An illustration of how Convolutional sparse coding can be used to automatically mine prototypical waveforms}
    \label{fig:sommaire:csc_schematic}
 \end{figure}
 
@@ -150,14 +150,13 @@ Finally, it is spatiotemporal data with different dynamics from the 3D world tha
 
 In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional \ac{CSC} algorithms for heavy-tailed noise. We reformulate the optimization problem as a \ac{MAP} inference with an alpha-stable distribution to replace the reconstruction loss. Our results show that this kind of algorithm is robust to the presence of artifacts and can be used to uncover temporal structures from neural signals, even those involving nested oscillations.
 
-\clearpage
 \section*{Brain Imaging Data Structure (BIDS)}
 
 \begin{figure}[htb!]
 \begin{center}
    \includegraphics[width=\linewidth]{figures/bids_organization.png}
 \end{center}
-   \caption[BIDS-MEG data organization scheme.]{BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folders are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all levels of the data hierarchy, and document conveniently the metadata contents.}
+   \caption[]{BIDS-MEG data organization scheme: Left: a typical default data organization scheme where folders are organized by date of session and contain different runs for a given participant in a study. Right: BIDS-MEG organizes data per study, then participant (subject), followed by modality, then sessions and eventually, runs. Note the sidecar files that are present at all levels of the data hierarchy, and document conveniently the metadata contents.}
    \label{fig:sommaire:BIDS-MEG-organization}
 \end{figure}
 From the perspective of reproducibility, data sharing is of paramount importance. Sharing code by itself does not enable reproducibility if the accompanying data is not available, and expensive to acquire. Reanalysis of a dataset is however useful not just from the perspective of reproducibility but also for discovering new effects that were previously overlooked. At the same time, the more data is shared, the larger our sample sizes will be and this will enable us to conduct studies with higher statistical power. Indeed, low statistical power is one of the main reasons for the reproducibility crisis.
@@ -188,7 +187,7 @@ In this work, we presented a significant extension of \ac{BIDS} to support the s
   \centering
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-NoneHz.pdf}\\
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-1Hz.pdf}
-\caption[Grand averaged evoked response across 16 subjects.]{Grand averaged evoked response across 16 subjects for channel EEG065.
+\caption[]{Grand averaged evoked response across 16 subjects for channel EEG065.
 (A) No highpass filter. (B) Highpass filtered at 1.0 Hz. Note that, similar to (A), the results reported by \cite{wakeman2015multi} (dashed line at 800 ms indicates where their plot stopped) show large drifts, but these return to near-baseline levels toward the end of a sufficiently long interval (here, 2.9 seconds) even without applying a highpass filter.}
 \label{fig:sommaire:grand_average}
 \end{figure}  
@@ -208,7 +207,7 @@ This aims to provide a comparative study of different stages of \ac{MEG}/\ac{EEG
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/figure1.pdf}
-    \caption[Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset.]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
+    \caption[]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
     \label{fig:sommaire:cross_val}
 \end{figure}
 
@@ -225,7 +224,7 @@ In order to assess the practical significance of the algorithm, we conducted ext
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=\linewidth]{figures/figure4.pdf}
-    \caption[Scatter plots for the results with the HCP data.]{Scatter plots for the results with the HCP data. For each method, the $\infnorm{\cdot}$ norm of the difference between the HCP ground truth and the method is taken. Each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
+    \caption[]{Scatter plots for the results with the HCP data. For each method, the $\infnorm{\cdot}$ norm of the difference between the HCP ground truth and the method is taken. Each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
     \label{fig:sommaire:hcp_scatter}
 \end{figure}
 
@@ -269,7 +268,7 @@ when applied to noisy neural time series.
      \includegraphics[width=0.5\linewidth]{figures/relative_10_32.pdf}} \\
      \subfigure[Time to reach a relative precision of 0.01.]{
      \includegraphics[width=\textwidth]{figures/bar_plot.pdf}}
-    \caption[Comparison of state-of-the-art methods with our approach.]{Comparison of state-of-the-art methods with our approach. (a)~Convergence plot with the objective function relative to the obtained minimum, as a function of computational time. (b)~Time taken to reach a relative precision of $10^{-2}$, for different settings of $K$ and $L$.  }
+    \caption[]{Comparison of state-of-the-art methods with our approach. (a)~Convergence plot with the objective function relative to the obtained minimum, as a function of computational time. (b)~Time taken to reach a relative precision of $10^{-2}$, for different settings of $K$ and $L$.  }
     \label{fig:sommaire:convergence}
 \end{figure}
 
@@ -282,7 +281,7 @@ when applied to noisy neural time series.
              \includegraphics[height=4cm]{figures/spike_atomsb.pdf}
              \label{fig:sommaire:spikeatoms}}
 
-            \caption[Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.]{Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.}
+            \caption[]{Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.}
 \end{figure}
 
 
