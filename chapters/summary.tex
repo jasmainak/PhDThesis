@@ -1,4 +1,4 @@
-\chapter*{Sommaire (en Francais)}
+\chapter{Sommaire (en Francais)}
 \label{chapter:sommaire}
 \pagestyle{mainmatter}
 \pagenumbering{arabic}
@@ -48,12 +48,13 @@ In the French summary, I will introduce the context of the thesis followed by a 
    \label{fig:sommaire:neuroimaging_methods}
 \end{figure}
 
-The study of electrical properties of the biological cells and tissues is known as electrophysiology. 
+In this thesis, we will be discussing data recorded primarily using \ac{MEG}/\ac{EEG}. EEG and MEG are electrophysiology methods that are used to study properties of biological cells and tissues. 
 Biological tissues have electrical properties due to the presence of ions. Just as we can measure voltages in electrical appliances, it is possible also to measure these voltages in living tissues. 
-Electrophysiological recording have the advantage of directly measuring the brain activity, as opposed to an indirect measure, which is for example the case in \ac{fMRI}.
-Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:sommaire:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution. In the case of \ac{fMRI}, as it measures the blood flow which is a slow response to neural activity, its temporal resolution cannot be high. 
 
-There are a number of methods to measure the electrical potentials in the human body, the most well-known being perhaps \ac{ECG} which is used to measure the electrical activity of the heart. However, in our work, we will focus on only three which are relevant for studying the brain. Each of these methods produces a multivariate time series.
+Electrophysiological recording have the advantage of directly measuring the brain activity, as opposed to an indirect measure, which is for example the case in \ac{fMRI}.
+Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:sommaire:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution, but also their invasiveness. This is useful to understand why MEG/EEG are often considered the method of choice for understanding the underpinnings of human brain activity. In the case of \ac{fMRI}, another non-invasive method such as MEG/EEG, as it measures the blood flow which is a slow response to neural activity, its temporal resolution cannot be high. 
+
+There are a number of methods to measure the electrical potentials in the human body, the most well-known being perhaps \ac{ECG} which is used to measure the electrical activity of the heart. The three methods we discuss in the thesis produce multivariate time series. A brief summary of each of these methods follows below.
 
 \paragraph{Electroencephalography: } \Ac{EEG} is a portable and non-invasive measurement technique invented in the 1920s that is  used in several contexts such as \acp{BCI}, monitoring and diagnosis, and in cognitive studies. 
 In electroencephalography, an array of electrodes on an \ac{EEG} cap is placed on the scalp to measure the voltages with respect to a reference electrode. 
@@ -134,7 +135,7 @@ Since the invention of \ac{EEG} in the 1920s, scientists have discovered several
 
 Considering the complexity of the human brain, clearly these waveforms represent only a fraction of the cognitive functions that the brain may perform. As a result of the wealth of data now available through the data sharing movement described in Section~\ref{sec:intro_datasharing}, the future neuroscientist will be able to mine such waveforms from large datasets. Imagine if neuroscientists had at their disposal a tool similar to Google Photos\footnote{\url{https://photos.google.com/}}. In the same way that Google Photos can automatically find faces and group photos, such tools will be able to find prototypical oscillations and cluster the data using them. Clicking on any of these waveforms would retrieve the data associated with them.
 
-\begin{figure}[htb]
+\begin{figure}[t]
 \begin{center}
    \includegraphics[width=0.85\linewidth]{figures/schema.pdf}
 \end{center}
@@ -180,10 +181,16 @@ The \ac{BIDS} consortium is also providing a growing ecosystem of tools to conve
 
 In this work, we presented a significant extension of \ac{BIDS} to support the specific aspects of \ac{MEG} data. \Ac{MEG}, as we know, provides direct measurement of brain activity with millisecond temporal resolution and unique source imaging capabilities. So far, \ac{BIDS} has provided a solution to structure the organization of \ac{MRI} data. Despite the lack of standard data format for \ac{MEG}, BIDS-MEG is a principled solution to store, organize and share the typically-large data volumes produced. It builds on \ac{BIDS} for \ac{MRI}, and therefore readily yields a multimodal data organization by construction. This is particularly valuable for the anatomical and functional registration of \ac{MEG} source imaging with \ac{MRI}. With BIDS-MEG and a growing range of software adopting the standard, the \ac{MEG} community has a solution to minimize curation overheads, reduce data handling errors and optimize usage of computational resources for data analysis. The standard also includes well-defined metadata to facilitate future data harmonization and sharing efforts, and extensions to other electrophysiological data modalities.
 
-\clearpage
+\subsection*{Software tools}
+As part of this effort, I contributed through discussions in deciding the standard. At the same time, I developed the MEG extension of the BIDS validator. Developed in javascript using nodejs, it can be packaged to work in the browser (Google Chrome). A command line version is also provided so that it can be used in scripted analysis. The validator performs several sanity checks on datasets to ensure they are compatible to BIDS. This includes the use of regular expressions to check filenames, and \ac{JSON} schemas to ensure that the metadata files are standardized by data types.
+
+In order to ease adoption of the BIDS format, I also contributed to Python code that is used to convert existing datasets into BIDS compatible ones. The code can be found here: \url{https://github.com/mne-tools/mne-bids}. 
+
+For a more detailed description of the BIDS-MEG specification, example datasets, resources and feedback, please visit \url{http://bids.neuroimaging.io}.
+
 \section*{A reproducible M/EEG group study}
 
-\begin{figure}[t]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-NoneHz.pdf}\\
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-1Hz.pdf}
@@ -200,11 +207,9 @@ To address this very issue, a workshop was organised by the lead developers of s
 
 This aims to provide a comparative study of different stages of \ac{MEG}/\ac{EEG} analysis pipeline on the same dataset, with open access to all of the scripts necessary to reproduce this analysis.
 
-\clearpage
-
 \section*{Automated artifact rejection for M/EEG}
 
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/figure1.pdf}
     \caption[]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
