@@ -229,7 +229,11 @@ In this section, we will present this algorithm which rejects and repairs bad tr
     \label{fig:sommaire:cross_val}
 \end{figure}
 
-This led us to develop a method based on design choices motivated by ease of interpretation and diagnosis. The method we propose capitalizes on cross-validation (Figure~\ref{fig:sommaire:cross_val}) in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold--a quantity commonly used for identifying bad trials in \ac{MEG}/\ac{EEG}. The key insight is that the training and validation sets are more similar when the data does not contain outliers than when it does. Thus a threshold that minimizes the cross-validation error is one which removes the outliers.
+This led us to develop a method based on design choices motivated by ease of interpretation and diagnosis. 
+The method we propose capitalizes on cross-validation (Figure~\ref{fig:sommaire:cross_val}) in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold--a quantity commonly used for identifying bad trials in \ac{MEG}/\ac{EEG}. 
+The key insight is that the training and validation sets are more similar when the data does not contain outliers than when it does. Thus a threshold that minimizes the cross-validation error is one which removes the outliers. 
+Indeed, as we see in Figure~\ref{fig:sommaire:cross_val}, for very low thresholds, too many trials are removed which results in a noisy average, whereas for very high thresholds, the outliers are not removed. 
+The optimum is somewhere in between which can be estimated by minimizing the cross-validation error.
 
 This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. For efficiency reasons, we use Bayesian optimization which is a well-known technique for hyperparameter optimization. All steps of the algorithm are fully automated thus lending itself to the name \emph{autoreject}. Crucially, the algorithm is even able to deal with sensors that are locally corrupted, which is quite often the case for \ac{EEG} data.
 
