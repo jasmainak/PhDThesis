@@ -151,7 +151,7 @@ Finally, it is spatiotemporal data with different dynamics from the 3D world tha
 
 In our work presented in Chapter~\ref{chapter:alphacsc}, we extend conventional \ac{CSC} algorithms for heavy-tailed noise. We reformulate the optimization problem as a \ac{MAP} inference with an alpha-stable distribution to replace the reconstruction loss. Our results show that this kind of algorithm is robust to the presence of artifacts and can be used to uncover temporal structures from neural signals, even those involving nested oscillations.
 
-\section*{Brain Imaging Data Structure (BIDS)}
+\section*{Chapter~\ref{chapter:bids}: Brain Imaging Data Structure (BIDS)}
 
 \begin{figure}[htb!]
 \begin{center}
@@ -188,9 +188,21 @@ In order to ease adoption of the BIDS format, I also contributed to Python code 
 
 For a more detailed description of the BIDS-MEG specification, example datasets, resources and feedback, please visit \url{http://bids.neuroimaging.io}.
 
-\section*{A reproducible M/EEG group study}
+\section*{Chapter~\ref{chapter:group_study}: A reproducible M/EEG group study}
 
-\begin{figure}[h]
+In the previous section, we discussed how data sharing can be facilitated using the \ac{BIDS} for \ac{MEG}. This is taking us one step closer to the goal of reproducibility. However, reproducibility is not achieved by merely sharing more data with the hope that this will solve all problems. As noted in \citet{baker20161}, one of the best solutions to foster reproducible science is not a technical one, but an educational one. This is of course true for statistics, where there is an urgent need to clarify and educate researchers about the statistical tools required in neuroscience. But it is now increasingly important also for academic software.
+
+In recent years, free academic toolboxes have gained increasing prominence in \ac{MEG} analysis as a means to disseminate cutting edge methods, share best practices between different research groups and pool resources for developing essential tools for the \ac{MEG} community. Teaching events are regularly held around the world where the basics of each toolbox are explained by its  developers and experienced power users. There are however, knowledge gaps that need to be addressed. First, most teaching examples only show analysis of a single ‘typical best’ subject whereas most real MEG studies involve analysis of group data. It is then left to the researchers in the field to figure out for themselves how to make the transition and obtain significant group results. Secondly, we are not familiar with any examples of fully analyzing the same group dataset with different academic toolboxes to assess the degree of agreement in scientific conclusions and compare strengths and weaknesses of various analysis methods and their independent implementations.
+
+\section*{Methods}
+To address this very issue, a workshop was organised by the lead developers of six most popular free academic MEG toolboxes at Biomag 2017. This work is a follow up to the workshop, which presents the contribution of the MNE software team, and will be published in \emph{Frontiers in Neuroscience, section Brain Imaging Methods}. This study presents the results obtained by the reanalysis of an open dataset from \citet{wakeman2015multi} using the MNE software package. The analysis covers preprocessing steps, quality assurance, sensor-space analysis of evoked responses, source localization, and statistics in both sensor and source space. Results with possible alternative strategies are presented and discussed at different stages such as the use of high-pass filtering versus baseline correction, tSSS versus \ac{SSS}, the use of a minimum norm inverse versus \ac{LCMV} beamformer, and the use of univariate or multivariate statistics. 
+
+
+\section*{Results}
+
+This aims to provide a comparative study of different stages of \ac{MEG}/\ac{EEG} analysis pipeline on the same dataset, with open access (\url{https://github.com/mne-tools/mne-biomag-group-demo}) to all of the scripts necessary to reproduce this analysis. An example of such a reanalysis figure is shown in Figure~\ref{fig:sommaire:grand_average} which shows the evoked response for one EEG sensor. Indeed, we are not only able to reproduce the results from \citet{wakeman2015multi} but also tease apart the factors that could lead to different results. The work ends with a set of recommendations based on the lessons we learned from this analysis exercise.
+
+\begin{figure}[htb]
   \centering
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-NoneHz.pdf}\\
   \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-1Hz.pdf}
@@ -199,44 +211,49 @@ For a more detailed description of the BIDS-MEG specification, example datasets,
 \label{fig:sommaire:grand_average}
 \end{figure}  
 
-In the previous section, we discussed how data sharing can be facilitated using the \ac{BIDS} for \ac{MEG}. This is taking us one step closer to the goal of reproducibility. However, reproducibility is not achieved by merely sharing more data with the hope that this will solve all problems. As noted in \citet{baker20161}, one of the best solutions to foster reproducible science is not a technical one, but an educational one. This is of course true for statistics, where there is an urgent need to clarify and educate researchers about the statistical tools required in neuroscience. But it is now increasingly important also for academic software.
+\clearpage
 
-In recent years, free academic toolboxes have gained increasing prominence in \ac{MEG} analysis as a means to disseminate cutting edge methods, share best practices between different research groups and pool resources for developing essential tools for the \ac{MEG} community. Teaching events are regularly held around the world where the basics of each toolbox are explained by its  developers and experienced power users. There are however, knowledge gaps that need to be addressed. First, most teaching examples only show analysis of a single ‘typical best’ subject whereas most real MEG studies involve analysis of group data. It is then left to the researchers in the field to figure out for themselves how to make the transition and obtain significant group results. Secondly, we are not familiar with any examples of fully analyzing the same group dataset with different academic toolboxes to assess the degree of agreement in scientific conclusions and compare strengths and weaknesses of various analysis methods and their independent implementations.
+\section*{Chapter~\ref{chapter:autoreject}: Automated artifact rejection for M/EEG}
 
-To address this very issue, a workshop was organised by the lead developers of six most popular free academic MEG toolboxes at Biomag 2017. This work is a follow up to the workshop, which presents the contribution of the MNE software team, and will be published in \emph{Frontiers in Neuroscience, section Brain Imaging Methods}. This study presents the results obtained by the reanalysis of an open dataset from \citet{wakeman2015multi} using the MNE software package. The analysis covers preprocessing steps, quality assurance, sensor-space analysis of evoked responses, source localization, and statistics in both sensor and source space. Results with possible alternative strategies are presented and discussed at different stages such as the use of high-pass filtering versus baseline correction, tSSS versus \ac{SSS}, the use of a minimum norm inverse versus \ac{LCMV} beamformer, and the use of univariate or multivariate statistics. An example of such a reanalysis figure is shown in Figure~\ref{fig:sommaire:grand_average} which shows the evoked response for one EEG sensor.
+In the previous section, we discussed the reproducibility challenges when performing group studies in \ac{MEG} and \ac{EEG}. One way to improve reproducibility is automation. and we briefly touched upon an algorithm for automating detection of bad data segments, known as \emph{autoreject}.
 
-This aims to provide a comparative study of different stages of \ac{MEG}/\ac{EEG} analysis pipeline on the same dataset, with open access to all of the scripts necessary to reproduce this analysis.
+%copy pasted abstract below
+In this section, we will present this algorithm which rejects and repairs bad trials in \ac{MEG} and \ac{EEG} signals. Annotating bad segments in the data is perhaps one of the most time consuming aspects of data processing in electrophysiology. Currently, it is either done manually, or using automated black-box algorithms (\textit{e.g.,} RANSAC~\citep{bigdely2015prep}, FASTER~\citep{nolan2010faster}, SNS~\citep{de2008sensor}). The manual approach is often subjective with often no clear consensus on what constitutes a corrupted data segment. Therefore, reanalysis is not only manually demanding but can also lead to problems in reproducibility. On the other hand, the automated methods are controlled by parameters that are not straightforward to tune. In the case of failure, it is not always obvious what caused the method to fail and how it can be corrected. As a result, one is left with no choice but to exclude the data from further analysis.
 
-\section*{Automated artifact rejection for M/EEG}
+\subsection*{Methods}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/figure1.pdf}
     \caption[]{Cross-validation error as a function of peak-to-peak rejection threshold on one EEG dataset. The root mean squared error (RMSE) between the mean of the training set (after removing the trials marked as bad) and the median of the validation set was used as the cross-validation metric (Section~\ref{sec:auto_global}). The two insets show the average of the trials as ``butterfly plots" (each curve representing one sensor) for very low and high thresholds. For low thresholds, the RMSE is high because most of the trials are rejected (underfit). At high thresholds, the model does not drop any trials (overfit). The optimal data-driven threshold (\emph{autoreject, global}) with minimum RMSE is somewhere in between. It closely matches the human threshold.}
     \label{fig:sommaire:cross_val}
 \end{figure}
 
-In the previous section, we discussed the reproducibility challenges when performing group studies in \ac{MEG} and \ac{EEG}. One way to improve reproducibility is automation. and we briefly touched upon an algorithm for automating detection of bad data segments, known as \emph{autoreject}.
+This led us to develop a method based on design choices motivated by ease of interpretation and diagnosis. The method we propose capitalizes on cross-validation (Figure~\ref{fig:sommaire:cross_val}) in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold--a quantity commonly used for identifying bad trials in \ac{MEG}/\ac{EEG}. The key insight is that the training and validation sets are more similar when the data does not contain outliers than when it does. Thus a threshold that minimizes the cross-validation error is one which removes the outliers.
 
-%copy pasted abstract below
-In this section, we will present this algorithm which rejects and repairs bad trials in \ac{MEG} and \ac{EEG} signals. Annotating bad segments in the data is perhaps one of the most time consuming aspects of data processing in electrophysiology. Currently, it is either done manually, or using automated black-box algorithms. The manual approach is often subjective with often no clear consensus on what constitutes a corrupted data segment. Therefore, reanalysis is not only manually demanding but can also lead to problems in reproducibility. On the other hand, the automated methods are controlled by parameters that are not straightforward to tune. In the case of failure, it is not always obvious what caused the method to fail and how it can be corrected. As a result, one is left with no choice but to exclude the data from further analysis.
+This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. For efficiency reasons, we use Bayesian optimization which is a well-known technique for hyperparameter optimization. All steps of the algorithm are fully automated thus lending itself to the name \emph{autoreject}. Crucially, the algorithm is even able to deal with sensors that are locally corrupted, which is quite often the case for \ac{EEG} data.
 
-This led us to develop a method based on design choices motivated by ease of interpretation and diagnosis. The method we propose capitalizes on cross-validation (Figure~\ref{fig:sommaire:cross_val}) in conjunction with a robust evaluation metric to estimate the optimal peak-to-peak threshold--a quantity commonly used for identifying bad trials in \ac{MEG}/\ac{EEG}. This approach is then extended to a more sophisticated algorithm which estimates this threshold for each sensor yielding trial-wise bad sensors. Depending on the number of bad sensors, the trial is then repaired by interpolation or by excluding it from subsequent analysis. For efficiency reasons, we use Bayesian optimization which is a well-known technique for hyperparameter optimization. All steps of the algorithm are fully automated thus lending itself to the name \emph{autoreject}. Crucially, the algorithm is even able to deal with sensors that are locally corrupted, which is quite often the case for \ac{EEG} data.
+\subsection*{Results}
 
-In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing \ac{MEG} and \ac{EEG} recordings from more than 200 subjects. The comparisons include purely qualitative efforts as well as quantitatively benchmarking against human supervised (Figure~\ref{fig:sommaire:hcp_scatter}) and semi-automated preprocessing pipelines. The algorithm allowed us to automate the preprocessing of \ac{MEG} data from the \ac{HCP} going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
-
-
-\begin{figure}[htb!]
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\linewidth]{figures/figure4.pdf}
     \caption[]{Scatter plots for the results with the HCP data. For each method, the $\infnorm{\cdot}$ norm of the difference between the HCP ground truth and the method is taken. Each circle is a subject. (A) \textit{autoreject (local)} against no rejection, (B) \textit{autoreject (local)} against Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} against FASTER, (D) \textit{autoreject (local)} against RANSAC. Data points below the dotted red line indicate subjects for which \textit{autoreject (local)} outperforms the alternative method.}
     \label{fig:sommaire:hcp_scatter}
 \end{figure}
 
-\clearpage
-\section*{Temporal representation learning}
+\begin{figure}[htb!]
+	\centering
+	\includegraphics[width=0.9\linewidth]{figures/figure5.pdf}
+    \caption[The evoked response (average of data across trials) on three different datasets before and after applying \emph{autoreject}]{The evoked response (average of data across trials) on three different datasets before and after applying \emph{autoreject} --- the MNE sample data, the HCP data and the EEG faces data. Each sensor is a line on the plots. On the left, manually annotated bad sensors are shown in red. The algorithm finds the bad sensors automatically and repairs them for the relevant trials. Note that it can even fix multiple sensors at a time and works for different modalities of data acquisition.}
+    \label{fig:sommaire:sample_evoked}
+\end{figure}
 
-So far, we studied automation in neuroimaging with the objective of enabling scalable data analysis and reproducibility. While  reproducibility and large-scale data analysis allow us to consolidate upon existing studies, \emph{per se} they are not tools to uncover new and interesting phenomena. In this chapter, we will explore this dimension of automation using what is known as \emph{representation learning}.
+In order to assess the practical significance of the algorithm, we conducted extensive validation and comparisons with state-of-the-art methods on four public datasets containing \ac{MEG} and \ac{EEG} recordings from more than 200 subjects. The comparisons include purely qualitative efforts (Figure~\ref{fig:sommaire:sample_evoked}) as well as quantitatively benchmarking against human supervised (Figure~\ref{fig:sommaire:hcp_scatter}) and semi-automated preprocessing pipelines. Our qualitative comparisons showed that \emph{autoreject} was able to annotate and repair bad segments satisfactorily for different datasets. Indeed, the algorithm allowed us to automate the preprocessing of \ac{MEG} data from the \ac{HCP} going up to the computation of the evoked responses. The automated nature of our method minimizes the burden of human inspection, hence supporting scalability and reliability demanded by data analysis in modern neuroscience.
+
+\section*{Chapter~\ref{chapter:alphacsc}: Temporal representation learning}
+
+So far, we studied automation in neuroimaging with the objective of enabling scalable data analysis and reproducibility. While  reproducibility and large-scale data analysis allow us to consolidate upon existing studies, \emph{per se} they are not tools to uncover new and interesting phenomena. In this section, we will explore this dimension of automation using what is known as \emph{representation learning}.
 
 Representations are the building blocks of signal processing. It is quite easy to convince ourselves of this fact, if we simply use a Fast Fourier Transform (FFT) to filter data. When we are using an FFT, we are in effect, decomposing the signal into a sum of sinusoids of varying frequencies. If we are interested in a time-frequency analysis, a common choice of representation for neurosience signals consists in using Morlet wavelets.
 
@@ -251,44 +268,63 @@ Remarkably, there has been so far very little cross-pollination of ideas between
 Our work is an attempt to bridge this gap. 
 We propose a model which builds upon existing shift-invariant sparse coding models to be able to handle heavy-tailed noise and artifacts. It assumes positivity of the coefficients to account for the fact that an atom does not change polarity over time. 
 
-Our model is a novel probabilistic \ac{CSC} model for learning shift-invariant atoms from unprocessed neural time series data containing
-potentially severe artifacts.
-In the core of our model, which we call $\alpha$CSC, lies a family of heavy-tailed
-distributions called $\alpha$-stable distributions. We develop a novel, computationally efficient Monte Carlo
-expectation-maximization algorithm for inference. The maximization step boils down to a weighted
-\ac{CSC} problem, for which we develop a computationally efficient optimization algorithm.
+\subsection*{Methods}
 
-In our work, we rigorously evaluate the computational efficiency of our algorithm against the competing benchmarks. Because the \ac{CSC} problem is non-convex, the optimization procedure involves nested loops and theoretical analysis often falls short in dealing with the complexity of non-convex functions. 
-The optimization procedure is nested as the problem is convex when one of the variables is fixed: the atoms or the activations. The outer loop alternates between these two variables while the inner loop learns them when the other is fixed. An experimental approach, while challenging, is not completely out of reach. The final result depends on the initialization, and therefore algorithms can be compared only if they are tested for many different random seeds and their results averaged. Our qualitative analysis also goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data.
-
-Our results
-show that the proposed algorithm achieves state-of-the-art convergence speeds. Besides, $\alpha$CSC is
-significantly more robust to artifacts when compared to three competing algorithms: it can extract
-spike bursts, oscillations, and even reveal more subtle phenomena such as cross-frequency coupling
-when applied to noisy neural time series.
-
-\begin{figure}[t]
+\begin{figure}[htb]
     \centering
      \subfigure[$K=10$, $L=32$.]{
      \includegraphics[width=0.5\linewidth]{figures/relative_10_32.pdf}} \\
      \subfigure[Time to reach a relative precision of 0.01.]{
      \includegraphics[width=\textwidth]{figures/bar_plot.pdf}}
-    \caption[]{Comparison of state-of-the-art methods with our approach. (a)~Convergence plot with the objective function relative to the obtained minimum, as a function of computational time. (b)~Time taken to reach a relative precision of $10^{-2}$, for different settings of $K$ and $L$.  }
+    \caption[]{Comparison of state-of-the-art methods with our approach. (a)~Convergence plot with the objective function relative to the obtained minimum, as a function of computational time. (b)~Time taken to reach a relative precision of $10^{-2}$, for different settings of number of atoms $K$ and length of an atom $L$.  }
     \label{fig:sommaire:convergence}
 \end{figure}
 
-\begin{figure}[b]
+A \ac{CSC} model, as first introduced by \citep{grosse2012shift}, expresses the estimate signal $\hat{x}_n$ as a sum of convolution of atoms $d^k$ and their corresponding activations $z_n^k$:
+
+\begin{align}
+z_{n,t}^k \sim {\cal E}(\lambda),
+\quad x_{n,t} | z, d \sim {\cal N}( \hat{x}_{n,t},1 ),
+\quad \text{ where,}
+\quad \hat{x}_n \triangleq \sum_{k=1}^{K}d^{k} * z_{n}^{k} \enspace .
+\label{eqn:sommaire:csc_prob}
+\end{align}
+
+In the traditional model, the noise is assumed to be Gaussian distributed $\cal N(\cdot)$ and the activations are assumed sparse, drawn from an exponential distribution $\cal E(\cdot)$. The activations and atoms are estimated using an alternate minimization scheme. The model we introduce is a novel probabilistic \ac{CSC} model for learning shift-invariant atoms from unprocessed neural time series data containing potentially severe artifacts. Therefore, a Gaussian noise model is no longer sufficient. In the core of our model, which we call $\alpha$CSC, lies a family of heavy-tailed
+distributions called $\alpha$-stable distributions. The parameter $\alpha$ controls how heavy-tailed the distribution is.
+
+We develop a novel, computationally efficient \ac{MCEM} algorithm for inference. The maximization step boils down to a weighted
+\ac{CSC} problem (Equation~\ref{eq:sommaire:problem_definition_z}), for which we develop a computationally efficient optimization algorithm.
+
+\begin{align}
+- & \max_{z, d} \sum_{n=1}^{N} \Big( \|\sqrt{w_{n}} \odot (x_{n} - \sum_{k=1}^{K}d^{k} * z_{n}^{k})\|_{2}^{2} + \lambda \sum_{k}{ \|{z}_{n}^{k} \|_1}\Big) \quad \text{ s.t.  } {z}_n^k \geq 0, \forall n,k\enspace .
+\label{eq:sommaire:problem_definition_z}
+\end{align} 
+
+The weights $w_n$ in the maximization step are estimated in the expectation step using an \ac{MCMC} procedure. Indeed, the weights help us deal with the artifacts by suppressing them in the maximization step objective function.
+
+\section*{Results}
+\begin{figure}[htb]
     \centering
              \subfigure[LFP spike data from \cite{hitziger2017adaptive}]{
              \includegraphics[height=4cm]{figures/spike_atomsa.pdf}
-             \label{fig:sommaire:spikedata}} \\
+             } \\
              \subfigure[Estimated atoms]{
              \includegraphics[height=4cm]{figures/spike_atomsb.pdf}
-             \label{fig:sommaire:spikeatoms}}
+             }
 
             \caption[]{Atoms learnt by $\alpha$CSC on LFP data containing epileptiform spikes with $\alpha=2$.}
+            \label{fig:sommaire:spikedata}
 \end{figure}
 
+In our work, we rigorously evaluate the computational efficiency of our algorithm against the competing benchmarks. Because the \ac{CSC} problem is non-convex, the optimization procedure involves nested loops and theoretical analysis often falls short in dealing with the complexity of non-convex functions. 
+The optimization procedure is nested as the problem is convex when one of the variables is fixed: the atoms or the activations. The outer loop alternates between these two variables while the inner loop learns them when the other is fixed. The final result depends on the initialization, and therefore algorithms can be compared only if they are tested for many different random seeds and their results averaged. Our qualitative analysis also goes beyond the narrative of verifying the existence of known waveforms to uncovering more complex structures in the data.
+
+Our results
+show that the proposed algorithm achieves state-of-the-art convergence speeds (Figure~\ref{fig:sommaire:convergence}). Indeed, our algorithm uses quasi-Newton solvers which results in a faster convergence compared to ADMM-based methods~\citep{heide2015fast, wohlberg2016efficient}. Besides, $\alpha$CSC is
+significantly more robust to artifacts when compared to three competing algorithms: it can extract
+spike bursts (Figure~\ref{fig:sommaire:spikedata}), oscillations, and even reveal more subtle phenomena such as cross-frequency coupling
+when applied to noisy neural time series.
 
 \section*{Conclusion}
 
