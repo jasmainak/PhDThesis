@@ -1,31 +1,29 @@
-\chapter{Sommaire (en Francais)}
+\chapter{Sommaire (en Français)}
 \label{chapter:sommaire}
 \pagestyle{mainmatter}
 \pagenumbering{arabic}
 
-Understanding the human brain is one of the most significant challenges of the 21st century. The human brain is arguably the most complex  organs of the human body, which performs a wide range of cognitive functions: from visual recognition to language understanding, speech, social interaction, and executive control. Pathologies of the brain are perhaps one of the biggest challenges for medicine today. Medical interventions and drugs for major infectious diseases are available today, and individuals can expect to live up to the mid 80s and even into their 90s. Yet, we still do not have a good grasp over most mental pathologies: Parkinson's, Alzheimer's, dementia, epilepsy to name a few. This is despite the fact that someone today who lives into their mid 80s has a 50\% chance of contracting Alzheimer's~\citep{alzheimer20162016}.
+Comprendre le cerveau humain  est l'un des défis les plus importants du 21e siècle. Sans doute l'organe le plus complexe du corps humain, le cerveau est responsable  d’un large éventail de fonctions cognitives telles la reconnaissance visuelle, la compréhension du langage, la production de la parole, les interactions sociales et le contrôle exécutif. Les pathologies associées au cerveau demeurent, à ce jour, une problématique extrêmement complexe.  Actuellement, les interventions médicales pour les principales maladies infectieuses permettent aux individus de vivre jusqu'à l’âge de 80 et même  90 ans. Malgré les avancées de la médecine, nous n’arrivons pas à cibler efficacement les mécanismes  qui engendrent ou qui contribuent à la progression des pathologies mentales, telles le Parkinson, la démence d’Alzheimer, la schizophrénie  et l’épilepsie, pour n'en nommer que quelques-unes. Ceci a de graves conséquences sur la société vieillissante, par exemple une personne  dans la quarantaine a 50\% de risque de développer la maladie d'Alzheimer ~\citep{alzheimer20162016}.
 
-Our current understanding of the brain is a result of decades of concerted efforts across multiple disciplines ranging from molecular biology, genetics, physiology, cognitive and behavioral neuroscience, to statistics, computer science, and data science. A relatively new subfield here is brain imaging, also known as neuroimaging. Brain imaging refer to a set of technologies where  snapshots of the brain are taken. These snapshots can be static, as in the case of anatomical images from \ac{MRI}, or an evolving image, as in the case of \ac{fMRI}. The grand vision is to utilize them in hospitals to help diagnosis, in surgeries, in \acp{BCI}, or in research for neuroscientists to better understand the brain. 
-In this thesis, we will focus our attention on measuring the electric currents and/or corresponding magnetic field from the brain, using electroencephalography, magnetoencephalography, and local field potentials. 
-These methods have the property of possessing a high temporal resolution, which is particularly useful for extracting the temporal dynamics of brain signals.
+Néanmoins, notre compréhension actuelle du cerveau est le résultat de décennies d'efforts concertés dans de multiples disciplines allant de la biologie moléculaire, à la génétique et la physiologie, en passant par les neurosciences cognitives et comportementales, la statistique, l'informatique et la science des données. Un sous-domaine en expansion est l'imagerie cérébrale, également connue sous le nom de neuroimagerie. L'imagerie cérébrale fait référence à un ensemble de technologies où l'on mesure l’activité  instantanée du cerveau. Ces mesures peuvent être statiques, comme dans le cas des images anatomiques issues de l'imagerie par résonance magnétique (IRM), ou dynamique, comme dans le cas de l'imagerie par résonance magnétique fonctionnelle (IRMf). L’objectif à long-terme serait d’utiliser ces techniques  dans les hôpitaux pour aider au niveau du diagnostic et dans les chirurgies, dans les interfaces cerveau-machine (BCI) et dans la recherche en neurosciences. Cette thèse sera dédiée à  la mesure des courants électriques et/ou du champ magnétique du cerveau par l’entremise de l'électroencéphalographie (EEG), de la magnétoencéphalographie et les potentiels de champ local (LFP). Ces méthodes ont la propriété de posséder une résolution temporelle élevée,ce qui est particulièrement utile pour extraire la dynamique temporelle des signaux du cerveau.
 
-In this thesis, I attempt to synthesize the lessons learned from analysing public neuroimaging data with open source software. To this effect, I participated in an international collaboration to create an \ac{MEG} standard for  \ac{BIDS}~\citep{niso2018meg}. I wrote the validator which helped create the MEG-BIDS compatible example datasets. As a contributor to MNE~\citep{gramfort2013meg}, I led an effort to write a tutorial paper which reanalyzes the Faces dataset~\citep{wakeman2015multi} for a reproducible group study. In the backdrop of the reproducibility and data sharing movement, we started automating our pipelines which led us to develop a fully automated algorithm for artifact rejection and repair~\citep{jas2016automated, jas2017autoreject}. Finally, we develop algorithms to learn new undiscovered motifs automatically from neural time series data~\citep{jas2017learning}. 
+Dans cette thèse, j’élabore sur l’optimisation des analyses  de données publiques en  neuroimagerie , et ce, au moyen des logiciels libres. À cet effet, j'ai participé à une collaboration internationale pour créer une norme sur les analyses en MEG pour la structure de données d'imagerie cérébrale (BIDS)~\citep{niso2018meg}. J'ai écrit le validateur qui a aidé à créer les exemples d'ensembles de données compatibles MEG-BIDS. En tant que collaborateur de MNE~\citep{gramfort2013meg}, j'ai dirigé la rédaction d'un tutoriel qui permet d’analyser à nouveau un ensemble de données, nommé Faces~\citep{wakeman2015multi}, pour une reproduire les résultats préalablement retrouvés.Dans le contexte du mouvement de reproductibilité et de partage des données, nous avons commencé à automatiser nos séquences d’étapes d’analyses (pipelines), ce qui nous a amené à développer un algorithme entièrement automatisé pour le rejet et la réparation des artefacts en EEG/MEG~\citep{jas2016automated, jas2017autoreject}. Enfin, nous avons développé des algorithmes pour permettre l’apprentissage automatique de nouveaux motifs (patterns) cérébraux qui n’ont pas pu être démontré  par l’utilisation de données extraites de séries temporelles neuronales~\citep{jas2017learning}. 
 
-The thesis is organized by chapters to highlight these four main  contribution areas: data sharing, reproducibility, automation for artifact detection, and automated data-driven motif discovery. An important aspect of this thesis is that these contributions led not only to publications in international conferences and journals, but also reproducible open source implementations and reusable datasets. A comprehensive list is given below.
+La thèse est organisée par chapitres pour mettre en évidence ces quatre principaux domaines de contribution : le partage des données, la reproductibilité, l'automatisation de la détection des artefacts et la découverte automatisée des motifs cérébraux à partir des données EEG/MEG. Un aspect important de cette thèse est que ces contributions ont conduit non seulement à des publications dans des conférences et revues internationales, mais aussi à des implémentations open source reproductibles et à des ensembles de données réutilisables. Une liste complète est donnée ci-dessous.
 
-\subsection*{Journal publications}
+\subsection*{Publications dans les revues}
 \bibentry{jas2017autoreject}\ \\ \\
 \bibentry{jas2017mne}\ \\ (Pending revision at \emph{Frontiers in Neuroscience, Brain Imaging Methods})\ \\ \\
 \bibentry{niso2018meg}
 
-\subsection*{Conference publications}
+\subsection*{Publications dans les conférences}
 \bibentry{jas2016automated}\ \\ \\
 \bibentry{jas2017learning}
 
-\subsection*{Workshop papers}
+\subsection*{Documents d'atelier}
 \bibentry{dengemann2015conc}\
 
-\subsection*{Open source implementations}
+\subsection*{Implémentations Open Source}
 
 \url{http://autoreject.github.io/} \\
 \url{http://alphacsc.github.io/} \\
@@ -36,9 +34,9 @@ The thesis is organized by chapters to highlight these four main  contribution a
 
 \url{https://openfmri.org/dataset/ds000248/}
 
-In the French summary, I will introduce the context of the thesis followed by a brief summary of each of the four main contribution areas.
+Dans le résumé en français, je présenterai le contexte de la thèse, suivi d'un bref résumé de chacun des quatre principaux domaines de contribution.
 
-\section*{Electrophysiology}
+\section*{Électrophysiologie}
 
 \begin{figure}[htb]
 \begin{center}
@@ -48,13 +46,11 @@ In the French summary, I will introduce the context of the thesis followed by a 
    \label{fig:sommaire:neuroimaging_methods}
 \end{figure}
 
-In this thesis, we will be discussing data recorded primarily using \ac{MEG}/\ac{EEG}. EEG and MEG are electrophysiology methods that are used to study properties of biological cells and tissues. 
-Biological tissues have electrical properties due to the presence of ions. Just as we can measure voltages in electrical appliances, it is possible also to measure these voltages in living tissues. 
+Dans cette thèse, nous discuterons des données enregistrées principalement à l'aide de la MEG et de l’EEG. L'EEG et la MEG sont des méthodes d'électrophysiologie permettant d’étudier les propriétés des cellules et tissus biologiques. Les tissus biologiques ont des propriétés électriques dues à la présence d'ions. Tout comme nous pouvons mesurer les tensions dans les appareils électriques, il est également possible de mesurer ces tensions dans les tissus vivants.
 
-Electrophysiological recording have the advantage of directly measuring the brain activity, as opposed to an indirect measure, which is for example the case in \ac{fMRI}.
-Brain imaging techniques are characterized by their temporal and spatial resolution, \textit{i.e.,} the time scale at which it can measure brain activity, and also the accuracy of localizing the source of the activity. Figure~\ref{fig:sommaire:neuroimaging_methods} summarizes different neuroimaging methods with respect to their temporal and spatial resolution, but also their invasiveness. This is useful to understand why MEG/EEG are often considered the method of choice for understanding the underpinnings of human brain activity. In the case of \ac{fMRI}, another non-invasive method such as MEG/EEG, as it measures the blood flow which is a slow response to neural activity, its temporal resolution cannot be high. 
+L'enregistrement électrophysiologique a l'avantage de mesurer directement l'activité cérébrale, par opposition à une mesure indirecte, ce qui est par exemple le cas de l'IRMf. Les techniques d'imagerie cérébrale se caractérisent par leur résolution temporelle et spatiale, c'est-à-dire l'échelle de temps à laquelle elle peut mesurer l'activité cérébrale, ainsi que la précision de la localisation de la source de l'activité, respectivement. La Figure~\ref{fig:sommaire:neuroimaging_methods} résume les différentes méthodes de neuroimagerie en ce qui concerne leur résolution temporelle et spatiale, mais aussi leur caractère invasif. Ceci est utile pour comprendre pourquoi la MEG/EEG est souvent considéré comme la méthode de choix pour comprendre les fondements de l'activité cérébrale humaine. Bien que l'IRMf soit une autre méthode non invasive, elle mesure le flux sanguin qui est une réponse lente en comparaison à l'activité neuronale ce qui lui confère une résolution temporelle peut élevée.
 
-There are a number of methods to measure the electrical potentials in the human body, the most well-known being perhaps \ac{ECG} which is used to measure the electrical activity of the heart. The three methods we discuss in the thesis produce multivariate time series. A brief summary of each of these methods follows below.
+Il existe un certain nombre de méthodes pour mesurer les potentiels électriques dans le corps humain, la plus connue étant peut-être l'électrocardiographie (ECG) qui est utilisée pour mesurer l'activité électrique du cœur. Les trois méthodes dont nous discutons dans la thèse produisent des séries temporelles multivariées. Un bref résumé de chacune de ces méthodes est présenté ci-dessous.
 
 \paragraph{Electroencephalography: } \Ac{EEG} is a portable and non-invasive measurement technique invented in the 1920s that is  used in several contexts such as \acp{BCI}, monitoring and diagnosis, and in cognitive studies. 
 In electroencephalography, an array of electrodes on an \ac{EEG} cap is placed on the scalp to measure the voltages with respect to a reference electrode. 
@@ -68,8 +64,8 @@ They are immersed in liquid Helium at very low temperatures (around 4 K), so as 
 \paragraph{\Ac{LFP}}
 The Local Field Potential is the electric potential that is recorded in the extracellular space of the brain tissue. In contrast to \ac{EEG}, \ac{LFP} are recorded in depth, from within the cortical tissue and can therefore measure more localized populations of neurons. Small intracerebral electrodes are typically used to measure these potentials as opposed to large surface electrodes used in \ac{EEG}.
 
-\section*{Context of the thesis}
-This emerges out of the recent movements in reproducibility and data sharing in neuroimaging. It focuses on simplifying data analysis through better educational tools and automated methods to enable reproducible analysis in the age of big data.
+\section*{Contexte de la thèse}
+La thèse se focalise sur les récents mouvements de reproductibilité et de partage des données en neuroimagerie. Elle met l'accent sur la simplification de l'analyse des données grâce à de meilleurs outils pédagogiques et à des méthodes automatisées permettant une analyse reproductible à l'ère des grandes données.
 
 \subsection*{The reproducibility crisis}
 \label{sec:sommaire:reproducibility_crisis}
