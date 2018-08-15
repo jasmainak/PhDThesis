@@ -129,7 +129,7 @@ Compte tenu de la complexité du cerveau humain, il est clair que ces formes d'o
 
 \begin{figure}[t]
 \begin{center}
-   \includegraphics[width=0.85\linewidth]{figures/schema.pdf}
+   \includegraphics[width=0.85\linewidth]{figures/schema_sommaire.pdf}
 \end{center}
    \caption[]{Une illustration de la façon dont le codage à faible densité convolutionnelle peut être utilisé pour extraire automatiquement les formes d'onde prototypiques.}
    \label{fig:sommaire:csc_schematic}
@@ -191,8 +191,8 @@ L'objectif est de fournir une étude comparative des différentes étapes du pip
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-NoneHz.pdf}\\
-  \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-1Hz.pdf}
+  \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-NoneHz_sommaire.pdf}\\
+  \includegraphics[width=0.7\linewidth]{figures/grand_average_highpass-1Hz_sommaire.pdf}
 \caption[]{Moyenne générale des réponses évoquées sur 16 sujets pour le canal EEG065. (A) Pas de filtre passe-haut. (B) Filtré passe-haut à 1,0 Hz. Il est à noter que, comme (A), les résultats rapportés par \cite{wakeman2015multi} (la ligne en pointillés à 800 ms indique où leur placette s'est arrêtée) montrent de grandes dérives, mais celles-ci reviennent à des niveaux proches de la ligne de base vers la fin d'un intervalle suffisamment long (ici, 2,9 secondes) même sans appliquer un filtre passe-haut.}
 \label{fig:sommaire:grand_average}
 \end{figure}  
@@ -231,7 +231,7 @@ Cette approche est ensuite étendue à un algorithme plus sophistiqué qui estim
 
 \begin{figure}[htb!]
 	\centering
-	\includegraphics[width=0.9\linewidth]{figures/figure5.pdf}
+	\includegraphics[width=0.9\linewidth]{figures/figure5_sommaire.pdf}
     \caption[]{La réponse évoquée (moyenne des données d'un essai à l'autre) sur trois ensembles de données différents avant et après l'application de l'\emph{autoreject} --- es données de l'échantillon MNE, les données HCP et les données EEG Faces. Chaque capteur est une ligne sur les tracés. A gauche, les mauvais capteurs annotés manuellement sont affichés en rouge. L'algorithme trouve automatiquement les mauvais capteurs et les corrige pour les essais en question. A noter que l’algorithme peut également corriger plusieurs capteurs à la fois et fonctionne pour tout type de modalités d'acquisition.}
     \label{fig:sommaire:sample_evoked}
 \end{figure}
@@ -256,9 +256,9 @@ Même s’il y a certains succès qui ont été rapportés en neuroimagerie avec
 \begin{figure}[htb]
     \centering
      \subfigure[$K=10$, $L=32$.]{
-     \includegraphics[width=0.5\linewidth]{figures/relative_10_32.pdf}} \\
+     \includegraphics[width=0.5\linewidth]{figures/relative_10_32_sommaire.pdf}} \\
      \subfigure[Temps nécessaire pour atteindre une précision relative de 0.01.]{
-     \includegraphics[width=\textwidth]{figures/bar_plot.pdf}}
+     \includegraphics[width=\textwidth]{figures/bar_plot_sommaire.pdf}}
     \caption[]{~Comparaison des méthodes de pointe avec notre approche. (a)~Diagramme de convergence avec la fonction objectif par rapport au minimum obtenu, en fonction du temps de calcul. (b)~Temps nécessaire pour atteindre une précision relative de $10^{-2}$, pour différents réglages du nombre d'atomes $K$ et de la longueur d'un atome $L$.}
     \label{fig:sommaire:convergence}
 \end{figure}
@@ -287,11 +287,11 @@ Les poids $w_n$ dans l'étape de maximisation sont estimés dans l'étape d'atte
 \section*{Résultats}
 \begin{figure}[htb]
     \centering
-             \subfigure[LFP spike data from \cite{hitziger2017adaptive}]{
-             \includegraphics[height=4cm]{figures/spike_atomsa.pdf}
+             \subfigure[Données LFP spike de \cite{hitziger2017adaptive}]{
+             \includegraphics[height=4cm]{figures/spike_atomsa_sommaire.pdf}
              } \\
-             \subfigure[Estimated atoms]{
-             \includegraphics[height=4cm]{figures/spike_atomsb.pdf}
+             \subfigure[Atomes appris]{
+             \includegraphics[height=4cm]{figures/spike_atomsb_sommaire.pdf}
              }
 
             \caption[]{Atomes appris par $\alpha$CSC sur les données LFP contenant des pointes épileptiformes avec $\alpha=2$.}
