@@ -210,7 +210,7 @@ Dans cette section, nous allons présenter cet algorithme qui rejette et répare
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.8\linewidth]{figures/figure1.pdf}
+	\includegraphics[width=0.8\linewidth]{figures/figure1_sommaire.pdf}
     \caption[]{Erreur de validation croisée en fonction du seuil de rejet crête à crête sur un ensemble de données EEG. Le racine de l'erreur quadratique moyenne (REQM) entre la moyenne de l'ensemble de formation (après avoir retiré les essais marqués comme étant mauvais) et la médiane de l'ensemble de validation a été utilisée comme mesure de validation croisée (Section~\ref{sec:auto_global}). Les deux cartons montrent la moyenne des essais sous forme de ``parcelles papillon" (chaque courbe représentant un capteur) respectivement pour des seuils très bas et élevés. Pour les seuils bas, le REQM est élevé parce que la plupart des essais sont rejetés (\emph{underfit}). Pour des seuils élevés, le modèle n'abandonne aucun essai (\emph{overfit}). Le seuil optimal basé sur les données \emph{(autoreject, global)} avec un minimum de REQM se situe quelque part entre les deux. Il correspond approximativement au seuil humain.}
     \label{fig:sommaire:cross_val}
 \end{figure}
@@ -224,7 +224,7 @@ Cette approche est ensuite étendue à un algorithme plus sophistiqué qui estim
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\linewidth]{figures/figure4.pdf}
+    \includegraphics[width=\linewidth]{figures/figure4_sommaire.pdf}
     \caption[]{Diagrammes de dispersion pour les résultats avec les données HCP. Pour chaque méthode, on utilise la norme $\infnorm{\cdot}$ de la différence entre la vérité terrain HCP et la méthode. Chaque cercle représente un sujet. (A) \textit{autoreject (local)} \emph{vs.} aucun rejet, (B) \textit{autoreject (local)} \emph{vs.} Sensor Noise Suppression (SNS) (SNS), (C) \textit{autoreject} \emph{vs.} FASTER, (D) \textit{autoreject (local)} \emph{vs.} RANSAC. Les points de données sous la ligne rouge pointillée indiquent les sujets pour lesquels l'\textit{autoreject (local)} surpasse la méthode alternative.}
     \label{fig:sommaire:hcp_scatter}
 \end{figure}
@@ -257,7 +257,7 @@ Même s’il y a certains succès qui ont été rapportés en neuroimagerie avec
     \centering
      \subfigure[$K=10$, $L=32$.]{
      \includegraphics[width=0.5\linewidth]{figures/relative_10_32.pdf}} \\
-     \subfigure[Time to reach a relative precision of 0.01.]{
+     \subfigure[Temps nécessaire pour atteindre une précision relative de 0.01.]{
      \includegraphics[width=\textwidth]{figures/bar_plot.pdf}}
     \caption[]{~Comparaison des méthodes de pointe avec notre approche. (a)~Diagramme de convergence avec la fonction objectif par rapport au minimum obtenu, en fonction du temps de calcul. (b)~Temps nécessaire pour atteindre une précision relative de $10^{-2}$, pour différents réglages du nombre d'atomes $K$ et de la longueur d'un atome $L$.}
     \label{fig:sommaire:convergence}
